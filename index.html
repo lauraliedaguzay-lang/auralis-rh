@@ -1,201 +1,947 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#818CF8">
-  <title>Auralis RH | Pineapp Inc</title>
-  <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}body{background-image:url('https://i.imgur.com/jULMNPR.png')!important;background-size:cover!important;background-position:center!important;background-attachment:fixed!important;color:#F8F7F4;min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}body.light-mode{background-image:url('https://i.imgur.com/aNHNqPn.png')!important;color:#1a1a2e}*{transition:all .4s ease}.glass{backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px}.light-mode .glass{background:rgba(255,255,255,.65);border-color:rgba(255,255,255,.8)}.light-mode .stat-val,.light-mode h1,.light-mode h2,.light-mode h3{color:#1a1a2e}.page{display:none}.page.active{display:block}#page-splash{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0a0a1a}.splash-name{font-size:64px;font-weight:700;color:#F8F7F4}.splash-rh{display:inline-block;background:#818CF8;color:#fff;padding:2px 14px;border-radius:20px;font-size:24px;font-weight:600;margin-left:8px;vertical-align:super}.splash-company{letter-spacing:.15em;color:rgba(248,247,244,.35);font-size:13px;margin-top:16px}.splash-tag{color:rgba(248,247,244,.55);font-size:18px;font-weight:300;margin-top:8px}.splash-bar{width:240px;height:2px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:40px;overflow:hidden}.splash-fill{height:100%;background:linear-gradient(90deg,#818CF8,#6EE7B7);border-radius:2px;animation:fill 3.5s linear forwards}@keyframes fill{from{width:0}to{width:100%}}.toggle-wrap{position:fixed;top:16px;right:16px;z-index:9999}.toggle-pill{width:52px;height:28px;border-radius:14px;background:#818CF8;cursor:pointer;position:relative;border:none;outline:none}.toggle-thumb{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .4s ease}.light-mode .toggle-pill{background:#6EE7B7}.light-mode .toggle-thumb{transform:translateX(24px)}.sidebar{width:72px;position:fixed;left:0;top:0;bottom:0;z-index:100;backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:4px}.light-mode .sidebar{background:rgba(255,255,255,.5)}.sidebar-logo{font-size:22px;font-weight:800;color:#818CF8;margin-bottom:24px}.nav-btn{width:44px;height:44px;border-radius:12px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(248,247,244,.4);position:relative}.nav-btn:hover{background:rgba(129,140,248,.1);color:#F8F7F4}.nav-btn.active{background:rgba(129,140,248,.2);color:#818CF8}.light-mode .nav-btn{color:rgba(26,26,46,.4)}.light-mode .nav-btn:hover{color:#1a1a2e}.light-mode .nav-btn.active{color:#818CF8}.nav-btn svg{width:20px;height:20px;fill:currentColor}.nav-tip{position:absolute;left:60px;background:#1a1a2e;color:#F8F7F4;padding:4px 10px;border-radius:6px;font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}.nav-btn:hover .nav-tip{opacity:1}.header{height:72px;position:fixed;top:0;left:72px;right:0;z-index:90;backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.04);display:flex;align-items:center;padding:0 24px;gap:16px;border-bottom:1px solid rgba(255,255,255,.06)}.light-mode .header{background:rgba(255,255,255,.5);border-color:rgba(0,0,0,.06)}.header h2{font-size:15px;font-weight:600;flex:1}.main{margin:72px 0 80px 72px;padding:32px;min-height:calc(100vh - 152px)}.aurora-bar{position:fixed;bottom:0;left:0;right:0;height:80px;z-index:9998;backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.06);display:flex;align-items:center;padding:0 24px;gap:16px;border-top:1px solid rgba(255,255,255,.06)}.light-mode .aurora-bar{background:rgba(255,255,255,.5);border-color:rgba(0,0,0,.06)}.aurora-dot{width:6px;height:6px;border-radius:50%;background:#818CF8;animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}.aurora-msg{font-size:14px;color:rgba(248,247,244,.6);flex:1}.light-mode .aurora-msg{color:rgba(26,26,46,.5)}.aurora-action{padding:6px 16px;border-radius:10px;background:rgba(129,140,248,.15);color:#818CF8;border:none;cursor:pointer;font-size:13px;font-weight:500}.auth-card{max-width:420px;width:100%;padding:40px;margin:auto}.auth-logo{text-align:center;margin-bottom:24px}.auth-logo-name{font-size:28px;font-weight:700;color:#F8F7F4}.light-mode .auth-logo-name{color:#1a1a2e}.auth-logo-co{font-size:11px;letter-spacing:.15em;color:rgba(248,247,244,.35);display:block;margin-top:4px}.light-mode .auth-logo-co{color:rgba(26,26,46,.35)}.auth-title{text-align:center;font-size:24px;font-weight:700;margin-bottom:4px}.auth-sub{text-align:center;font-size:13px;color:rgba(248,247,244,.4);margin-bottom:24px}.light-mode .auth-sub{color:rgba(26,26,46,.4)}.oauth-row{display:flex;gap:8px;margin-bottom:16px}.oauth-btn{flex:1;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#F8F7F4;font-size:14px;gap:8px}.light-mode .oauth-btn{border-color:rgba(0,0,0,.1);background:rgba(255,255,255,.5);color:#1a1a2e}.divider{display:flex;align-items:center;gap:12px;margin:16px 0;font-size:12px;color:rgba(248,247,244,.3)}.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}.light-mode .divider{color:rgba(26,26,46,.3)}.light-mode .divider::before,.light-mode .divider::after{background:rgba(0,0,0,.1)}.input{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#F8F7F4;font-size:14px;outline:none;font-family:inherit}.input:focus{border-color:#818CF8;box-shadow:0 0 0 3px rgba(129,140,248,.15)}.input::placeholder{color:rgba(248,247,244,.3)}.light-mode .input{background:rgba(255,255,255,.5);border-color:rgba(0,0,0,.1);color:#1a1a2e}.light-mode .input::placeholder{color:rgba(26,26,46,.3)}.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(248,247,244,.4);margin-bottom:6px}.light-mode .form-group label{color:rgba(26,26,46,.4)}.btn{width:100%;height:48px;border-radius:12px;border:none;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit}.btn-indigo{background:#818CF8;color:#fff}.btn-peach{background:#FBBF9A;color:#1a1a2e}.btn-ghost{background:transparent;color:rgba(248,247,244,.5);border:1px solid rgba(255,255,255,.1)}.light-mode .btn-ghost{color:rgba(26,26,46,.5);border-color:rgba(0,0,0,.1)}.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:16px 0}.stat-card{padding:20px}.stat-val{font-size:2rem;font-weight:700;color:#818CF8}.stat-lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(248,247,244,.4);margin-top:4px}.light-mode .stat-lbl{color:rgba(26,26,46,.4)}.badge{padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;display:inline-block}.b-new{background:rgba(251,191,154,.15);color:#FBBF9A}.b-pre{background:rgba(129,140,248,.15);color:#818CF8}.b-int{background:rgba(196,181,253,.15);color:#C4B5FD}.b-dec{background:rgba(110,231,183,.15);color:#6EE7B7}.b-arch{background:rgba(255,255,255,.06);color:rgba(248,247,244,.35)}.score-big{font-size:56px;font-weight:800;color:#818CF8;line-height:1}.kanban{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px}.kanban-col{min-width:220px;flex:1;padding:16px}.kanban-hd{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between}.kcard{padding:12px;border-radius:12px;margin-bottom:8px;cursor:grab}.kcard:active{transform:scale(1.02);box-shadow:0 8px 24px rgba(0,0,0,.3)}.chat-wrap{display:flex;height:calc(100vh - 232px)}.chat-list{width:260px;border-right:1px solid rgba(255,255,255,.06);overflow-y:auto;padding:8px}.chat-item{display:flex;gap:10px;padding:10px;border-radius:12px;cursor:pointer;align-items:center}.chat-item:hover{background:rgba(129,140,248,.06)}.chat-body{flex:1;display:flex;flex-direction:column;padding:16px;overflow-y:auto;gap:8px}.bubble{max-width:70%;padding:10px 16px;border-radius:16px;font-size:14px;line-height:1.5}.b-sent{background:#818CF8;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}.b-recv{background:rgba(255,255,255,.08);align-self:flex-start;border-bottom-left-radius:4px}.light-mode .b-recv{background:rgba(255,255,255,.6)}.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-top:16px}.cal-hd{text-align:center;font-size:11px;font-weight:600;color:rgba(248,247,244,.4);padding:8px;text-transform:uppercase}.light-mode .cal-hd{color:rgba(26,26,46,.4)}.cal-day{padding:10px 4px;text-align:center;border-radius:10px;font-size:13px;cursor:pointer;position:relative}.cal-day:hover{background:rgba(129,140,248,.08)}.cal-dot{width:5px;height:5px;border-radius:50%;position:absolute;bottom:3px;left:50%;transform:translateX(-50%)}.onb-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}.onb-card{max-width:480px;width:100%;padding:40px;text-align:center}.onb-dots{display:flex;gap:6px;justify-content:center;margin-bottom:32px}.onb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15)}.onb-dot.active{background:#818CF8}.light-mode .onb-dot{background:rgba(0,0,0,.1)}.onb-title{font-size:22px;font-weight:700;margin-bottom:8px}.onb-sub{font-size:14px;color:rgba(248,247,244,.4);margin-bottom:24px}.light-mode .onb-sub{color:rgba(26,26,46,.4)}.persona-cards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}.persona-card{padding:16px 24px;border-radius:14px;border:2px solid rgba(255,255,255,.1);cursor:pointer;font-weight:600;font-size:14px;min-width:140px}.persona-card:hover,.persona-card.selected{border-color:#818CF8;background:rgba(129,140,248,.1);color:#818CF8}.light-mode .persona-card{border-color:rgba(0,0,0,.1)}.avatar{width:40px;height:40px;border-radius:50%;background:#818CF8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}.chart-ph{height:160px;border:1px dashed rgba(255,255,255,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(248,247,244,.3);margin-top:8px}.light-mode .chart-ph{border-color:rgba(0,0,0,.1);color:rgba(26,26,46,.3)}.progress-track{height:6px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;background:linear-gradient(90deg,#818CF8,#6EE7B7);border-radius:6px}.trust{text-align:center;font-size:11px;color:rgba(248,247,244,.3);margin-top:20px}.light-mode .trust{color:rgba(26,26,46,.3)}.forgot-link{display:block;text-align:right;font-size:12px;color:#818CF8;margin:8px 0 16px;text-decoration:none}.compliance-big{font-size:64px;font-weight:800;color:#818CF8}a{color:#818CF8;text-decoration:none}table{width:100%;border-collapse:collapse}th{text-align:left;padding:10px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(248,247,244,.4);border-bottom:1px solid rgba(255,255,255,.08)}.light-mode th{color:rgba(26,26,46,.4);border-color:rgba(0,0,0,.08)}td{padding:10px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.04)}.light-mode td{border-color:rgba(0,0,0,.04)}.low-score{opacity:.5}@media(max-width:900px){.sidebar{display:none}.header,.main{margin-left:0}.main{padding:16px}.chat-list{display:none}.kanban-col{min-width:80vw}}.hidden{display:none!important}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#818CF8">
+<title>Auralis RH | Pineapp Inc</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
+body{background-image:url('https://i.imgur.com/jULMNPR.png')!important;background-size:cover!important;background-position:center!important;background-attachment:fixed!important;color:#F8F7F4;min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
+body.light-mode{background-image:url('https://i.imgur.com/aNHNqPn.png')!important;color:#1a1a2e}
+*{transition:all .4s ease}
+.page{display:none!important}.page.active{display:block!important}
+#page-splash{position:fixed;inset:0;z-index:10000;background:#0a0a1a}
+.splash-name{font-size:64px;font-weight:700;color:#F8F7F4}.splash-rh{display:inline-block;background:#818CF8;color:#fff;padding:2px 14px;border-radius:20px;font-size:24px;font-weight:600;margin-left:8px;vertical-align:super}
+.splash-company{letter-spacing:.15em;color:rgba(248,247,244,.35);font-size:13px;margin-top:16px}
+.splash-tag{color:rgba(248,247,244,.55);font-size:18px;font-weight:300;margin-top:8px}
+.splash-bar{width:240px;height:2px;background:rgba(255,255,255,.1);border-radius:2px;margin-top:40px;overflow:hidden}
+.splash-fill{height:100%;background:linear-gradient(90deg,#818CF8,#6EE7B7);border-radius:2px;animation:sfill 3.5s linear forwards}
+@keyframes sfill{from{width:0}to{width:100%}}
+.glass{backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px}
+.light-mode .glass{background:rgba(255,255,255,.65);border-color:rgba(255,255,255,.8)}
+.toggle-wrap{position:fixed;top:16px;right:16px;z-index:9999}
+.toggle-pill{width:52px;height:28px;border-radius:14px;background:#818CF8;cursor:pointer;position:relative;border:none}
+.toggle-thumb{width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .4s}
+.light-mode .toggle-pill{background:#6EE7B7}
+.light-mode .toggle-thumb{transform:translateX(24px)}
+.sidebar{width:72px;position:fixed;left:0;top:0;bottom:0;z-index:100;backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.06);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:6px}
+.light-mode .sidebar{background:rgba(255,255,255,.5)}
+.sidebar-logo{font-size:22px;font-weight:800;color:#818CF8;margin-bottom:24px}
+.nav-btn{width:44px;height:44px;border-radius:12px;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:rgba(248,247,244,.4)}
+.nav-btn:hover{background:rgba(129,140,248,.1);color:#F8F7F4}
+.light-mode .nav-btn{color:rgba(26,26,46,.35)}.light-mode .nav-btn:hover{color:#1a1a2e}
+.nav-btn svg{width:20px;height:20px;fill:currentColor}
+.header{height:72px;position:fixed;top:0;left:72px;right:0;z-index:90;backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.04);display:flex;align-items:center;padding:0 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.light-mode .header{background:rgba(255,255,255,.5);border-color:rgba(0,0,0,.06)}
+.header h2{font-size:15px;font-weight:600}
+.main{margin:72px 0 80px 72px;padding:32px}
+.aurora-bar{position:fixed;bottom:0;left:0;right:0;height:80px;z-index:9998;backdrop-filter:blur(20px) saturate(180%);background:rgba(255,255,255,.06);display:flex;align-items:center;padding:0 24px;gap:16px;border-top:1px solid rgba(255,255,255,.06)}
+.light-mode .aurora-bar{background:rgba(255,255,255,.5);border-color:rgba(0,0,0,.06)}
+.aurora-dot{width:6px;height:6px;border-radius:50%;background:#818CF8;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.aurora-msg{font-size:14px;color:rgba(248,247,244,.6);flex:1}.light-mode .aurora-msg{color:rgba(26,26,46,.5)}
+.aurora-action{padding:6px 16px;border-radius:10px;background:rgba(129,140,248,.15);color:#818CF8;border:none;cursor:pointer;font-size:13px;font-weight:500}
+.auth-card{max-width:420px;width:100%;padding:40px}.auth-logo{text-align:center;margin-bottom:24px}
+.auth-logo-name{font-size:28px;font-weight:700;color:#F8F7F4}.light-mode .auth-logo-name{color:#1a1a2e}
+.auth-logo-co{font-size:11px;letter-spacing:.15em;color:rgba(248,247,244,.35);display:block;margin-top:4px}.light-mode .auth-logo-co{color:rgba(26,26,46,.35)}
+.auth-title{text-align:center;font-size:24px;font-weight:700;margin-bottom:4px}
+.auth-sub{text-align:center;font-size:13px;color:rgba(248,247,244,.4);margin-bottom:24px}.light-mode .auth-sub{color:rgba(26,26,46,.4)}
+.oauth-row{display:flex;gap:8px;margin-bottom:16px}
+.oauth-btn{flex:1;height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#F8F7F4;font-size:16px}
+.light-mode .oauth-btn{border-color:rgba(0,0,0,.1);background:rgba(255,255,255,.5);color:#1a1a2e}
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0;font-size:12px;color:rgba(248,247,244,.3)}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
+.light-mode .divider{color:rgba(26,26,46,.3)}.light-mode .divider::before,.light-mode .divider::after{background:rgba(0,0,0,.1)}
+.form-group{margin-bottom:12px}.form-group label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:rgba(248,247,244,.4);margin-bottom:6px}
+.light-mode .form-group label{color:rgba(26,26,46,.4)}
+.input{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#F8F7F4;font-size:14px;outline:none;font-family:inherit}
+.input:focus{border-color:#818CF8;box-shadow:0 0 0 3px rgba(129,140,248,.15)}
+.input::placeholder{color:rgba(248,247,244,.25)}
+.light-mode .input{background:rgba(255,255,255,.5);border-color:rgba(0,0,0,.1);color:#1a1a2e}
+.light-mode .input::placeholder{color:rgba(26,26,46,.3)}
+.btn{width:100%;height:48px;border-radius:12px;border:none;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit}
+.btn-indigo{background:#818CF8;color:#fff}.btn-peach{background:#FBBF9A;color:#1a1a2e}
+.btn-ghost{background:transparent;color:rgba(248,247,244,.5);border:1px solid rgba(255,255,255,.1)}
+.light-mode .btn-ghost{color:rgba(26,26,46,.5);border-color:rgba(0,0,0,.1)}
+.forgot-link{display:block;text-align:right;font-size:12px;color:#818CF8;margin:8px 0 16px;text-decoration:none}
+.trust{text-align:center;font-size:11px;color:rgba(248,247,244,.25);margin-top:20px}.light-mode .trust{color:rgba(26,26,46,.25)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:16px 0}
+.stat-card{padding:20px}.stat-val{font-size:2rem;font-weight:700;color:#818CF8}.stat-lbl{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(248,247,244,.4);margin-top:4px}
+.light-mode .stat-val,.light-mode h1,.light-mode h2,.light-mode h3{color:#1a1a2e}
+.light-mode .stat-lbl{color:rgba(26,26,46,.4)}
+.badge{padding:3px 10px;border-radius:16px;font-size:11px;font-weight:600;display:inline-block}
+.b-new{background:rgba(251,191,154,.15);color:#FBBF9A}.b-pre{background:rgba(129,140,248,.15);color:#818CF8}
+.b-int{background:rgba(196,181,253,.15);color:#C4B5FD}.b-dec{background:rgba(110,231,183,.15);color:#6EE7B7}
+.b-arch{background:rgba(255,255,255,.06);color:rgba(248,247,244,.35)}
+.score-big{font-size:56px;font-weight:800;color:#818CF8;line-height:1}
+.compliance-big{font-size:64px;font-weight:800;color:#818CF8}
+.avatar{width:40px;height:40px;border-radius:50%;background:#818CF8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.kanban{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px}
+.kanban-col{min-width:220px;flex:1;padding:16px}
+.kanban-hd{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.kcard{cursor:grab}.kcard:active{transform:scale(1.02);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.chat-wrap{display:flex;height:calc(100vh - 232px);gap:0}
+.chat-list{width:260px;border-right:1px solid rgba(255,255,255,.06);overflow-y:auto;padding:8px}
+.chat-item:hover{background:rgba(129,140,248,.06)}
+.chat-body{flex:1;display:flex;flex-direction:column;padding:16px;overflow-y:auto;gap:8px}
+.bubble{max-width:70%;padding:10px 16px;border-radius:16px;font-size:14px;line-height:1.5}
+.b-sent{background:#818CF8;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.b-recv{align-self:flex-start;border-bottom-left-radius:4px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-hd{text-align:center;font-size:11px;font-weight:600;color:rgba(248,247,244,.4);padding:8px;text-transform:uppercase}
+.light-mode .cal-hd{color:rgba(26,26,46,.4)}
+.cal-day{padding:10px 4px;text-align:center;border-radius:10px;font-size:13px;cursor:pointer;position:relative;min-height:36px}
+.cal-day:hover{background:rgba(129,140,248,.08)}
+.cal-dot{width:5px;height:5px;border-radius:50%;position:absolute;bottom:3px;left:50%;transform:translateX(-50%)}
+.chart-ph{height:140px;border:1px dashed rgba(255,255,255,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(248,247,244,.25);margin-top:8px}
+.light-mode .chart-ph{border-color:rgba(0,0,0,.1);color:rgba(26,26,46,.25)}
+.progress-track{height:6px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#818CF8,#6EE7B7);border-radius:6px}
+.onb-card{max-width:480px;width:100%;padding:40px;text-align:center}
+.onb-dots{display:flex;gap:6px;justify-content:center;margin-bottom:32px}
+.onb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.15)}.onb-dot.active{background:#818CF8}
+.light-mode .onb-dot{background:rgba(0,0,0,.1)}
+.onb-title{font-size:22px;font-weight:700;margin-bottom:8px}
+.onb-sub{font-size:14px;color:rgba(248,247,244,.4);margin-bottom:16px}.light-mode .onb-sub{color:rgba(26,26,46,.4)}
+.persona-cards{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+.persona-card{padding:14px 24px;border-radius:14px;border:2px solid rgba(255,255,255,.1);cursor:pointer;font-weight:600;font-size:14px}
+.persona-card:hover,.persona-card.selected{border-color:#818CF8;background:rgba(129,140,248,.1);color:#818CF8}
+.light-mode .persona-card{border-color:rgba(0,0,0,.1)}
+.low-score{opacity:.5}
+a{color:#818CF8;text-decoration:none}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:10px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:rgba(248,247,244,.4);border-bottom:1px solid rgba(255,255,255,.08)}
+.light-mode th{color:rgba(26,26,46,.4);border-color:rgba(0,0,0,.08)}
+td{padding:10px;font-size:14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.light-mode td{border-color:rgba(0,0,0,.04)}
+@media(max-width:900px){.sidebar{display:none}.header,.main{margin-left:0}.main{padding:16px}.chat-list{display:none}.kanban-col{min-width:80vw}}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 </style>
 </head>
 <body>
 
-<!-- TOGGLE -->
-<div class="toggle-wrap">
-  <button class="toggle-pill">
-    <span class="toggle-thumb"></span>
-  </button>
+<div class="toggle-wrap"><button class="toggle-pill" onclick="toggleTheme()"><span class="toggle-thumb"></span></button></div>
+<div id="aurora-bar" class="aurora-bar">
+  <span class="aurora-dot"></span>
+  <span id="aurora-text" class="aurora-msg"></span>
+  <button id="aurora-btn" class="aurora-action" style="display:none"></button>
 </div>
 
-<!-- SPLASH -->
-<div id="page-splash" class="page active">
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;">
-    <div style="text-align:center;">
-      <span class="splash-name">Auralis</span><span class="splash-rh">RH</span>
-    </div>
-    <div class="splash-company">PINEAPP INC</div>
-    <div class="splash-tag">Tu recrutes. Aurora veille.</div>
-    <div class="splash-bar">
-      <div class="splash-fill"></div>
-    </div>
-  </div>
-</div>
+<div id="page-splash" class="page"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh">
+  <div><span class="splash-name">Auralis</span><span class="splash-rh">RH</span></div>
+  <div class="splash-company">PINEAPP INC</div>
+  <div class="splash-tag">Tu recrutes. Aurora veille.</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div></div>
 
-<!-- LOGIN -->
-<div id="page-login" class="page" style="min-height:100vh;display:none;align-items:center;justify-content:center;padding:24px;">
+<div id="page-login" class="page"><div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px">
   <div class="auth-card glass">
-    <div class="auth-logo">
-      <span class="auth-logo-name">Auralis RH</span>
-      <span class="auth-logo-co">by Pineapp Inc</span>
-    </div>
+    <div class="auth-logo"><span class="auth-logo-name">Auralis RH</span><span class="auth-logo-co">by Pineapp Inc</span></div>
     <h1 class="auth-title">Bienvenue</h1>
-    <p class="auth-sub">Comment veux-tu te connecter&nbsp;?</p>
+    <p class="auth-sub">Comment veux-tu te connecter ?</p>
     <div class="oauth-row">
       <button class="oauth-btn">G</button>
       <button class="oauth-btn">M</button>
-      <button class="oauth-btn">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v1H2V4zm0 3h16v9a2 2 0 01-2 2H4a2 2 0 01-2-2V7zm7 3a1 1 0 000 2h2a1 1 0 000-2H9z"/></svg>
-      </button>
+      <button class="oauth-btn">&#9993;</button>
     </div>
     <div class="divider">ou par email</div>
-    <div class="form-group">
-      <label>E-mail</label>
-      <input class="input" type="email" placeholder="nom@entreprise.com">
-    </div>
-    <div class="form-group">
-      <label>Mot de passe</label>
-      <input class="input" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢">
-    </div>
-    <a class="forgot-link" href="#">Mot de passe oubli&eacute; &rarr;</a>
-    <button class="btn btn-indigo" onclick="showPage('page-onboarding')">Acc&eacute;der &agrave; mon espace</button>
-    <div style="height:12px;"></div>
-    <button class="btn btn-peach" onclick="enterDemo()">Essayer en mode d&eacute;mo</button>
-    <p style="text-align:center;font-size:11px;color:rgba(248,247,244,.3);margin-top:12px;">14 jours gratuit, sans carte bancaire</p>
-    <div class="trust">Donn&eacute;es prot&eacute;g&eacute;es &middot; RGPD &middot; H&eacute;berg&eacute; en France</div>
-    <div class="aurora-bar">
-      <span class="aurora-dot"></span>
-      <span class="aurora-msg"></span>
-    </div>
+    <div class="form-group"><label>E-mail</label><input class="input" type="email" placeholder="nom@entreprise.com"></div>
+    <div class="form-group"><label>Mot de passe</label><input class="input" type="password" placeholder="â¢â¢â¢â¢â¢â¢â¢â¢"></div>
+    <a class="forgot-link" href="#">Mot de passe oublie &#8594;</a>
+    <button class="btn btn-indigo" onclick="showPage('page-onboarding')">Acceder a mon espace</button>
+    <div style="height:12px"></div>
+    <button class="btn btn-peach" onclick="showPage('page-dashboard')">Essayer en mode demo</button>
+    <p style="text-align:center;font-size:11px;opacity:.3;margin-top:12px">14 jours gratuit, sans carte bancaire</p>
+    <div class="trust">Donnees protegees Â· RGPD Â· Heberge en France</div>
   </div>
-</div>
+</div></div>
 
-<!-- ONBOARDING -->
-<div id="page-onboarding" class="page">
-  <div class="onb-wrap">
-    <div class="onb-card glass">
-      <div class="onb-dots">
-        <span class="onb-dot active"></span>
-        <span class="onb-dot"></span>
-        <span class="onb-dot"></span>
-        <span class="onb-dot"></span>
-        <span class="onb-dot"></span>
-        <span class="onb-dot"></span>
-        <span class="onb-dot"></span>
-        <span class="onb-dot"></span>
+<div id="page-onboarding" class="page"><div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px">
+  <div class="onb-card glass">
+    <div class="onb-dots"><span class="onb-dot active"></span><span class="onb-dot"></span><span class="onb-dot"></span><span class="onb-dot"></span><span class="onb-dot"></span><span class="onb-dot"></span><span class="onb-dot"></span><span class="onb-dot"></span></div>
+    <div id="onb-content">
+      <h2 class="onb-title">Tu es plutot...</h2>
+      <p class="onb-sub">Choisis ton profil pour personnaliser Aurora.</p>
+      <div class="persona-cards">
+        <div class="persona-card" onclick="this.classList.toggle('selected')">Alternant RH</div>
+        <div class="persona-card" onclick="this.classList.toggle('selected')">Tuteur / Manager</div>
+        <div class="persona-card" onclick="this.classList.toggle('selected')">Senior DRH</div>
       </div>
-      <div id="onb-content"></div>
-      <button class="btn btn-indigo" id="onb-next">Suivant &rarr;</button>
+    </div>
+    <button class="btn btn-indigo" id="onb-next" onclick="nextOnbStep()">Suivant &#8594;</button>
+  </div>
+</div></div>
+
+<div id="page-dashboard" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main">
+<div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px">
+  <div class="glass" style="padding:24px">
+    <h3>Candidat du jour</h3>
+    <div style="display:flex;gap:16px;align-items:center;margin:16px 0">
+      <div class="avatar">CM</div>
+      <div><h3 style="margin:0">Camille Moreau</h3><p style="margin:0">Lyon Â· Developpeuse Full-Stack</p></div>
+    </div>
+    <div class="score-big">82</div>
+    <p style="font-size:14px;opacity:.6;margin:12px 0">Camille correspond a tes criteres et attend une reponse depuis 2 jours. C'est le bon moment pour la contacter.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-indigo" style="width:auto;padding:0 20px;height:40px" onclick="showPage('page-candidate-detail')">Contacter</button>
+      <button class="btn btn-ghost" style="width:auto;padding:0 20px;height:40px" onclick="showPage('page-candidate-detail')">Voir le profil</button>
+    </div>
+  </div>
+  <div>
+    <div class="stat-grid" style="grid-template-columns:1fr">
+      <div class="stat-card glass"><div class="stat-val">5</div><div class="stat-lbl">Candidatures actives</div></div>
+      <div class="stat-card glass"><div class="stat-val">2</div><div class="stat-lbl">Entretiens cette semaine</div></div>
+      <div class="stat-card glass"><div class="stat-val">3</div><div class="stat-lbl">Reponses en attente</div></div>
+    </div>
+    <p style="margin-top:16px;font-size:13px;opacity:.4">Aujourd'hui tu as traite 4 candidatures et planifie 1 entretien.</p>
+  </div>
+</div></div>
+    </div>
+
+<div id="page-candidates" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main">
+<div style="display:flex;gap:12px;margin-bottom:16px">
+  <input class="input" placeholder="Chercher un nom, une ville..." style="flex:1">
+  <span class="badge b-new" style="cursor:pointer;padding:8px 14px">Ville</span>
+  <span class="badge b-pre" style="cursor:pointer;padding:8px 14px">Score</span>
+</div>
+<div class="stat-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+  <div class="glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">CM</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Camille Moreau</h4><p style="font-size:11px;opacity:.5">Lyon Â· Developpeuse Full-Stack</p></div>
+      <span class="badge b-int">82</span>
+    </div>
+  </div>
+<div class="glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">MD</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Marie Dubois</h4><p style="font-size:11px;opacity:.5">Paris Â· Chef de Projet Digital</p></div>
+      <span class="badge b-pre">78</span>
+    </div>
+  </div>
+<div class="glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">NB</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Nadia Benzara</h4><p style="font-size:11px;opacity:.5">Marseille Â· UX Designer</p></div>
+      <span class="badge b-new">65</span>
+    </div>
+  </div>
+<div class="glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">TP</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Thomas Petit</h4><p style="font-size:11px;opacity:.5">Bordeaux Â· Data Analyst</p></div>
+      <span class="badge b-dec">71</span>
+    </div>
+  </div>
+<div class="glass  low-score" style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">SM</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Sarah Martin</h4><p style="font-size:11px;opacity:.5">Lille Â· Assistante RH</p></div>
+      <span class="badge b-arch">58</span>
+    </div>
+  </div>
+</div></div>
+    </div>
+
+<div id="page-kanban" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main"><div class="kanban">
+  <div class="kanban-col glass">
+      <div class="kanban-hd">Nouveau <span class="badge b-pre">1</span></div>
+      <div class="kcard glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">NB</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Nadia Benzara</h4><p style="font-size:11px;opacity:.5">Marseille Â· UX Designer</p></div>
+      <span class="badge b-new">65</span>
+    </div>
+  </div>
+    </div>
+<div class="kanban-col glass">
+      <div class="kanban-hd">Preselection <span class="badge b-pre">1</span></div>
+      <div class="kcard glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">MD</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Marie Dubois</h4><p style="font-size:11px;opacity:.5">Paris Â· Chef de Projet Digital</p></div>
+      <span class="badge b-pre">78</span>
+    </div>
+  </div>
+    </div>
+<div class="kanban-col glass">
+      <div class="kanban-hd">Entretien <span class="badge b-pre">1</span></div>
+      <div class="kcard glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">CM</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Camille Moreau</h4><p style="font-size:11px;opacity:.5">Lyon Â· Developpeuse Full-Stack</p></div>
+      <span class="badge b-int">82</span>
+    </div>
+  </div>
+    </div>
+<div class="kanban-col glass">
+      <div class="kanban-hd">Decision <span class="badge b-pre">1</span></div>
+      <div class="kcard glass " style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">TP</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Thomas Petit</h4><p style="font-size:11px;opacity:.5">Bordeaux Â· Data Analyst</p></div>
+      <span class="badge b-dec">71</span>
+    </div>
+  </div>
+    </div>
+<div class="kanban-col glass">
+      <div class="kanban-hd">Archive <span class="badge b-pre">1</span></div>
+      <div class="kcard glass  low-score" style="padding:14px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="avatar">SM</div>
+      <div style="flex:1"><h4 style="font-size:13px;font-weight:600">Sarah Martin</h4><p style="font-size:11px;opacity:.5">Lille Â· Assistante RH</p></div>
+      <span class="badge b-arch">58</span>
+    </div>
+  </div>
+    </div>
+</div></div>
+    </div>
+
+<div id="page-calendar" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+  <button class="btn btn-ghost" style="width:auto;padding:8px 16px;height:36px">&#8592;</button>
+  <h3>Mars 2025</h3>
+  <button class="btn btn-ghost" style="width:auto;padding:8px 16px;height:36px">&#8594;</button>
+</div>
+<div class="cal-grid">
+  <div class="cal-hd">L</div><div class="cal-hd">M</div><div class="cal-hd">M</div><div class="cal-hd">J</div><div class="cal-hd">V</div><div class="cal-hd">S</div><div class="cal-hd">D</div>
+  <div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div>
+  <div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12<span class="cal-dot" style="background:#C4B5FD"></span></div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18<span class="cal-dot" style="background:#818CF8"></span></div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25<span class="cal-dot" style="background:#6EE7B7"></span></div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div>
+</div></div>
+    </div>
+
+<div id="page-messaging" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main"><div class="chat-wrap">
+  <div class="chat-list">
+    <div class="chat-item" style="display:flex;gap:10px;padding:10px;border-radius:12px;cursor:pointer;align-items:center">
+      <div class="avatar">CM</div>
+      <div style="flex:1;min-width:0"><h4 style="font-size:13px">Camille Moreau</h4><p style="font-size:11px;opacity:.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dernier message...</p></div>
+    </div>
+<div class="chat-item" style="display:flex;gap:10px;padding:10px;border-radius:12px;cursor:pointer;align-items:center">
+      <div class="avatar">MD</div>
+      <div style="flex:1;min-width:0"><h4 style="font-size:13px">Marie Dubois</h4><p style="font-size:11px;opacity:.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dernier message...</p></div>
+    </div>
+<div class="chat-item" style="display:flex;gap:10px;padding:10px;border-radius:12px;cursor:pointer;align-items:center">
+      <div class="avatar">NB</div>
+      <div style="flex:1;min-width:0"><h4 style="font-size:13px">Nadia Benzara</h4><p style="font-size:11px;opacity:.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dernier message...</p></div>
+    </div>
+<div class="chat-item" style="display:flex;gap:10px;padding:10px;border-radius:12px;cursor:pointer;align-items:center">
+      <div class="avatar">TP</div>
+      <div style="flex:1;min-width:0"><h4 style="font-size:13px">Thomas Petit</h4><p style="font-size:11px;opacity:.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dernier message...</p></div>
+    </div>
+<div class="chat-item" style="display:flex;gap:10px;padding:10px;border-radius:12px;cursor:pointer;align-items:center">
+      <div class="avatar">SM</div>
+      <div style="flex:1;min-width:0"><h4 style="font-size:13px">Sarah Martin</h4><p style="font-size:11px;opacity:.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dernier message...</p></div>
+    </div>
+  </div>
+  <div class="chat-body">
+    <div class="glass" style="padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+      <div class="avatar">CM</div><div><h4 style="font-size:14px;margin:0">Camille Moreau</h4><span style="font-size:11px;opacity:.5">Developpeuse Â· Lyon</span></div>
+    </div>
+    <div class="bubble b-recv glass">Bonjour, merci pour votre retour rapide. Je suis disponible la semaine prochaine.</div>
+    <div class="bubble b-sent">Bonjour Camille, que pensez-vous de jeudi 14h ?</div>
+    <div class="bubble b-recv glass">Jeudi 14h c'est parfait pour moi.</div>
+    <div class="bubble b-sent">Parfait, je vous envoie la confirmation. A jeudi.</div>
+    <div style="display:flex;gap:8px;margin-top:auto;padding-top:12px">
+      <input class="input" placeholder="Ecrire un message..." style="flex:1">
+      <button class="btn btn-indigo" style="width:auto;padding:0 20px;height:44px">Envoyer</button>
+    </div>
+  </div>
+</div></div>
+    </div>
+
+<div id="page-candidate-detail" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+  <div class="glass" style="padding:24px"><h3>CV</h3><div class="chart-ph" style="height:300px">Apercu du CV</div></div>
+  <div style="text-align:center">
+    <div class="score-big">82</div><p style="opacity:.5;margin:8px 0">Score global</p>
+    <div class="chart-ph">Competences</div>
+    <h3 style="margin-top:16px;text-align:left">Notes</h3>
+    <textarea class="input" style="min-height:80px;margin-top:8px;text-align:left" placeholder="Ajouter une note..."></textarea>
+  </div>
+  <div class="glass" style="padding:24px">
+    <h3>Aurora recommande</h3>
+    <p style="font-size:14px;margin:12px 0;opacity:.6">Camille a un profil similaire a tes 3 dernieres recrues reussies. Son score est au-dessus de la moyenne.</p>
+    <h3 style="margin-top:16px">Historique</h3>
+    <div style="font-size:13px;display:flex;flex-direction:column;gap:6px;margin-top:8px;opacity:.6">
+      <div>15/03 â Candidature recue</div><div>16/03 â Profil analyse par Aurora</div>
+      <div>17/03 â Preselection validee</div><div>18/03 â Entretien planifie</div>
     </div>
   </div>
 </div>
+<div style="display:flex;gap:8px;margin-top:20px">
+  <button class="btn btn-indigo" style="flex:1">Planifier entretien</button>
+  <button class="btn btn-ghost" style="flex:1" onclick="showPage('page-messaging')">Envoyer message</button>
+  <button class="btn" style="flex:1;background:#EF4444;color:#fff">Archiver</button>
+</div></div>
+    </div>
 
-<!-- APP SHELL -->
-<div id="app-shell" class="hidden">
-
-  <div class="sidebar">
-    <div class="sidebar-logo">A</div>
-
-    <button class="nav-btn" data-target="page-dashboard">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <rect x="2" y="2" width="7" height="7" rx="1"/>
-        <rect x="11" y="2" width="7" height="7" rx="1"/>
-        <rect x="2" y="11" width="7" height="7" rx="1"/>
-        <rect x="11" y="11" width="7" height="7" rx="1"/>
-      </svg>
-      <span class="nav-tip">Tableau de bord</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-candidates">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <circle cx="7" cy="6" r="3"/>
-        <path d="M1 17c0-3.314 2.686-6 6-6s6 2.686 6 6"/>
-        <circle cx="14" cy="5" r="2.5"/>
-        <path d="M14 10.5c2.485 0 4.5 2.015 4.5 4.5"/>
-      </svg>
-      <span class="nav-tip">Candidats</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-kanban">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <rect x="1" y="2" width="5" height="16" rx="1"/>
-        <rect x="7.5" y="2" width="5" height="12" rx="1"/>
-        <rect x="14" y="2" width="5" height="10" rx="1"/>
-      </svg>
-      <span class="nav-tip">Pipeline</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-calendar">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <rect x="2" y="3" width="16" height="15" rx="2" fill-opacity="0.3"/>
-        <path d="M2 7h16" stroke="currentColor" stroke-width="1.5"/>
-        <rect x="5" y="10" width="2" height="2" rx="0.5"/>
-        <rect x="9" y="10" width="2" height="2" rx="0.5"/>
-        <rect x="13" y="10" width="2" height="2" rx="0.5"/>
-        <rect x="5" y="14" width="2" height="2" rx="0.5"/>
-        <rect x="9" y="14" width="2" height="2" rx="0.5"/>
-        <line x1="6" y1="1" x2="6" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="14" y1="1" x2="14" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <span class="nav-tip">Calendrier</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-messaging">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <path d="M2 3a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H6l-4 4V3z"/>
-      </svg>
-      <span class="nav-tip">Messages</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-rgpd">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <path d="M10 1L3 4v6c0 4.418 3 8 7 9 4-1 7-4.582 7-9V4l-7-3z"/>
-      </svg>
-      <span class="nav-tip">RGPD</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-academy">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <path d="M3 5a1 1 0 011-1h5v12H4a1 1 0 01-1-1V5z" fill-opacity="0.7"/>
-        <path d="M11 4h5a1 1 0 011 1v11a1 1 0 01-1 1h-5V4z" fill-opacity="0.7"/>
-        <path d="M9 3a1 1 0 011 1v13a1 1 0 01-1 1 1 1 0 01-1-1V4a1 1 0 011-1z"/>
-      </svg>
-      <span class="nav-tip">Academy</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-analytics">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <rect x="2" y="10" width="3" height="8" rx="1"/>
-        <rect x="7" y="6" width="3" height="12" rx="1"/>
-        <rect x="12" y="3" width="3" height="15" rx="1"/>
-        <rect x="17" y="8" width="2" height="10" rx="1"/>
-      </svg>
-      <span class="nav-tip">R&eacute;sultats</span>
-    </button>
-
-    <button class="nav-btn" data-target="page-settings">
-      <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
-        <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106a1.532 1.532 0 01-.948 2.287c-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.948 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
-      </svg>
-      <span class="nav-tip">Param&egrave;tres</span>
-    </button>
+<div id="page-rgpd" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
   </div>
+</div>
+      <div class="main">
+<div style="text-align:center;margin-bottom:24px"><div class="compliance-big">97%</div><p style="opacity:.5">Score de conformite</p></div>
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="stat-val">5/5</div><div class="stat-lbl">Accords actifs</div></div>
+  <div class="stat-card glass"><div class="stat-val">0</div><div class="stat-lbl">Dossiers a traiter</div></div>
+  <div class="stat-card glass"><div class="stat-val">25/03</div><div class="stat-lbl">Prochaine echeance</div></div>
+</div>
+<h3 style="margin-top:20px">Suivi des accords</h3>
+<p style="opacity:.5;margin:8px 0">Aucun dossier urgent. Aurora surveille pour toi.</p>
+<div class="glass" style="padding:16px;margin-top:12px">
+  <table><thead><tr><th>Candidat</th><th>Statut</th><th>Echeance</th></tr></thead>
+  <tbody>
+    <tr><td>Camille Moreau</td><td><span class="badge b-dec">Conforme</span></td><td>25/04/2027</td></tr><tr><td>Marie Dubois</td><td><span class="badge b-dec">Conforme</span></td><td>25/04/2027</td></tr><tr><td>Nadia Benzara</td><td><span class="badge b-dec">Conforme</span></td><td>25/04/2027</td></tr>
+  </tbody></table>
+</div>
+<button class="btn btn-ghost" style="width:auto;margin-top:16px">Telecharger certificat</button></div>
+    </div>
 
-  <div class="header glass">
-    <h2 id="page-title">Tableau de bord</h2>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <span id="moon-icon" title="Bien-&ecirc;tre &eacute;quipe" style="font-size:20px;">ð</span>
-      <span id="greet-name" style="font-size:14px;font-weight:600;"></span>
-      <span id="greet-date" style="font-size:12px;opacity:.5;"></span>
+<div id="page-academy" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main">
+<h3>Academy Auralis</h3><p style="opacity:.5;margin-bottom:16px">Apprends a ton rythme. Rien d'obligatoire.</p>
+<div class="progress-track" style="margin-bottom:20px"><div class="progress-fill" style="width:35%"></div></div>
+<div class="stat-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
+  
+  <div class="glass" style="padding:20px">
+    <h4>Recrutement</h4><p style="font-size:13px;opacity:.5">Les bases pour bien recruter</p>
+    <div class="progress-track" style="margin:8px 0"><div class="progress-fill" style="width:60%"></div></div>
+    <button class="btn btn-ghost" style="width:auto;font-size:12px;height:32px;padding:0 12px">Continuer</button>
+  </div>
+  <div class="glass" style="padding:20px">
+    <h4>RGPD</h4><p style="font-size:13px;opacity:.5">Proteger les donnees candidats</p>
+    <div class="progress-track" style="margin:8px 0"><div class="progress-fill" style="width:20%"></div></div>
+    <button class="btn btn-ghost" style="width:auto;font-size:12px;height:32px;padding:0 12px">Continuer</button>
+  </div>
+  <div class="glass" style="padding:20px">
+    <h4>Alternance</h4><p style="font-size:13px;opacity:.5">Gerer tuteurs et alternants</p>
+    <div class="progress-track" style="margin:8px 0"><div class="progress-fill" style="width:0%"></div></div>
+    <button class="btn btn-ghost" style="width:auto;font-size:12px;height:32px;padding:0 12px">Continuer</button>
+  </div>
+</div></div>
+    </div>
+
+<div id="page-analytics" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main">
+<div class="stat-grid">
+  <div class="stat-card glass"><div class="stat-val">18j</div><div class="stat-lbl">Temps moyen</div></div>
+  <div class="stat-card glass"><div class="stat-val">72%</div><div class="stat-lbl">Conversion</div></div>
+  <div class="stat-card glass"><div class="stat-val">4</div><div class="stat-lbl">Sources actives</div></div>
+  <div class="stat-card glass"><div class="stat-val">12</div><div class="stat-lbl">Tes decisions ce mois</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+  <div class="glass" style="padding:20px"><h4>Temps par etape</h4><div class="chart-ph">Graphique a venir</div></div><div class="glass" style="padding:20px"><h4>Taux de conversion</h4><div class="chart-ph">Graphique a venir</div></div><div class="glass" style="padding:20px"><h4>Qualite des sources</h4><div class="chart-ph">Graphique a venir</div></div><div class="glass" style="padding:20px"><h4>Tes decisions</h4><div class="chart-ph">Graphique a venir</div></div>
+</div></div>
+    </div>
+
+<div id="page-settings" class="page">
+      <nav class="sidebar glass">
+  <div class="sidebar-logo">A</div>
+  <button class="nav-btn" onclick="showPage('page-dashboard')" title="Tableau de bord">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-candidates')" title="Candidats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6zm8-3a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm0 2c-1.6 0-3 1.1-3.4 2.6.8.3 1.5.7 2.2 1.2.4.3.8.7 1.2 1.1h3c0-2.8-1.3-5-3-5z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-kanban')" title="Pipeline">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-calendar')" title="Calendrier">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm2 3h12v9H4V8zm2-5v2m8-2v2"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-messaging')" title="Messages">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-rgpd')" title="RGPD">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-academy')" title="Academy">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zM12 3h6v14h-6zM8 7h4"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-analytics')" title="Resultats">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg>
+  </button>
+<button class="nav-btn" onclick="showPage('page-settings')" title="Parametres">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2a2 2 0 00-2 2v1.17A6.02 6.02 0 004.17 8H3a2 2 0 000 4h1.17A6.02 6.02 0 008 14.83V16a2 2 0 004 0v-1.17A6.02 6.02 0 0015.83 12H17a2 2 0 000-4h-1.17A6.02 6.02 0 0012 5.17V4a2 2 0 00-2-2zm0 6a2 2 0 110 4 2 2 0 010-4z"/></svg>
+  </button>
+</nav>
+      <div class="header glass">
+  <h2 id="page-title">Tableau de bord</h2>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+    <span id="moon-icon" style="font-size:18px">&#127769;</span>
+    <span id="greet-name" style="font-size:14px;font-weight:600"></span>
+    <span id="greet-date" style="font-size:12px;opacity:.5"></span>
+  </div>
+</div>
+      <div class="main">
+<div style="display:flex;flex-direction:column;gap:16px">
+  <div class="glass" style="padding:24px">
+    <h3>Profil</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+      <div class="form-group"><label>Prenom</label><input class="input" value="Marie"></div>
+      <div class="form-group"><label>Nom</label><input class="input" value="Dupont"></div>
+      <div class="form-group"><label>Email</label><input class="input" value="marie@techcorp.fr"></div>
+      <div class="form-group"><label>Organisation</label><input class="input" value="TechCorp"></div>
     </div>
   </div>
+  <div class="glass" style="padding:24px">
+    <h3>Sensibilite Aurora</h3>
+    <p style="font-size:13px;opacity:.5;margin:8px 0">Discrete &#8594; Presente</p>
+    <input type="range" min="1" max="5" value="3" style="width:100%">
+  </div>
+  <div class="glass" style="padding:24px">
+    <h3>Integrations</h3>
+    <div style="font-size:14px;margin-top:12px;display:flex;flex-direction:column;gap:6px">
+      <div>Gmail <span style="color:#6EE7B7;margin-left:8px">Connecte</span></div>
+      <div style="opacity:.5">Google Calendar â Bientot</div>
+      <div style="opacity:.5">Make.com â Bientot</div>
+    </div>
+  </div>
+  <button class="btn" style="background:#EF4444;color:#fff" onclick="showPage('page-login')">Se deconnecter</button>
+</div></div>
+    </div>
 
-  <div class="main" id="main-zone">
-<div class="page" id="page-dashboard"><div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px"><div class="glass" style="padding:24px"><h3>Candidat du jour</h3><div style="display:flex;gap:16px;align-items:center;margin:16px 0"><div class="avatar">CM</div><div><h3>Camille Moreau</h3><p>Lyon Â· Developpeuse Full-Stack</p></div></div><div class="score-big">82</div><p class="aurora-msg" style="margin:12px 0">Camille correspond a tes criteres et attend une reponse depuis 2 jours. C'est le bon moment pour la contacter.</p><div style="display:flex;gap:8px"><button class="btn-indigo" style="width:auto;padding:0 20px">Contacter</button><button class="btn-ghost" style="width:auto;padding:0 20px">Voir le profil</button></div></div><div class="stat-grid" style="grid-template-columns:1fr"><div class="stat-card glass"><div class="stat-val">5</div><div class="stat-lbl">Candidatures actives</div></div><div class="stat-card glass"><div class="stat-val">2</div><div class="stat-lbl">Entretiens cette semaine</div></div><div class="stat-card glass"><div class="stat-val">3</div><div class="stat-lbl">Reponses en attente</div></div><p style="margin-top:24px;font-size:13px;opacity:.5">Aujourd'hui tu as traite 4 candidatures et planifie 1 entretien.</p></div></div></div><div class="page" id="page-candidates"><div style="display:flex;gap:12px;margin-bottom:16px"><input class="input" placeholder="Chercher un nom, une ville..." style="flex:1"/><div class="badge b-new" style="cursor:pointer;padding:8px 14px">Ville</div><div class="badge b-pre" style="cursor:pointer;padding:8px 14px">Score</div><div class="badge b-dec" style="cursor:pointer;padding:8px 14px">Statut</div></div><div class="stat-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))"><div class="glass" style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><div><h4>Camille Moreau</h4><p style="font-size:12px;opacity:.5">Lyon</p></div><span class="badge b-int">82</span></div><div style="margin-top:8px"><span class="badge b-int">Entretien</span></div></div><div class="glass" style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><div><h4>Marie Dubois</h4><p style="font-size:12px;opacity:.5">Paris</p></div><span class="badge b-dec">78</span></div><div style="margin-top:8px"><span class="badge b-dec">Decision</span></div></div><div class="glass" style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><div><h4>Nadia Benzara</h4><p style="font-size:12px;opacity:.5">Marseille</p></div><span class="badge b-new">65</span></div><div style="margin-top:8px"><span class="badge b-new">Nouveau</span></div></div><div class="glass" style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><div><h4>Thomas Petit</h4><p style="font-size:12px;opacity:.5">Bordeaux</p></div><span class="badge b-pre">71</span></div><div style="margin-top:8px"><span class="badge b-pre">Preselection</span></div></div><div class="glass low-score" style="padding:16px"><div style="display:flex;justify-content:space-between;align-items:center"><div><h4>Sarah Martin</h4><p style="font-size:12px;opacity:.5">Lille</p></div><span class="badge b-arch">58</span></div><div style="margin-top:8px"><span class="badge b-arch">Archive</span></div></div></div></div><div class="page" id="page-kanban"><div class="kanban"><div class="kanban-col glass"><div class="kanban-hd">Nouveau<span class="badge b-new">1</span></div><div class="kcard glass"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">NB</div><div><h4 style="font-size:13px">Nadia Benzara</h4><p style="font-size:11px;opacity:.5">Marseille</p></div></div><div style="display:flex;justify-content:space-between;margin-top:8px"><span class="badge b-new">65</span><span style="font-size:11px;opacity:.4">1 jour</span></div></div></div><div class="kanban-col glass"><div class="kanban-hd">Preselection<span class="badge b-pre">1</span></div><div class="kcard glass"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">TP</div><div><h4 style="font-size:13px">Thomas Petit</h4><p style="font-size:11px;opacity:.5">Bordeaux</p></div></div><div style="display:flex;justify-content:space-between;margin-top:8px"><span class="badge b-pre">71</span><span style="font-size:11px;opacity:.4">3 jours</span></div></div></div><div class="kanban-col glass"><div class="kanban-hd">Entretien<span class="badge b-int">1</span></div><div class="kcard glass"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">CM</div><div><h4 style="font-size:13px">Camille Moreau</h4><p style="font-size:11px;opacity:.5">Lyon</p></div></div><div style="display:flex;justify-content:space-between;margin-top:8px"><span class="badge b-int">82</span><span style="font-size:11px;opacity:.4">2 jours</span></div></div></div><div class="kanban-col glass"><div class="kanban-hd">Decision<span class="badge b-dec">1</span></div><div class="kcard glass"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">MD</div><div><h4 style="font-size:13px">Marie Dubois</h4><p style="font-size:11px;opacity:.5">Paris</p></div></div><div style="display:flex;justify-content:space-between;margin-top:8px"><span class="badge b-dec">78</span><span style="font-size:11px;opacity:.4">5 jours</span></div></div></div><div class="kanban-col glass"><div class="kanban-hd">Archive<span class="badge b-arch">1</span></div><div class="kcard glass"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">SM</div><div><h4 style="font-size:13px">Sarah Martin</h4><p style="font-size:11px;opacity:.5">Lille</p></div></div><div style="display:flex;justify-content:space-between;margin-top:8px"><span class="badge b-arch">58</span><span style="font-size:11px;opacity:.4">7 jours</span></div></div></div></div></div><div class="page" id="page-calendar"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><button class="btn-ghost" style="width:auto;padding:8px 16px">â</button><h3>Mars 2025</h3><button class="btn-ghost" style="width:auto;padding:8px 16px">â</button></div><div class="cal-grid"><div class="cal-hd">L</div><div class="cal-hd">M</div><div class="cal-hd">M</div><div class="cal-hd">J</div><div class="cal-hd">V</div><div class="cal-hd">S</div><div class="cal-hd">D</div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12<span class="cal-dot" style="background:#C4B5FD"></span></div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18<span class="cal-dot" style="background:#818CF8"></span></div><div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25<span class="cal-dot" style="background:#6EE7B7"></span></div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div class="cal-day">31</div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div></div></div><div class="page" id="page-messaging"><div class="chat-wrap"><div class="chat-list"><div class="chat-item"><div class="avatar">CM</div><div><h4 style="font-size:13px">Camille Moreau</h4><p style="font-size:11px;opacity:.5">Super, je suis disponible...</p></div></div><div class="chat-item"><div class="avatar">MD</div><div><h4 style="font-size:13px">Marie Dubois</h4><p style="font-size:11px;opacity:.5">Merci pour votre retour...</p></div></div><div class="chat-item"><div class="avatar">NB</div><div><h4 style="font-size:13px">Nadia Benzara</h4><p style="font-size:11px;opacity:.5">Bonjour, je souhaitais...</p></div></div><div class="chat-item"><div class="avatar">TP</div><div><h4 style="font-size:13px">Thomas Petit</h4><p style="font-size:11px;opacity:.5">Est-ce que le poste est...</p></div></div><div class="chat-item"><div class="avatar">SM</div><div><h4 style="font-size:13px">Sarah Martin</h4><p style="font-size:11px;opacity:.5">Je reste disponible si...</p></div></div></div><div class="chat-body"><div class="glass" style="padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:12px"><div class="avatar">CM</div><div><h4 style="font-size:14px">Camille Moreau</h4><span style="font-size:11px;opacity:.5">Developpeuse Â· Lyon</span></div></div><div class="bubble b-recv">Bonjour, avez-vous des disponibilites pour un entretien la semaine prochaine ?</div><div class="bubble b-sent">Oui tout a fait, je suis libre mardi 18 mars a partir de 14h ou jeudi 20 mars en matinee.</div><div class="bubble b-recv">Parfait, mardi 18 mars a 14h me convient tres bien. Sera-t-il en visio ou en presentiel ?</div><div class="bubble b-sent">Ce sera en visio via notre plateforme. Je vous enverrai le lien de connexion la veille. A mardi !</div><div style="display:flex;gap:8px;margin-top:12px"><input class="input" placeholder="Ecrire un message..." style="flex:1"/><button class="btn-indigo" style="width:auto;padding:0 20px">Envoyer</button></div></div></div></div><div class="page" id="page-candidate-detail"><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px"><div class="glass" style="padding:24px"><h3>CV</h3><div class="chart-ph" style="height:300px">Apercu du CV</div></div><div><div style="text-align:center"><div class="score-big">82</div><p style="margin:8px 0;opacity:.5">Score global</p></div><div class="chart-ph">Competences (radar)</div><div style="margin-top:16px"><h3>Notes</h3><textarea class="input" style="min-height:100px;margin-top:8px" placeholder="Ajouter une note..."></textarea></div></div><div class="glass" style="padding:24px"><h3>Aurora recommande</h3><p style="margin:12px 0;font-size:14px">Camille a un profil similaire a tes 3 dernieres recrues reussies. Son score est au-dessus de la moyenne de tes candidats.</p><h3 style="margin-top:20px">Historique</h3><div style="font-size:13px;display:flex;flex-direction:column;gap:8px;margin-top:8px"><div>10 mars â Candidature recue</div><div>12 mars â Preselection validee</div><div>15 mars â Message envoye</div><div>18 mars â Entretien planifie</div></div><div style="display:flex;gap:8px;margin-top:20px"><button class="btn-indigo" style="width:auto;flex:1">Planifier entretien</button><button class="btn-ghost" style="width:auto;flex:1">Envoyer message</button><button class="btn-ghost" style="width:auto;flex:1;color:#EF4444">Archiver</button></div></div></div></div>
-<div id="page-rgpd" class="page"><div style="text-align:center;margin-bottom:24px"><div class="compliance-big">97%</div><p style="opacity:.5">Score de conformite</p></div><div class="stat-grid"><div class="stat-card glass"><div class="stat-val">5/5</div><div class="stat-lbl">Accords actifs</div></div><div class="stat-card glass"><div class="stat-val">0</div><div class="stat-lbl">Dossiers a traiter</div></div><div class="stat-card glass"><div class="stat-val">25/03</div><div class="stat-lbl">Prochaine echeance</div></div></div><h3>Dossiers a traiter avant le 25 mars</h3><p style="opacity:.5;margin:8px 0">Aucun dossier urgent pour le moment. Aurora surveille pour toi.</p><div class="glass" style="padding:20px;margin-top:16px"><table><thead><tr><th>Candidat</th><th>Statut</th><th>Echeance</th></tr></thead><tbody><tr><td>Sophie Martin</td><td><span class="badge badge-green">Conforme</span></td><td>15/04</td></tr><tr><td>Julien Renard</td><td><span class="badge badge-green">Conforme</span></td><td>20/04</td></tr><tr><td>Camille Leroy</td><td><span class="badge badge-green">Conforme</span></td><td>25/04</td></tr></tbody></table></div><div style="margin-top:16px"><button class="btn-ghost" style="width:auto">Telecharger le certificat de suppression</button></div></div><div id="page-academy" class="page"><h3 style="margin-bottom:4px">Academy Auralis</h3><p style="opacity:.5;margin-bottom:20px">Apprends a ton rythme. Rien d'obligatoire.</p><div class="progress-track" style="margin-bottom:24px"><div class="progress-fill" style="width:35%"></div></div><h3>Parcours disponibles</h3><div class="stat-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr));margin-top:12px"><div class="glass" style="padding:20px"><h4>Recrutement</h4><p style="font-size:13px;opacity:.5">Les bases pour bien recruter</p><div class="progress-track"><div class="progress-fill" style="width:60%"></div></div><button class="btn-ghost" style="width:auto;margin-top:8px;font-size:12px">Continuer</button></div><div class="glass" style="padding:20px"><h4>RGPD</h4><p style="font-size:13px;opacity:.5">Proteger les donnees candidats</p><div class="progress-track"><div class="progress-fill" style="width:20%"></div></div><button class="btn-ghost" style="width:auto;margin-top:8px;font-size:12px">Continuer</button></div><div class="glass" style="padding:20px"><h4>Alternance</h4><p style="font-size:13px;opacity:.5">Gerer tuteurs et alternants</p><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div><button class="btn-ghost" style="width:auto;margin-top:8px;font-size:12px">Continuer</button></div></div><div class="glass" style="padding:16px;margin-top:20px"><h4>Defi du jour (optionnel)</h4><p style="font-size:13px;opacity:.5;margin-top:4px">Redige une offre d'emploi en moins de 5 minutes.</p><button class="btn-ghost" style="width:auto;margin-top:8px;font-size:12px">Relever le defi</button></div></div><div id="page-analytics" class="page"><h3 style="margin-bottom:16px">Tes resultats</h3><div class="stat-grid"><div class="stat-card glass"><div class="stat-val">18j</div><div class="stat-lbl">Temps moyen</div></div><div class="stat-card glass"><div class="stat-val">72%</div><div class="stat-lbl">Taux de conversion</div></div><div class="stat-card glass"><div class="stat-val">4</div><div class="stat-lbl">Sources actives</div></div><div class="stat-card glass"><div class="stat-val">12</div><div class="stat-lbl">Tes decisions ce mois</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px"><div class="glass" style="padding:20px"><h4>Temps par etape</h4><div class="chart-ph"></div></div><div class="glass" style="padding:20px"><h4>Taux de conversion</h4><div class="chart-ph"></div></div><div class="glass" style="padding:20px"><h4>Qualite des sources</h4><div class="chart-ph"></div></div><div class="glass" style="padding:20px"><h4>Tes decisions</h4><div class="chart-ph"></div></div></div></div><div id="page-settings" class="page"><div style="display:flex;flex-direction:column;gap:16px"><div class="glass" style="padding:24px"><h3>Profil</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px"><div class="form-group"><label>Prenom</label><input class="input" type="text" value="Marie"></div><div class="form-group"><label>Nom</label><input class="input" type="text" value="Dupont"></div><div class="form-group"><label>Email</label><input class="input" type="text" value="marie@techcorp.fr"></div><div class="form-group"><label>Organisation</label><input class="input" type="text" value="TechCorp"></div></div></div><div class="glass" style="padding:24px"><h3>Notifications</h3><div style="display:flex;flex-direction:column;gap:12px;margin-top:12px"><div><label style="display:flex;justify-content:space-between;align-items:center;font-size:14px"><span>Nouvelles candidatures</span><input type="checkbox" checked></label></div><div><label style="display:flex;justify-content:space-between;align-items:center;font-size:14px"><span>Rappels entretiens</span><input type="checkbox" checked></label></div><div><label style="display:flex;justify-content:space-between;align-items:center;font-size:14px"><span>Rapport hebdomadaire</span><input type="checkbox" checked></label></div></div></div><div class="glass" style="padding:24px"><h3>Sensibilite Aurora</h3><p style="font-size:13px;opacity:.5;margin:8px 0">Discrete ar Presente</p><input type="range" min="1" max="5" value="3" style="width:100%"></div><div class="glass" style="padding:24px"><h3>Integrations</h3><div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;font-size:14px"><div><span>Gmail</span><span style="color:#6EE7B7;margin-left:8px">Connecte</span></div><div style="opacity:.5"><span>Google Calendar</span><span style="margin-left:8px">Bientot</span></div><div style="opacity:.5"><span>Make.com</span><span style="margin-left:8px">Bientot</span></div></div></div><button class="btn" style="background:#EF4444;color:#fff">Se deconnecter</button></div></div></div></div><div class="aurora-bar" id="aurora-bar"><span class="aurora-dot"></span><span class="aurora-msg" id="aurora-text"></span><button class="aurora-action" id="aurora-action" style="display:none"></button></div>
 <script>
-(function(){'use strict';function showPage(id){document.querySelectorAll('.page').forEach(p=>{p.style.display='none';p.classList.remove('active')});const el=document.getElementById(id);if(el){el.style.display='block';el.classList.add('active')}if(id==='page-login'){if(el)el.style.display='flex'}const shell=document.getElementById('app-shell');const bar=document.getElementById('aurora-bar');if(id==='page-splash'||id==='page-login'||id==='page-onboarding'){if(shell)shell.classList.add('hidden');if(bar)bar.style.display=id==='page-login'?'flex':'none'}else{if(shell)shell.classList.remove('hidden');if(bar)bar.style.display='flex';updatePageTitle(id);updateAurora(id);setActiveNav(id)}}setTimeout(()=>showPage('page-login'),3500);const titles={'page-dashboard':'Tableau de bord','page-candidates':'Candidats','page-kanban':'Pipeline','page-calendar':'Calendrier','page-messaging':'Messages','page-candidate-detail':'Fiche candidat','page-rgpd':'Protection des donnees','page-academy':'Academy','page-analytics':'Tes resultats','page-settings':'Parametres'};function updatePageTitle(id){const t=document.getElementById('page-title');if(t)t.textContent=titles[id]||''}function setActiveNav(id){document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.toggle('active',b.dataset.target===id)})}function enterDemo(){localStorage.setItem('user',JSON.stringify({name:'Marie',company:'TechCorp'}));showPage('page-dashboard');updateGreeting()}window.enterDemo=enterDemo;function updateGreeting(){const name=document.getElementById('greet-name');const date=document.getElementById('greet-date');if(name){const u=JSON.parse(localStorage.getItem('user')||'{}');name.textContent=u.name||''}if(date){const d=new Date();date.textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}}const auroraMap={'page-dashboard':'Camille attend une reponse depuis 2 jours. C est le bon moment.','page-candidates':'3 candidats meritent ton attention aujourd hui. Par lequel tu veux commencer ?','page-kanban':'Marie est en preselection depuis 5 jours. Tu veux planifier un entretien ?','page-calendar':'Tu as 2 entretiens cette semaine. Mardi reste libre si tu as besoin.','page-messaging':'3 candidats n ont pas eu de reponse depuis 7 jours. Je peux preparer un message groupe.','page-candidate-detail':'Camille a un profil similaire a tes 3 dernieres recrues reussies.','page-rgpd':'2 dossiers sont a traiter avant le 25 mars. Rien d urgent pour aujourd hui.','page-academy':'Tu as traite tous tes candidats. C est un bon moment pour explorer le module RGPD.','page-analytics':'Ton temps de reponse moyen est de 2,3 jours. Tu es dans les meilleurs 20%.','page-settings':'Tes preferences sont sauvegardees automatiquement.'};const auroraActions={'page-dashboard':'Contacter','page-candidates':'Voir','page-kanban':'Planifier','page-messaging':'Preparer'};function getAuroraMsg(pageId){const h=new Date().getHours();const d=new Date().getDay();if(h>=20)return{msg:'C est tard. Ca peut attendre demain.',btn:null};if(d===1&&h<10)return{msg:'Bonne semaine. Par ou tu veux commencer ?',btn:null};if(d===5&&h>=17)return{msg:'Belle semaine. Tu peux partir serein.',btn:null};return{msg:auroraMap[pageId]||'',btn:auroraActions[pageId]||null}}function updateAurora(pageId){const txt=document.getElementById('aurora-text');const btn=document.getElementById('aurora-action');const{msg,btn:label}=getAuroraMsg(pageId);if(txt)txt.textContent=msg;if(btn){if(label){btn.style.display='inline-block';btn.textContent=label}else{btn.style.display='none'}}}const moons=['ð','ð','ð','ð','ð'];function updateMoon(){const h=new Date().getHours();const idx=Math.min(4,Math.floor(h/5));const el=document.getElementById('moon-icon');if(el)el.textContent=moons[idx]}const onbSteps=[{title:'Tu es plutot...',content:'personas'},{title:'Comment tu t appelles ?',content:'input:prenom'},{title:'Tu travailles pour...',content:'input:organisation'},{title:'Ton poste ?',content:'input:poste'},{title:'Tes preferences',content:'toggles'},{title:'Voici Aurora',content:'aurora-intro'},{title:'Ta premiere action',content:'first-action'},{title:'C est parti',content:'done'}];let onbStep=0;function renderOnb(){const c=document.getElementById('onb-content');const dots=document.querySelectorAll('.onb-dot');dots.forEach((d,i)=>d.classList.toggle('active',i<=onbStep));const s=onbSteps[onbStep];const btn=document.getElementById('onb-next');if(btn){if(onbStep===7){btn.textContent='Commencer';btn.onclick=()=>{showPage('page-dashboard');updateGreeting()}}else{btn.textContent='Suivant rightarrow';btn.onclick=()=>{onbStep++;renderOnb()}}}let html='<h2 class="onb-title">'+s.title+'</h2>';if(s.content==='personas')html+='<p class="onb-sub">Choisis ton profil pour personnaliser Aurora.</p><div class="persona-cards"><div class="persona-card" onclick="this.classList.toggle(\"selected\")">Alternant RH</div><div class="persona-card" onclick="this.classList.toggle(\"selected\")">Tuteur / Manager</div><div class="persona-card" onclick="this.classList.toggle(\"selected\")">Senior DRH</div></div>';else if(s.content.startsWith('input:'))html+='<p class="onb-sub" style="margin-bottom:16px"></p><input class="input" style="max-width:300px;margin:0 auto;display:block" placeholder="'+s.content.split(':')[1]+'">';else if(s.content==='toggles')html+='<p class="onb-sub">Personnalise ton experience.</p><div style="display:flex;flex-direction:column;gap:12px;text-align:left;max-width:300px;margin:0 auto"><label style="display:flex;justify-content:space-between"><span>Notifications email</span><input type="checkbox" checked></label><label style="display:flex;justify-content:space-between"><span>Mode sombre par defaut</span><input type="checkbox" checked></label></div>';else if(s.content==='aurora-intro')html+='<p class="onb-sub">Aurora est ton assistante. Elle observe, elle suggere, elle ne decide jamais a ta place. Tu gardes le controle.</p>';else if(s.content==='first-action')html+='<p class="onb-sub">Consulte ton premier candidat. Aurora t accompagne.</p>';else if(s.content==='done')html+='<p class="onb-sub">Tout est pret. Aurora veille.</p>';if(c)c.innerHTML=html}window.renderOnb=renderOnb;document.addEventListener('DOMContentLoaded',()=>{updateMoon();renderOnb();const pill=document.querySelector('.toggle-pill');if(pill){pill.addEventListener('click',()=>{document.body.classList.toggle('light-mode');localStorage.setItem('theme',document.body.classList.contains('light-mode')?'light':'dark')})}if(localStorage.getItem('theme')==='light')document.body.classList.add('light-mode');document.querySelectorAll('.nav-btn').forEach(b=>{b.addEventListener('click',()=>showPage(b.dataset.target))});const saved=localStorage.getItem('user');if(saved){showPage('page-dashboard');updateGreeting()}})})();
+(function(){
+'use strict';
+
+var titles = {
+  'page-dashboard':'Tableau de bord','page-candidates':'Candidats','page-kanban':'Pipeline',
+  'page-calendar':'Calendrier','page-messaging':'Messages','page-candidate-detail':'Fiche candidat',
+  'page-rgpd':'Protection des donnees','page-academy':'Academy','page-analytics':'Tes resultats',
+  'page-settings':'Parametres'
+};
+
+var auroraMessages = {
+  'page-dashboard':'Camille attend une reponse depuis 2 jours. C est le bon moment.',
+  'page-candidates':'3 candidats meritent ton attention aujourd hui. Par lequel tu veux commencer ?',
+  'page-kanban':'Marie est en preselection depuis 5 jours. Tu veux planifier un entretien ?',
+  'page-calendar':'Tu as 2 entretiens cette semaine. Mardi reste libre si tu as besoin.',
+  'page-messaging':'3 candidats n ont pas eu de reponse depuis 7 jours.',
+  'page-candidate-detail':'Camille a un profil similaire a tes 3 dernieres recrues reussies.',
+  'page-rgpd':'2 dossiers a traiter avant le 25 mars. Rien d urgent pour aujourd hui.',
+  'page-academy':'Tu as traite tous tes candidats. Bon moment pour explorer un module.',
+  'page-analytics':'Ton temps de reponse moyen est de 2,3 jours. Tu es dans les meilleurs 20 pourcent.',
+  'page-settings':'Tes preferences sont sauvegardees automatiquement.'
+};
+
+window.showPage = function(id) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) { pages[i].classList.remove('active'); }
+  var el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  var t = document.getElementById('page-title');
+  if (t && titles[id]) t.textContent = titles[id];
+  var navBtns = document.querySelectorAll('.nav-btn');
+  for (var j = 0; j < navBtns.length; j++) {
+    navBtns[j].style.background = navBtns[j].getAttribute('onclick').indexOf(id) > -1 ? 'rgba(129,140,248,.2)' : 'transparent';
+    navBtns[j].style.color = navBtns[j].getAttribute('onclick').indexOf(id) > -1 ? '#818CF8' : '';
+  }
+  var bar = document.getElementById('aurora-bar');
+  var txt = document.getElementById('aurora-text');
+  var btn = document.getElementById('aurora-btn');
+  if (id === 'page-splash') { if(bar) bar.style.display = 'none'; return; }
+  if (bar) bar.style.display = 'flex';
+  var h = new Date().getHours();
+  var d = new Date().getDay();
+  var msg = '';
+  if (h >= 20) msg = 'C est tard. Ca peut attendre demain.';
+  else if (d === 1 && h < 10) msg = 'Bonne semaine. Par ou tu veux commencer ?';
+  else if (d === 5 && h >= 17) msg = 'Belle semaine. Tu peux partir serein.';
+  else msg = auroraMessages[id] || '';
+  if (txt) txt.textContent = msg;
+  if (btn) btn.style.display = 'none';
+  if (id === 'page-login') { if(txt) txt.textContent = ''; }
+  var dateEl = document.getElementById('greet-date');
+  if (dateEl) dateEl.textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var nameEl = document.getElementById('greet-name');
+  if (nameEl) nameEl.textContent = 'Marie';
+};
+
+window.toggleTheme = function() {
+  document.body.classList.toggle('light-mode');
+  localStorage.setItem('auralis-theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+};
+
+var onbStep = 0;
+var onbData = [
+  {t:'Tu es plutot...',h:'<p class="onb-sub">Choisis ton profil pour personnaliser Aurora.</p><div class="persona-cards"><div class="persona-card" onclick="this.classList.toggle(\'selected\')">Alternant RH</div><div class="persona-card" onclick="this.classList.toggle(\'selected\')">Tuteur / Manager</div><div class="persona-card" onclick="this.classList.toggle(\'selected\')">Senior DRH</div></div>'},
+  {t:'Comment tu t appelles ?',h:'<input class="input" style="max-width:280px;margin:16px auto;display:block" placeholder="Prenom">'},
+  {t:'Tu travailles pour...',h:'<input class="input" style="max-width:280px;margin:16px auto;display:block" placeholder="Organisation">'},
+  {t:'Ton poste ?',h:'<input class="input" style="max-width:280px;margin:16px auto;display:block" placeholder="Poste">'},
+  {t:'Tes preferences',h:'<div style="max-width:280px;margin:16px auto;text-align:left"><label style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Notifications</span><input type="checkbox" checked></label><label style="display:flex;justify-content:space-between"><span>Mode sombre</span><input type="checkbox" checked></label></div>'},
+  {t:'Voici Aurora',h:'<p class="onb-sub">Aurora observe, suggere, et ne decide jamais a ta place. Tu gardes le controle.</p>'},
+  {t:'Ta premiere action',h:'<p class="onb-sub">Consulte ton premier candidat. Aurora t accompagne.</p>'},
+  {t:'C est parti',h:'<p class="onb-sub">Tout est pret. Aurora veille.</p>'}
+];
+
+window.nextOnbStep = function() {
+  onbStep++;
+  if (onbStep >= 8) { showPage('page-dashboard'); onbStep = 0; return; }
+  var c = document.getElementById('onb-content');
+  var dots = document.querySelectorAll('.onb-dot');
+  if (c) c.innerHTML = '<h2 class="onb-title">' + onbData[onbStep].t + '</h2>' + onbData[onbStep].h;
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('active', i <= onbStep);
+  }
+  var btn = document.getElementById('onb-next');
+  if (btn && onbStep === 7) btn.textContent = 'Commencer';
+};
+
+if (localStorage.getItem('auralis-theme') === 'light') document.body.classList.add('light-mode');
+showPage('page-splash');
+setTimeout(function() { showPage('page-login'); }, 3500);
+
+})();
 </script>
+
 </body>
 </html>
