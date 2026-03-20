@@ -2,379 +2,1225 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#818CF8">
-<title>Auralis RH | Pineapp Inc</title>
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auralis RH â by Pineapp Inc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --indigo:#818CF8;--mint:#6EE7B7;--peach:#FBBF9A;--violet:#C4B5FD;--cream:#F8F7F4;
+  --dark-bg:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;
+  --glass-bg:rgba(255,255,255,0.05);--glass-border:rgba(255,255,255,0.1);
+  --text-primary:#fff;--text-secondary:rgba(255,255,255,0.6);
+  --card-bg:rgba(255,255,255,0.06);--sidebar-bg:rgba(0,0,0,0.3);
+}
+body.light{
+  --dark-bg:linear-gradient(135deg,#FFF8F0 0%,#FFF3E8 50%,#F8F7F4 100%);
+  --glass-bg:rgba(255,255,255,0.7);--glass-border:rgba(0,0,0,0.08);
+  --text-primary:#1a1a2e;--text-secondary:rgba(26,26,46,0.6);
+  --card-bg:rgba(255,255,255,0.8);--sidebar-bg:rgba(255,255,255,0.9);
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;background:var(--dark-bg);min-height:100vh;color:var(--text-primary);}
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* GLASS */
+.glass{background:var(--glass-bg);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--glass-border);border-radius:16px;}
+
+/* AURORA BAR */
+.aurora-bar{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;padding:0 24px;z-index:100;}
+.aurora-dot{width:8px;height:8px;border-radius:50%;background:var(--indigo);animation:pulse 2s infinite;margin-right:10px;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
+.aurora-label{color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;}
+.aurora-ticker{position:fixed;bottom:80px;left:0;right:0;height:28px;background:rgba(129,140,248,0.08);border-top:1px solid rgba(129,140,248,0.15);display:flex;align-items:center;overflow:hidden;z-index:99;}
+.ticker-inner{white-space:nowrap;animation:ticker 30s linear infinite;color:rgba(255,255,255,0.5);font-size:12px;padding-left:100%;}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-100%);}  }
+.aurora-chat-btn{margin-left:auto;width:40px;height:40px;border-radius:50%;background:rgba(129,140,248,0.2);border:1px solid rgba(129,140,248,0.4);color:var(--indigo);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 280ms cubic-bezier(0.34,1.56,0.64,1);}
+.aurora-chat-btn:hover{background:rgba(129,140,248,0.35);transform:scale(1.1);}
+
+/* BUTTONS */
+.btn{padding:12px 24px;border-radius:12px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:all 280ms cubic-bezier(0.34,1.56,0.64,1);}
+.btn-indigo{background:var(--indigo);color:#fff;}
+.btn-indigo:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(129,140,248,0.4);}
+.btn-peach{background:var(--peach);color:#1a1a2e;}
+.btn-peach:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(251,191,154,0.4);}
+.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--glass-border);}
+.btn-ghost:hover{background:var(--glass-bg);color:var(--text-primary);}
+.btn-full{width:100%;}
+
+/* INPUTS */
+.input{width:100%;padding:12px 16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:var(--text-primary);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;outline:none;transition:border 200ms;}
+.input::placeholder{color:rgba(255,255,255,0.35);}
+.input:focus{border-color:var(--indigo);}
+body.light .input{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1);color:#1a1a2e;}
+body.light .input::placeholder{color:rgba(0,0,0,0.3);}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:80px;width:72px;background:var(--sidebar-bg);backdrop-filter:blur(20px);border-right:1px solid var(--glass-border);display:flex;flex-direction:column;align-items:center;padding:16px 0;z-index:50;gap:4px;}
+.sidebar-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 200ms;color:rgba(255,255,255,0.4);font-size:20px;}
+.sidebar-icon:hover,.sidebar-icon.active{background:rgba(129,140,248,0.15);color:var(--indigo);}
+.main-content{margin-left:72px;padding:24px;padding-bottom:120px;}
+
+/* HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.page-title{font-size:22px;font-weight:700;color:var(--text-primary);}
+.pill{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;}
+.pill-indigo{background:rgba(129,140,248,0.2);color:var(--indigo);border:1px solid rgba(129,140,248,0.3);}
+.pill-peach{background:rgba(251,191,154,0.2);color:#f59e0b;border:1px solid rgba(251,191,154,0.3);}
+.pill-mint{background:rgba(110,231,183,0.2);color:var(--mint);border:1px solid rgba(110,231,183,0.3);}
+
+/* CARDS */
+.card{background:var(--card-bg);backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:16px;padding:24px;}
+.stat-card{text-align:center;}
+.stat-value{font-size:36px;font-weight:700;margin:8px 0 4px;}
+.stat-label{font-size:13px;color:var(--text-secondary);}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
+
+/* SCORE CIRCLE */
+.score-circle{width:80px;height:80px;border-radius:50%;background:conic-gradient(var(--indigo) calc(var(--pct)*1%),rgba(255,255,255,0.1) 0);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;position:relative;}
+.score-circle::before{content:'';position:absolute;width:62px;height:62px;border-radius:50%;background:var(--card-bg);}
+.score-circle span{position:relative;z-index:1;}
+
+/* TOGGLE */
+.theme-toggle{position:fixed;top:20px;right:20px;z-index:200;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:var(--text-primary);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 400ms ease;}
+.theme-toggle:hover{background:rgba(255,255,255,0.2);}
+
+/* PROGRESS BAR SPLASH */
+@keyframes progressSplash{from{width:0}to{width:100%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* CANDIDATE CARD */
+.candidate-card{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:16px;padding:20px;transition:all 200ms;}
+.candidate-card:hover{transform:translateY(-3px);border-color:rgba(129,140,248,0.3);}
+.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;}
+.score-badge{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(129,140,248,0.2);color:var(--indigo);}
+
+/* KANBAN */
+.kanban-wrap{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px;}
+.kanban-col{min-width:220px;flex-shrink:0;background:var(--card-bg);border:1px solid var(--glass-border);border-radius:16px;padding:16px;}
+.kanban-col-header{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.kanban-item{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:10px;padding:12px;margin-bottom:8px;font-size:13px;cursor:grab;}
+
+/* CHAT */
+.chat-panel{position:fixed;top:0;right:-400px;width:380px;height:100vh;background:rgba(4,4,14,0.95);backdrop-filter:blur(24px);border-left:1px solid rgba(255,255,255,0.1);z-index:500;transition:right 400ms ease;display:flex;flex-direction:column;}
+.chat-panel.open{right:0;}
+.chat-header{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:12px;}
+.chat-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--indigo);}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
+.msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;}
+.msg-aurora{background:rgba(129,140,248,0.15);border:1px solid rgba(129,140,248,0.2);align-self:flex-start;border-bottom-left-radius:4px;}
+.msg-user{background:rgba(129,140,248,0.3);align-self:flex-end;border-bottom-right-radius:4px;}
+.typing{display:flex;gap:4px;align-items:center;padding:8px 12px;}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);animation:typing 1.2s infinite;}
+.typing-dot:nth-child(2){animation-delay:0.2s;}
+.typing-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes typing{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.chat-suggestions{padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px;}
+.chat-suggestion{padding:6px 10px;border-radius:999px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);color:var(--indigo);font-size:11px;cursor:pointer;transition:all 200ms;}
+.chat-suggestion:hover{background:rgba(129,140,248,0.25);}
+.chat-input-wrap{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;}
+.chat-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;outline:none;}
+.chat-input:focus{border-color:var(--indigo);}
+.chat-send{width:36px;height:36px;border-radius:8px;background:var(--indigo);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* TABS */
+.tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(255,255,255,0.05);padding:4px;border-radius:12px;}
+.tab{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text-secondary);transition:all 200ms;}
+.tab.active{background:var(--indigo);color:#fff;}
+
+/* MOBILE */
+@media(max-width:767px){
+  .sidebar{display:none;}
+  .main-content{margin-left:0;padding:16px;padding-bottom:180px;}
+  .mobile-nav{display:flex!important;}
+  .theme-toggle{top:12px;right:12px;}
+}
+.mobile-nav{display:none;position:fixed;bottom:80px;left:0;right:0;height:56px;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.08);align-items:center;justify-content:space-around;z-index:101;}
+.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:rgba(255,255,255,0.4);font-size:10px;cursor:pointer;padding:8px 12px;}
+.mobile-nav-item.active,.mobile-nav-item:hover{color:var(--indigo);}
+.mobile-nav-item svg{width:22px;height:22px;}
+
+/* ONBOARDING */
+.onboarding-wrap{max-width:600px;margin:0 auto;padding:40px 20px 120px;}
+.progress-dots{display:flex;gap:8px;justify-content:center;margin-bottom:40px;}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 400ms;}
+.dot.active{background:var(--indigo);width:24px;border-radius:4px;}
+.persona-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0;}
+.persona-card{padding:16px;border-radius:12px;border:2px solid var(--glass-border);background:var(--card-bg);cursor:pointer;text-align:center;transition:all 200ms;}
+.persona-card.selected,.persona-card:hover{border-color:var(--indigo);background:rgba(129,140,248,0.1);}
+.persona-icon{font-size:28px;margin-bottom:8px;}
+.persona-label{font-size:13px;font-weight:500;}
+
+/* MESSAGING */
+.msg-layout{display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - 200px);min-height:400px;}
+.msg-contacts{border-right:1px solid var(--glass-border);overflow-y:auto;}
+.msg-contact{padding:14px 16px;display:flex;gap:12px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04);}
+.msg-contact:hover,.msg-contact.active{background:rgba(129,140,248,0.1);}
+.msg-chat{display:flex;flex-direction:column;padding:16px;}
+.msg-chat-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+@media(max-width:600px){.msg-layout{grid-template-columns:1fr;}.msg-contacts{display:none;}}
+
+/* RGPD */
+.rgpd-card{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--card-bg);border:1px solid var(--glass-border);border-radius:12px;margin-bottom:10px;}
+.status-dot{width:10px;height:10px;border-radius:50%;}
+
+/* SVG Charts */
+.chart-wrap{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:16px;padding:20px;}
+.chart-title{font-size:14px;font-weight:600;margin-bottom:16px;color:var(--text-primary);}
+.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+</style>
 </head>
 <body>
 
-<!-- TOGGLE -->
-<div class="toggle-wrap">
-<button class="toggle-pill" onclick="toggleTheme()">
-<span class="toggle-icon toggle-moon">&#127769;</span>
-<span class="toggle-icon toggle-sun">&#9728;</span>
-<span class="toggle-thumb"></span>
-</button>
+
+<div id="page-splash" class="page active" style="background:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+  <div style="text-align:center;opacity:0;animation:fadeUp 0.7s 0.3s forwards;">
+    <div style="display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <span style="font-size:64px;font-weight:700;letter-spacing:-2px;color:#fff;">Auralis</span>
+      <span style="background:#818CF8;color:#fff;font-size:16px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.05em;">RH</span>
+    </div>
+    <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:14px;">by Pineapp Inc</p>
+    <p style="font-size:18px;font-weight:300;color:rgba(255,255,255,0.7);">Tu recrutes. Aurora veille.</p>
+  </div>
+  <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.08);">
+    <div id="splash-bar" style="height:100%;background:linear-gradient(90deg,#818CF8,#6EE7B7);width:0%;animation:progressSplash 3.2s 0.9s ease-out forwards;"></div>
+  </div>
 </div>
 
-<!-- DEMO BAR -->
-<div id="demo-bar" class="demo-bar">Mode d&eacute;mo &mdash; Donn&eacute;es fictives <button class="aurora-btn" onclick="showPage('page-login')" style="margin-left:12px">Cr&eacute;er mon compte</button></div>
-
-<!-- AURORA BAR -->
-<div id="aurora-bar" class="aurora-bar" style="display:none">
-<span class="aurora-dot"></span>
-<span id="aurora-text" class="aurora-msg"></span>
-<div class="aurora-actions" id="aurora-actions"></div>
+<div id="page-login" class="page" style="background:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div class="glass" style="width:100%;max-width:420px;padding:40px;position:relative;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="font-size:26px;font-weight:700;color:#fff;">Auralis</span>
+        <span style="background:#818CF8;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;">RH</span>
+      </div>
+      <p style="color:rgba(255,255,255,0.5);font-size:14px;">Bienvenue sur Auralis RH</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+      <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;gap:10px;justify-content:center;padding:12px 20px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 200ms;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continuer avec Google
+      </button>
+      <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;gap:10px;justify-content:center;padding:12px 20px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 200ms;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+        <svg viewBox="0 0 24 24" width="20" height="20"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="13" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="13" width="10" height="10" fill="#00A4EF"/><rect x="13" y="13" width="10" height="10" fill="#FFB900"/></svg>
+        Continuer avec Microsoft
+      </button>
+      <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;gap:10px;justify-content:center;padding:12px 20px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 200ms;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Continuer avec Apple Mail
+      </button>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+      <span style="color:rgba(255,255,255,0.4);font-size:12px;">ou</span>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+      <input class="input" type="email" placeholder="Email professionnel">
+      <input class="input" type="password" placeholder="Mot de passe">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button class="btn btn-indigo btn-full" onclick="showPage('page-onboarding')">AccÃ©der Ã  mon espace</button>
+      <button class="btn btn-peach btn-full" onclick="showPage('page-dashboard')">Essayer en mode dÃ©mo</button>
+    </div>
+  </div>
+  <div class="aurora-bar">
+    <div class="aurora-dot"></div>
+    <span class="aurora-label">Aurora Â· Disponible</span>
+  </div>
 </div>
 
-<!-- TOASTS -->
-<div id="toast-wrap" class="toast-wrap"></div>
-
-<!-- MOBILE NAV -->
-<div class="mob-nav" id="mob-nav">
-<button class="mob-tab" onclick="showPage('page-dashboard')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg>Accueil</button>
-<button class="mob-tab" onclick="showPage('page-candidates')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6z"/></svg>Candidats</button>
-<button class="mob-tab" onclick="showPage('page-kanban')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg>Pipeline</button>
-<button class="mob-tab" onclick="showPage('page-messaging')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg>Messages</button>
-<button class="mob-tab" onclick="showPage('page-settings')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 13a3 3 0 100-6 3 3 0 000 6z"/></svg>Plus</button>
+<div id="page-onboarding" class="page" style="background:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;min-height:100vh;padding-bottom:80px;">
+  <div class="onboarding-wrap">
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:32px;padding-top:40px;">
+      <span style="font-size:20px;font-weight:700;color:#fff;">Auralis</span>
+      <span style="background:#818CF8;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;">RH</span>
+    </div>
+    <div class="progress-dots" id="ob-dots">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+    <!-- Step 1 -->
+    <div id="ob-step-1">
+      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Quel est votre profil ?</h2>
+      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Choisissez le profil qui vous correspond le mieux</p>
+      <div class="persona-grid">
+        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð¥</div><div class="persona-label">RH GÃ©nÃ©raliste</div></div>
+        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð¢</div><div class="persona-label">DRH</div></div>
+        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð¯</div><div class="persona-label">Recruteur indÃ©pendant</div></div>
+        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð</div><div class="persona-label">Startup</div></div>
+        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð</div><div class="persona-label">Cabinet RH</div></div>
+      </div>
+    </div>
+    <!-- Step 2 -->
+    <div id="ob-step-2" style="display:none;">
+      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Comment vous appelez-vous ?</h2>
+      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Aurora vous appellera par votre prÃ©nom</p>
+      <input class="input" type="text" placeholder="Votre prÃ©nom" style="margin-bottom:12px;">
+    </div>
+    <!-- Step 3 -->
+    <div id="ob-step-3" style="display:none;">
+      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Votre organisation ?</h2>
+      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Nom de votre entreprise ou cabinet</p>
+      <input class="input" type="text" placeholder="Nom de l'organisation" style="margin-bottom:12px;">
+    </div>
+    <!-- Step 4 -->
+    <div id="ob-step-4" style="display:none;">
+      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Quels modules souhaitez-vous ?</h2>
+      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Vous pourrez modifier cela plus tard</p>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        
+        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
+          <input type="checkbox" checked style="accent-color:#818CF8;width:16px;height:16px;">
+          <span style="font-size:14px;color:#fff;">Suggestions Aurora</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
+          <input type="checkbox" checked style="accent-color:#818CF8;width:16px;height:16px;">
+          <span style="font-size:14px;color:#fff;">Pipeline candidats</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
+          <input type="checkbox" checked style="accent-color:#818CF8;width:16px;height:16px;">
+          <span style="font-size:14px;color:#fff;">Analyses RH</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
+          <input type="checkbox"  style="accent-color:#818CF8;width:16px;height:16px;">
+          <span style="font-size:14px;color:#fff;">RGPD auto</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
+          <input type="checkbox"  style="accent-color:#818CF8;width:16px;height:16px;">
+          <span style="font-size:14px;color:#fff;">Messagerie</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
+          <input type="checkbox"  style="accent-color:#818CF8;width:16px;height:16px;">
+          <span style="font-size:14px;color:#fff;">Rapports</span>
+        </label>
+      </div>
+    </div>
+    <!-- Step 5 -->
+    <div id="ob-step-5" style="display:none;">
+      <div style="background:linear-gradient(135deg,rgba(129,140,248,0.15),rgba(110,231,183,0.08));border:1px solid rgba(129,140,248,0.3);border-radius:20px;padding:32px;text-align:center;margin-bottom:24px;">
+        <div style="width:72px;height:72px;border-radius:50%;overflow:hidden;margin:0 auto 20px;border:3px solid #818CF8;">
+          <img src="https://drive.google.com/uc?export=view&id=1WfYrK0FDfZ_pSTjd3M9_jsj84bVy0s2D" alt="Aurora" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#818CF8,#6EE7B7);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;&quot;>A</div>'">
+        </div>
+        <h2 style="font-size:22px;font-weight:700;color:#fff;margin-bottom:12px;">Je m'appelle Aurora.</h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.7;max-width:400px;margin:0 auto 24px;">Je suis votre assistante RH intelligente. Je lis vos candidatures, je classe les profils, je vous fais gagner 3h par semaine. Par oÃ¹ voulez-vous commencer ?</p>
+        <button class="btn btn-indigo" onclick="showPage('page-dashboard')" style="font-size:15px;padding:14px 32px;">AccÃ©der au tableau de bord</button>
+      </div>
+    </div>
+    <!-- Navigation -->
+    <div id="ob-nav" style="display:flex;gap:12px;justify-content:center;margin-top:32px;">
+      <button id="ob-back" class="btn btn-ghost" onclick="obStep(-1)" style="display:none;">Retour</button>
+      <button id="ob-next" class="btn btn-indigo" onclick="obStep(1)">Suivant</button>
+    </div>
+  </div>
 </div>
 
-<!-- ==================== PAGE 1: SPLASH ==================== -->
-<div id="page-splash" class="page active">
-<div class="splash-center">
-<div><span class="splash-name">Auralis</span><span class="splash-rh">RH</span></div>
-<div class="splash-co">by Pineapp Inc</div>
-<div class="splash-tag">Tu recrutes. Aurora veille.</div>
-<div class="splash-bar"><div class="splash-fill"></div></div>
-</div>
-</div>
-
-<!-- ==================== PAGE 2: LOGIN ==================== -->
-<div id="page-login" class="page">
-<div class="auth-center">
-<div class="auth-card glass">
-<div class="auth-logo"><span class="auth-logo-name">Auralis RH</span><span class="auth-logo-co">by Pineapp Inc</span></div>
-<h1 class="auth-title">Bienvenue</h1>
-<p class="auth-sub">Comment veux-tu te connecter&nbsp;?</p>
-<div class="oauth-row">
-<button class="oauth-btn" title="Google">G</button>
-<button class="oauth-btn" title="Microsoft">M</button>
-<button class="oauth-btn" title="Email">&#9993;</button>
-</div>
-<div class="divider">ou par email</div>
-<div class="form-group"><label>E-mail</label><input class="input" type="email" placeholder="nom@entreprise.com"></div>
-<div class="form-group"><label>Mot de passe</label><input class="input" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"></div>
-<a class="forgot-link" href="#" onclick="toast('Un lien a &eacute;t&eacute; envoy&eacute; sur ton email.','info');return false">Mot de passe oubli&eacute; &rarr;</a>
-<button class="btn btn-indigo" onclick="showPage('page-onboarding')">Acc&eacute;der &agrave; mon espace</button>
-<div style="height:12px"></div>
-<button class="btn btn-peach" onclick="enterDemo()">Essayer en mode d&eacute;mo</button>
-<p style="text-align:center;font-size:11px;opacity:.2;margin-top:12px">14 jours gratuit, sans carte bancaire</p>
-<div class="trust">Donn&eacute;es prot&eacute;g&eacute;es &middot; RGPD &middot; H&eacute;berg&eacute; en France</div>
-</div>
-</div>
-</div>
-
-<!-- ==================== PAGE 3: ONBOARDING ==================== -->
-<div id="page-onboarding" class="page">
-<div class="onb-center">
-<div class="onb-card glass">
-<div class="onb-dots" id="onb-dots"></div>
-<div id="onb-content"></div>
-<button class="btn btn-indigo" id="onb-next" onclick="nextOnb()">Suivant &rarr;</button>
-</div>
-</div>
-</div>
-
-<!-- ==================== PAGE 4: DASHBOARD (Aurora-first) ==================== -->
 <div id="page-dashboard" class="page">
-<nav class="sidebar glass" id="sidebar">
-<div class="sidebar-logo">A</div>
-<button class="nav-btn active" onclick="showPage('page-dashboard')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 2h7v7H2zm9 0h7v7h-7zM2 11h7v7H2zm9 0h7v7h-7z"/></svg><span class="tip">Tableau de bord</span></button>
-<button class="nav-btn" onclick="showPage('page-candidates')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zm0 2c-3.3 0-6 2.7-6 6h12c0-3.3-2.7-6-6-6z"/></svg><span class="tip">Candidats</span></button>
-<button class="nav-btn" onclick="showPage('page-kanban')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h4v14H2zm7 0h4v10H9zm7 0h4v12h-4z"/></svg><span class="tip">Pipeline</span></button>
-<button class="nav-btn" onclick="showPage('page-calendar')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M3 5a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 4h14"/></svg><span class="tip">Calendrier</span></button>
-<button class="nav-btn" onclick="showPage('page-messaging')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6l-4 4V4z"/></svg><span class="tip">Messages</span></button>
-<button class="nav-btn" onclick="showPage('page-rgpd')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l7 4v6c0 4.4-3 8.5-7 10-4-1.5-7-5.6-7-10V6l7-4z"/></svg><span class="tip">RGPD</span></button>
-<button class="nav-btn" onclick="showPage('page-academy')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 3h6v14H2zm10 0h6v14h-6z"/></svg><span class="tip">Academy</span></button>
-<button class="nav-btn" onclick="showPage('page-analytics')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M2 17V7h3v10zm5 0V3h3v14zm5 0V9h3v8z"/></svg><span class="tip">R&eacute;sultats</span></button>
-<button class="nav-btn" onclick="showPage('page-settings')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 13a3 3 0 100-6 3 3 0 000 6z"/></svg><span class="tip">Param&egrave;tres</span></button>
-<button class="nav-btn" onclick="showPage('page-aurora-center')"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg><span class="tip">Aurora</span></button>
+  
+<nav class="sidebar" id="main-sidebar">
+  <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;">
+    <span style="font-size:14px;font-weight:700;color:#818CF8;">A</span>
+  </div>
+  <div class="sidebar-icon active" onclick="showPage('page-dashboard')" title="Tableau de bord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-candidates')" title="Candidats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-kanban')" title="Kanban"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-messaging')" title="Messagerie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-analytics')" title="Analyses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-rgpd')" title="RGPD"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+  <div style="flex:1;"></div>
+  <div class="sidebar-icon" onclick="showPage('page-settings')" title="ParamÃ¨tres"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
 </nav>
-<div class="header glass">
-<h2 id="page-title">Tableau de bord</h2>
-<div class="header-right">
-<span class="moon-display" id="moon-display" title="Bien-&ecirc;tre &eacute;quipe">&#127765;</span>
-<span id="header-badges" style="display:flex;gap:8px"><span class="badge b-pre">5 candidatures</span><span class="badge b-int">2 entretiens</span><span class="badge b-new">3 r&eacute;ponses</span></span>
-<span id="greet-name" style="font-size:14px;font-weight:600"></span>
-<span id="greet-date" style="font-size:12px;opacity:.4"></span>
-</div>
-</div>
-<div class="main">
-<!-- AURORA SPEAKS FIRST -->
-<div class="glass fade-up" style="padding:24px;margin-bottom:24px;border-left:3px solid #818CF8">
-<div style="display:flex;gap:12px;align-items:flex-start">
-<div class="avatar" style="width:36px;height:36px;font-size:12px;background:linear-gradient(135deg,#818CF8,#6EE7B7)">A</div>
-<div style="flex:1">
-<p style="font-size:14px;color:#F8F7F4;margin:0"><strong>Aurora</strong></p>
-<p style="font-size:14px;margin:8px 0 0;line-height:1.6;opacity:.7">Camille attend une r&eacute;ponse depuis 2 jours, parce que les candidats r&eacute;pondent mieux quand on est r&eacute;actif. Thomas est en phase de d&eacute;cision depuis 3 jours. Que veux-tu faire&nbsp;?</p>
-<div style="display:flex;gap:8px;margin-top:12px">
-<button class="aurora-btn" onclick="showPage('page-candidate-detail')">Contacter Camille</button>
-<button class="aurora-btn" onclick="showPage('page-kanban')">Voir le pipeline</button>
-<button class="aurora-btn aurora-btn-ghost">Plus tard</button>
-</div>
-</div>
-</div>
-</div>
-<!-- CANDIDATE DU JOUR -->
-<div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px" class="fade-up d1">
-<div class="glass" style="padding:24px">
-<h3 style="margin:0 0 16px;font-size:14px;opacity:.5;text-transform:uppercase;letter-spacing:1px">Candidat du jour</h3>
-<div style="display:flex;gap:16px;align-items:center">
-<div class="avatar" style="width:56px;height:56px;font-size:18px">CM</div>
-<div><h3 style="margin:0">Camille Moreau</h3><p style="margin:4px 0 0;font-size:13px">Lyon &middot; D&eacute;veloppeuse Full-Stack</p></div>
-</div>
-<div class="score-big" style="margin:16px 0">82</div>
-<p style="font-size:13px;opacity:.4;margin:0">Score bas&eacute; sur : comp&eacute;tences techniques, r&eacute;activit&eacute;, exp&eacute;rience.</p>
-<div style="display:flex;gap:8px;margin-top:16px">
-<button class="btn btn-indigo" style="width:auto;padding:0 20px;height:40px" onclick="showPage('page-candidate-detail');toast('Fiche de Camille ouverte.','info')">Voir le profil</button>
-<button class="btn btn-ghost" style="width:auto;padding:0 20px;height:40px" onclick="showPage('page-messaging');toast('Conversation avec Camille ouverte.','info')">Envoyer un message</button>
-</div>
-</div>
-<div class="fade-up d2">
-<div class="stat-grid" style="grid-template-columns:1fr">
-<div class="stat-card glass"><div class="stat-val">5</div><div class="stat-lbl">Candidatures actives</div></div>
-<div class="stat-card glass"><div class="stat-val">2</div><div class="stat-lbl">Entretiens cette semaine</div></div>
-<div class="stat-card glass"><div class="stat-val">3</div><div class="stat-lbl">R&eacute;ponses en attente</div></div>
-</div>
-<div class="glass fade-up d3" style="padding:16px;margin-top:16px">
-<p style="font-size:13px;margin:0;opacity:.5" id="daily-summary">Aujourd&rsquo;hui tu as trait&eacute; 4 candidatures et planifi&eacute; 1 entretien.</p>
-</div>
-</div>
-</div>
-</div>
+  
+<nav class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-item active" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Accueil</span></div>
+  <div class="mobile-nav-item" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Candidats</span></div>
+  <div class="mobile-nav-item" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg><span>Kanban</span></div>
+  <div class="mobile-nav-item" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span></div>
+  <div class="mobile-nav-item" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Stats</span></div>
+</nav>
+  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Basculer le thÃ¨me">ð</button>
+  <div class="main-content">
+    <!-- HEADER -->
+    <div class="page-header">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+          <span style="font-size:20px;">ð¤</span>
+          <span style="font-size:20px;font-weight:700;color:var(--text-primary);">Bonne journÃ©e, Lauralie</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);">Vendredi 20 mars 2026</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="pill pill-indigo">3 nouveaux</span>
+        <span class="pill pill-peach">1 urgent</span>
+        <span class="pill pill-mint">82% actifs</span>
+      </div>
+    </div>
+
+    <!-- HERO AURORA CARD -->
+    <div class="card" style="border-left:3px solid #818CF8;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#818CF8;animation:pulse 2s infinite;display:inline-block;"></span>
+          <span style="font-size:12px;font-weight:600;color:#818CF8;letter-spacing:0.05em;">AURORA Â· SUGGESTION</span>
+        </div>
+        <span style="font-size:11px;color:var(--text-secondary);">Mise Ã  jour il y a 2 min</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;">
+          <h3 style="font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Camille Moreau</h3>
+          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:16px;">Lyon Â· DÃ©veloppeuse Full Stack</p>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);">
+              <span style="color:#6EE7B7;font-weight:700;">â</span> ExpÃ©rience parfaitement alignÃ©e avec le poste
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);">
+              <span style="color:#6EE7B7;font-weight:700;">â</span> DisponibilitÃ© immÃ©diate confirmÃ©e
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);">
+              <span style="color:#6EE7B7;font-weight:700;">â</span> RecommandÃ©e par 2 contacts de votre rÃ©seau
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-indigo" onclick="showPage('page-candidate-detail')">Voir le profil</button>
+            <button class="btn btn-ghost">Passer</button>
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <div class="score-circle" style="--pct:82;" id="hero-score-circle">
+            <span id="hero-score">0</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:6px;">Score Aurora</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="cards-grid">
+      <div class="card stat-card">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Candidats actifs</div>
+        <div class="stat-value" style="color:#6EE7B7;">47</div>
+        <div class="stat-label">+3 cette semaine</div>
+      </div>
+      <div class="card stat-card">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Entretiens</div>
+        <div class="stat-value" style="color:#818CF8;">8</div>
+        <div class="stat-label">Cette semaine</div>
+      </div>
+      <div class="card stat-card">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Temps de traitement</div>
+        <div class="stat-value" style="color:#FBBF9A;">2.4j</div>
+        <div class="stat-label">Vs 18j marchÃ©</div>
+      </div>
+    </div>
+
+    <!-- RECENT ACTIVITY -->
+    <div class="card" style="margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">ActivitÃ© rÃ©cente</div>
+      
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6EE7B722,#6EE7B744);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#6EE7B7;flex-shrink:0;">C</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
+          <div style="font-size:12px;color:var(--text-secondary);">Candidature reÃ§ue Â· Lyon</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-secondary);">Il y a 2 min</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#818CF822,#818CF844);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#818CF8;flex-shrink:0;">M</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
+          <div style="font-size:12px;color:var(--text-secondary);">Entretien planifiÃ© Â· Paris</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-secondary);">Il y a 1h</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FBBF9A22,#FBBF9A44);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#FBBF9A;flex-shrink:0;">T</div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
+          <div style="font-size:12px;color:var(--text-secondary);">Relance envoyÃ©e Â· Bordeaux</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-secondary);">Il y a 3h</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AURORA TICKER -->
+  <div class="aurora-ticker">
+    <div class="ticker-inner">Aurora a analysÃ© 3 nouveaux profils Â· Camille Moreau recommandÃ©e en prioritÃ© Â· Thomas Petit Ã  relancer cette semaine Â· Consentements RGPD Ã  jour Â· 82% de candidats actifs cette semaine Â· Aurora optimise votre pipeline en temps rÃ©el &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+  </div>
+  <!-- AURORA BAR -->
+  <div class="aurora-bar">
+    <div class="aurora-dot"></div>
+    <span class="aurora-label">Aurora Â· Active</span>
+    <button class="aurora-chat-btn" onclick="toggleChat()" title="Parler Ã  Aurora">?</button>
+  </div>
 </div>
 
-<!-- ==================== PAGE 5: CANDIDATES ==================== -->
 <div id="page-candidates" class="page">
-<nav class="sidebar glass" id="sidebar-c"></nav>
-<div class="header glass"><h2 id="pt-c">Candidats</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div style="display:flex;gap:12px;margin-bottom:16px">
-<input class="input" id="search-cand" placeholder="Chercher un nom, une ville..." style="flex:1" oninput="filterCandidates()">
-<span class="badge b-new" style="cursor:pointer;padding:8px 14px">Ville</span>
-<span class="badge b-pre" style="cursor:pointer;padding:8px 14px">Score</span>
-</div>
-<div class="stat-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr))" id="cand-grid"></div>
-</div>
+  <nav class="sidebar">
+    <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div>
+    <div class="sidebar-icon" onclick="showPage('page-dashboard')" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+    <div class="sidebar-icon active" onclick="showPage('page-candidates')" title="Candidats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+    <div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
+    <div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+    <div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+    <div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <div style="flex:1;"></div>
+    <div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+  </nav>
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Candidats</h1>
+      <input class="input" type="search" placeholder="Rechercher par nom ou ville..." id="candidate-search" oninput="filterCandidates(this.value)" style="width:260px;">
+    </div>
+    <div id="candidates-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+      
+      <div class="candidate-card" data-name="camille moreau" data-city="lyon">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div class="avatar" style="background:linear-gradient(135deg,#818CF833,#818CF855);color:#818CF8;">CM</div>
+          <div>
+            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Lyon Â· DÃ©veloppeuse Full Stack</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span class="score-badge">82/100</span>
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#6EE7B722;color:#6EE7B7;border:1px solid #6EE7B744;">Active</span>
+        </div>
+        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
+      </div>
+      <div class="candidate-card" data-name="marie dubois" data-city="paris">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div class="avatar" style="background:linear-gradient(135deg,#C4B5FD33,#C4B5FD55);color:#C4B5FD;">MD</div>
+          <div>
+            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Paris Â· Chef de projet RH</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span class="score-badge">78/100</span>
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#818CF822;color:#818CF8;border:1px solid #818CF844;">En entretien</span>
+        </div>
+        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
+      </div>
+      <div class="candidate-card" data-name="thomas petit" data-city="bordeaux">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div class="avatar" style="background:linear-gradient(135deg,#6EE7B733,#6EE7B755);color:#6EE7B7;">TP</div>
+          <div>
+            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Bordeaux Â· Data Analyst</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span class="score-badge">71/100</span>
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#FBBF9A22;color:#FBBF9A;border:1px solid #FBBF9A44;">En attente</span>
+        </div>
+        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
+      </div>
+      <div class="candidate-card" data-name="nadia benzara" data-city="marseille">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div class="avatar" style="background:linear-gradient(135deg,#FBBF9A33,#FBBF9A55);color:#FBBF9A;">NB</div>
+          <div>
+            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Nadia Benzara</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Marseille Â· UX Designer</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span class="score-badge">65/100</span>
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b44;">Ã relancer</span>
+        </div>
+        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
+      </div>
+      <div class="candidate-card" data-name="sarah martin" data-city="lille">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div class="avatar" style="background:linear-gradient(135deg,#C4B5FD33,#C4B5FD55);color:#C4B5FD;">SM</div>
+          <div>
+            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Sarah Martin</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Lille Â· ChargÃ©e de communication</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span class="score-badge">58/100</span>
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#ef444422;color:#ef4444;border:1px solid #ef444444;">ArchivÃ©e</span>
+        </div>
+        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
+      </div>
+    </div>
+  </div>
+  <div class="aurora-ticker"><div class="ticker-inner">5 candidats actifs Â· Camille Moreau recommandÃ©e Â· Thomas Petit Ã  relancer Â· Aurora analyse en continu &nbsp;&nbsp;&nbsp;&nbsp;</div></div>
+  <div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
+  <nav class="mobile-nav">
+    <div class="mobile-nav-item" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Accueil</span></div>
+    <div class="mobile-nav-item active" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>Candidats</span></div>
+    <div class="mobile-nav-item" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg><span>Kanban</span></div>
+    <div class="mobile-nav-item" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span></div>
+    <div class="mobile-nav-item" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Stats</span></div>
+  </nav>
 </div>
 
-<!-- ==================== PAGE 6: KANBAN ==================== -->
 <div id="page-kanban" class="page">
-<nav class="sidebar glass" id="sidebar-k"></nav>
-<div class="header glass"><h2>Pipeline</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main"><div class="kanban" id="kanban-board"></div></div>
+  <nav class="sidebar">
+  <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div>
+  <div class="sidebar-icon" onclick="showPage('page-dashboard')" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+  <div style="flex:1;"></div>
+  <div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+</nav>
+  <div class="main-content">
+    <div class="page-header"><h1 class="page-title">Pipeline Candidats</h1><span class="pill pill-indigo">5 candidats</span></div>
+    <div class="kanban-wrap" id="kanban-board">
+      <div class="kanban-col" style="border-top:3px solid #818CF8;">
+        <div class="kanban-col-header"><span style="color:#818CF8;">Nouveau</span><span class="pill pill-indigo" style="font-size:11px;">2</span></div>
+        <div class="kanban-item">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Camille Moreau</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Lyon Â· Score 82</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">DÃ©veloppeuse Full Stack</div>
+        </div>
+        <div class="kanban-item">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Sarah Martin</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Lille Â· Score 58</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">ChargÃ©e de comm.</div>
+        </div>
+      </div>
+      <div class="kanban-col" style="border-top:3px solid #C4B5FD;">
+        <div class="kanban-col-header"><span style="color:#C4B5FD;">PrÃ©sÃ©lectionnÃ©</span><span style="background:rgba(196,181,253,0.2);color:#C4B5FD;border:1px solid rgba(196,181,253,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">1</span></div>
+        <div class="kanban-item">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Marie Dubois</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Paris Â· Score 78</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Chef de projet RH</div>
+        </div>
+      </div>
+      <div class="kanban-col" style="border-top:3px solid #6EE7B7;">
+        <div class="kanban-col-header"><span style="color:#6EE7B7;">Entretien</span><span style="background:rgba(110,231,183,0.2);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">1</span></div>
+        <div class="kanban-item">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Thomas Petit</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Bordeaux Â· Score 71</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Data Analyst</div>
+        </div>
+      </div>
+      <div class="kanban-col" style="border-top:3px solid #FBBF9A;">
+        <div class="kanban-col-header"><span style="color:#FBBF9A;">Offre</span><span style="background:rgba(251,191,154,0.2);color:#FBBF9A;border:1px solid rgba(251,191,154,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">1</span></div>
+        <div class="kanban-item">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Nadia Benzara</div>
+          <div style="font-size:11px;color:var(--text-secondary);">Marseille Â· Score 65</div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">UX Designer</div>
+        </div>
+      </div>
+      <div class="kanban-col" style="border-top:3px solid #ef4444;">
+        <div class="kanban-col-header"><span style="color:#ef4444;">RefusÃ©</span><span style="background:rgba(239,68,68,0.2);color:#ef4444;border:1px solid rgba(239,68,68,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">0</span></div>
+        <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:12px;">Aucun refus</div>
+      </div>
+    </div>
+  </div>
+  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· 5 candidats actifs Â· RGPD Ã  jour Â· Camille Moreau prioritaire &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
 </div>
 
-<!-- ==================== PAGE 7: CALENDAR ==================== -->
-<div id="page-calendar" class="page">
-<nav class="sidebar glass" id="sidebar-cal"></nav>
-<div class="header glass"><h2>Calendrier</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div class="cal-nav">
-<button class="btn btn-ghost" style="width:auto;padding:8px 16px;height:36px">&larr;</button>
-<h3>Mars 2025</h3>
-<button class="btn btn-ghost" style="width:auto;padding:8px 16px;height:36px">&rarr;</button>
-</div>
-<div class="glass" style="padding:16px">
-<div class="cal-grid" id="cal-grid"></div>
-</div>
-<div class="glass" style="padding:16px;margin-top:16px">
-<h4 style="margin:0 0 12px">&Eacute;v&eacute;nements</h4>
-<div style="display:flex;flex-direction:column;gap:8px;font-size:14px">
-<div><span class="badge b-int">20 mars</span> Entretien Camille Moreau &mdash; 14h</div>
-<div><span class="badge b-dec">25 mars</span> Bilan tutoral L&eacute;a &mdash; point mi-parcours</div>
-<div><span class="badge b-pre">12 mars</span> R&eacute;union &eacute;quipe recrutement</div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- ==================== PAGE 8: MESSAGING ==================== -->
 <div id="page-messaging" class="page">
-<nav class="sidebar glass" id="sidebar-msg"></nav>
-<div class="header glass"><h2>Messages</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div class="chat-wrap">
-<div class="chat-list" id="chat-list"></div>
-<div class="chat-body">
-<div class="glass" style="padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
-<div class="avatar">CM</div>
-<div><h4 style="font-size:14px;margin:0">Camille Moreau</h4><span style="font-size:11px;opacity:.4">D&eacute;veloppeuse &middot; Lyon</span></div>
-</div>
-<div class="bubble b-recv glass">Bonjour, merci pour votre retour rapide. Je suis disponible la semaine prochaine pour l&rsquo;entretien.</div>
-<div class="bubble b-sent">Bonjour Camille, que pensez-vous de jeudi 14h&nbsp;?</div>
-<div class="bubble b-recv glass">Jeudi 14h c&rsquo;est parfait pour moi.</div>
-<div class="bubble b-sent">Parfait, je vous envoie la confirmation. &Agrave; jeudi.</div>
-<div style="display:flex;gap:8px;margin-top:auto;padding-top:12px">
-<input class="input" placeholder="&Eacute;crire un message..." style="flex:1">
-<button class="btn btn-indigo" style="width:auto;padding:0 20px;height:44px" onclick="toast('Message envoy&eacute;. Tu as bien g&eacute;r&eacute; &ccedil;a.','success')">Envoyer</button>
-</div>
-</div>
-</div>
-</div>
+  <nav class="sidebar">
+  <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div>
+  <div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+  <div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+  <div style="flex:1;"></div>
+  <div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+</nav>
+  <div class="main-content" style="padding:24px 24px 120px;">
+    <div class="page-header"><h1 class="page-title">Messagerie</h1></div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div class="msg-layout">
+        <div class="msg-contacts">
+          <div style="padding:12px 16px;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid rgba(255,255,255,0.06);">Conversations</div>
+          
+          <div class="msg-contact active">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#818CF833,#818CF855);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#818CF8;flex-shrink:0;">CM</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
+              <div style="font-size:11px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Merci pour votre retour</div>
+            </div>
+            <span style="font-size:10px;color:var(--text-secondary);">2 min</span>
+          </div>
+          <div class="msg-contact ">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#C4B5FD33,#C4B5FD55);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#C4B5FD;flex-shrink:0;">MD</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
+              <div style="font-size:11px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Je suis disponible mardi</div>
+            </div>
+            <span style="font-size:10px;color:var(--text-secondary);">1h</span>
+          </div>
+          <div class="msg-contact ">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6EE7B733,#6EE7B755);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#6EE7B7;flex-shrink:0;">TP</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
+              <div style="font-size:11px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Bien reÃ§u, merci</div>
+            </div>
+            <span style="font-size:10px;color:var(--text-secondary);">3h</span>
+          </div>
+        </div>
+        <div class="msg-chat" style="background:rgba(0,0,0,0.1);">
+          <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;font-weight:600;color:var(--text-primary);">Camille Moreau Â· Lyon</div>
+          <div class="msg-chat-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div class="msg msg-aurora">Bonjour Camille, nous avons bien reÃ§u votre candidature pour le poste de DÃ©veloppeuse Full Stack. Votre profil nous intÃ©resse, parce que votre expÃ©rience correspond exactement Ã  nos besoins.</div>
+            <div class="msg msg-user">Bonjour, merci beaucoup pour votre retour rapide. Je suis disponible pour un entretien Ã  partir de lundi prochain.</div>
+            <div class="msg msg-aurora">Parfait. Je vous propose lundi 23 mars Ã  10h ou 14h. Lequel vous convient le mieux ?</div>
+            <div class="msg msg-user">14h me convient parfaitement. Merci pour votre retour.</div>
+          </div>
+          <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;">
+            <input class="chat-input" type="text" placeholder="Ãcrire un message..." id="msg-input">
+            <button class="chat-send" onclick="sendMsg()">â</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· 5 candidats actifs Â· RGPD Ã  jour &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
 </div>
 
-<!-- ==================== PAGE 9: CANDIDATE DETAIL ==================== -->
 <div id="page-candidate-detail" class="page">
-<nav class="sidebar glass" id="sidebar-cd"></nav>
-<div class="header glass"><h2>Fiche candidat</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
-<div class="glass" style="padding:24px"><h3 style="margin:0 0 12px">CV</h3><div class="chart-ph" style="height:280px">Aper&ccedil;u du CV</div></div>
-<div style="text-align:center">
-<div class="score-big">82</div><p style="opacity:.4;margin:8px 0">Score global</p>
-<svg viewBox="0 0 120 120" class="chart" style="height:120px;width:120px;margin:10px auto"><circle cx="60" cy="60" r="45" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="12"/><circle cx="60" cy="60" r="45" fill="none" stroke="#818CF8" stroke-width="12" stroke-dasharray="113 170" stroke-linecap="round" transform="rotate(-90 60 60)"/><circle cx="60" cy="60" r="45" fill="none" stroke="#6EE7B7" stroke-width="12" stroke-dasharray="57 226" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 60 60)"/><circle cx="60" cy="60" r="45" fill="none" stroke="#C4B5FD" stroke-width="12" stroke-dasharray="40 243" stroke-dashoffset="-170" stroke-linecap="round" transform="rotate(-90 60 60)"/></svg>
-<p style="font-size:12px;opacity:.35;margin-top:4px">Technique &middot; R&eacute;activit&eacute; &middot; Exp&eacute;rience</p>
-<h3 style="margin-top:16px;text-align:left">Notes</h3>
-<textarea class="input" style="min-height:80px;margin-top:8px;text-align:left" placeholder="Ajouter une note..."></textarea>
-</div>
-<div class="glass" style="padding:24px">
-<h3 style="margin:0 0 12px">Aurora recommande</h3>
-<p style="font-size:14px;opacity:.5;margin:0 0 16px;line-height:1.6">Camille a un profil similaire &agrave; tes 3 derni&egrave;res recrues r&eacute;ussies, parce que son exp&eacute;rience technique et sa r&eacute;activit&eacute; correspondent &agrave; ce qui fonctionne dans ton &eacute;quipe.</p>
-<h3>Historique</h3>
-<div style="font-size:13px;display:flex;flex-direction:column;gap:6px;margin-top:8px;opacity:.5">
-<div>15/03 &mdash; Candidature re&ccedil;ue via LinkedIn</div>
-<div>16/03 &mdash; Profil analys&eacute; par Aurora (score 82)</div>
-<div>17/03 &mdash; Pr&eacute;s&eacute;lection valid&eacute;e par toi</div>
-<div>18/03 &mdash; Entretien planifi&eacute; jeudi 14h</div>
-</div>
-</div>
-</div>
-<div style="display:flex;gap:8px;margin-top:20px">
-<button class="btn btn-indigo" style="flex:1" onclick="toast('Entretien planifi&eacute;. Tu as bien g&eacute;r&eacute; &ccedil;a.','success')">Planifier entretien</button>
-<button class="btn btn-ghost" style="flex:1" onclick="showPage('page-messaging')">Envoyer message</button>
-<button class="btn" style="flex:1;background:#EF4444;color:#fff" onclick="toast('Candidature archiv&eacute;e.','info')">Archiver</button>
-</div>
-</div>
+  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
+  <div class="main-content">
+    <button class="btn btn-ghost" onclick="showPage('page-candidates')" style="margin-bottom:20px;font-size:13px;">â Retour aux candidats</button>
+    <div class="card" style="margin-bottom:20px;">
+      <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#818CF822,#818CF844);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#818CF8;flex-shrink:0;">CM</div>
+        <div style="flex:1;">
+          <h1 style="font-size:24px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Camille Moreau</h1>
+          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:12px;">Lyon, France Â· DÃ©veloppeuse Full Stack Â· Disponible immÃ©diatement</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="score-badge" style="font-size:14px;padding:6px 14px;">Score 82/100</span>
+            <span class="pill pill-mint">Active</span>
+            <span class="pill pill-indigo">Prioritaire</span>
+          </div>
+        </div>
+        <div class="score-circle" style="--pct:82;"><span style="font-size:20px;font-weight:700;">82</span></div>
+      </div>
+    </div>
+    <div class="tabs" id="detail-tabs">
+      <div class="tab active" onclick="switchTab('profil',this)">Profil</div>
+      <div class="tab" onclick="switchTab('entretiens',this)">Entretiens</div>
+      <div class="tab" onclick="switchTab('documents',this)">Documents</div>
+      <div class="tab" onclick="switchTab('notes',this)">Notes</div>
+      <div class="tab" onclick="switchTab('rgpd-c',this)">RGPD</div>
+    </div>
+    <div id="tab-profil">
+      <div class="cards-grid">
+        <div class="card">
+          <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:12px;">CompÃ©tences</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">React</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">TypeScript</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">Node.js</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">PostgreSQL</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">Docker</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">GraphQL</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">Python</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">AWS</span>
+          </div>
+        </div>
+        <div class="card">
+          <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:12px;">Analyse Aurora</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">ExpÃ©rience</span><span style="color:#6EE7B7;font-weight:700;">90%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:90%;background:#6EE7B7;border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">CompÃ©tences</span><span style="color:#818CF8;font-weight:700;">85%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:85%;background:#818CF8;border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">DisponibilitÃ©</span><span style="color:#6EE7B7;font-weight:700;">100%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:100%;background:#6EE7B7;border-radius:2px;"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">AdÃ©quation</span><span style="color:#C4B5FD;font-weight:700;">78%</span></div>
+              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:78%;background:#C4B5FD;border-radius:2px;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:16px;">Parcours professionnel</div>
+        
+        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <div style="width:2px;background:rgba(129,140,248,0.3);border-radius:1px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Lead Developer</div>
+            <div style="font-size:12px;color:#818CF8;">Startup Lyon Tech</div>
+            <div style="font-size:11px;color:var(--text-secondary);">2022 â prÃ©sent Â· 2 ans</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <div style="width:2px;background:rgba(129,140,248,0.3);border-radius:1px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">DÃ©veloppeuse Full Stack</div>
+            <div style="font-size:12px;color:#818CF8;">Agence Digital</div>
+            <div style="font-size:11px;color:var(--text-secondary);">2019 â 2022 Â· 3 ans</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <div style="width:2px;background:rgba(129,140,248,0.3);border-radius:1px;flex-shrink:0;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">DÃ©veloppeuse Junior</div>
+            <div style="font-size:12px;color:#818CF8;">Freelance</div>
+            <div style="font-size:11px;color:var(--text-secondary);">2017 â 2019 Â· 2 ans</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-entretiens" style="display:none;">
+      <div class="card"><p style="color:var(--text-secondary);font-size:14px;">Entretien planifiÃ© : Lundi 23 mars 2026 Ã  14h. Format : VisioconfÃ©rence. Intervieweur : Lauralie Daguzay.</p></div>
+    </div>
+    <div id="tab-documents" style="display:none;">
+      <div class="card">
+        
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <span style="font-size:20px;">ð</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text-primary);">CV_Camille_Moreau.pdf</div><div style="font-size:11px;color:var(--text-secondary);">CV Â· 12 mars 2026</div></div>
+          <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;">TÃ©lÃ©charger</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <span style="font-size:20px;">ð</span>
+          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text-primary);">Lettre_Motivation.pdf</div><div style="font-size:11px;color:var(--text-secondary);">Lettre de motivation Â· 12 mars 2026</div></div>
+          <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;">TÃ©lÃ©charger</button>
+        </div>
+      </div>
+    </div>
+    <div id="tab-notes" style="display:none;">
+      <div class="card"><textarea class="input" rows="6" placeholder="Ajouter une note sur cette candidate..."></textarea></div>
+    </div>
+    <div id="tab-rgpd-c" style="display:none;">
+      <div class="card"><p style="color:var(--text-secondary);font-size:14px;">Consentement RGPD : Actif depuis le 12 mars 2026. DurÃ©e de conservation : 2 ans. Droit Ã  l'effacement disponible.</p></div>
+    </div>
+  </div>
+  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
 </div>
 
-<!-- ==================== PAGE 10: RGPD ==================== -->
 <div id="page-rgpd" class="page">
-<nav class="sidebar glass" id="sidebar-r"></nav>
-<div class="header glass"><h2>Protection des donn&eacute;es</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div style="text-align:center;margin-bottom:24px"><div class="compliance-big">97%</div><p style="opacity:.4">Score de conformit&eacute;</p></div>
-<div class="stat-grid">
-<div class="stat-card glass"><div class="stat-val">5/5</div><div class="stat-lbl">Accords actifs</div></div>
-<div class="stat-card glass"><div class="stat-val">0</div><div class="stat-lbl">Dossiers &agrave; traiter</div></div>
-<div class="stat-card glass"><div class="stat-val">25/03</div><div class="stat-lbl">Prochaine &eacute;ch&eacute;ance</div></div>
-</div>
-<div class="glass" style="padding:16px;margin-top:16px">
-<h3 style="margin:0 0 12px">Ce qu&rsquo;Aurora surveille pour toi</h3>
-<div style="font-size:14px;display:flex;flex-direction:column;gap:8px;opacity:.6">
-<div>&bull; V&eacute;rification des accords candidats chaque jour</div>
-<div>&bull; Suppression automatique apr&egrave;s 2 ans sans contact</div>
-<div>&bull; Chaque acc&egrave;s aux donn&eacute;es est enregistr&eacute;</div>
-<div>&bull; Alerte 30 jours avant expiration d&rsquo;un accord</div>
-</div>
-</div>
-<button class="btn btn-ghost" style="width:auto;margin-top:16px" onclick="toast('Certificat t&eacute;l&eacute;charg&eacute;.','success')">T&eacute;l&eacute;charger certificat</button>
-</div>
+  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
+  <div class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">RGPD & ConformitÃ©</h1>
+      <div style="display:flex;gap:8px;">
+        <span class="pill pill-mint">5 actifs</span>
+        <span class="pill" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">0 expirÃ©</span>
+      </div>
+    </div>
+    <div class="cards-grid" style="margin-bottom:20px;">
+      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Consentements</div><div class="stat-value" style="color:#6EE7B7;">5/5</div><div class="stat-label">Tous actifs</div></div>
+      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Conservation</div><div class="stat-value" style="color:#818CF8;">2 ans</div><div class="stat-label">Politique en vigueur</div></div>
+      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">DerniÃ¨re audit</div><div class="stat-value" style="color:#FBBF9A;">20 mars</div><div class="stat-label">Ã jour</div></div>
+    </div>
+    <div class="card" style="margin-bottom:20px;">
+      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Consentements candidats</div>
+      
+      <div class="rgpd-card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="status-dot" style="background:#6EE7B7;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 12 mars 2026 Â· Expire le 12 mars 2028</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
+          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
+        </div>
+      </div>
+      <div class="rgpd-card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="status-dot" style="background:#6EE7B7;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 8 mars 2026 Â· Expire le 8 mars 2028</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
+          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
+        </div>
+      </div>
+      <div class="rgpd-card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="status-dot" style="background:#6EE7B7;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 5 mars 2026 Â· Expire le 5 mars 2028</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
+          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
+        </div>
+      </div>
+      <div class="rgpd-card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="status-dot" style="background:#6EE7B7;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Nadia Benzara</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 1 mars 2026 Â· Expire le 1 mars 2028</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
+          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
+        </div>
+      </div>
+      <div class="rgpd-card">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="status-dot" style="background:#6EE7B7;"></div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Sarah Martin</div>
+            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 15 fÃ©v. 2026 Â· Expire le 15 fÃ©v. 2028</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
+          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">Politique de conservation</div>
+      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">Les donnÃ©es des candidats sont conservÃ©es pendant 2 ans aprÃ¨s la derniÃ¨re interaction. PassÃ© ce dÃ©lai, elles sont automatiquement anonymisÃ©es. Les candidats peuvent exercer leur droit Ã  l'effacement Ã  tout moment via la messagerie Auralis.</p>
+    </div>
+  </div>
+  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
 </div>
 
-<!-- ==================== PAGE 11: ACADEMY ==================== -->
-<div id="page-academy" class="page">
-<nav class="sidebar glass" id="sidebar-a"></nav>
-<div class="header glass"><h2>Academy</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<h3>Academy Auralis</h3>
-<p style="opacity:.4;margin-bottom:16px">Apprends &agrave; ton rythme. Rien d&rsquo;obligatoire.</p>
-<div class="progress-track" style="margin-bottom:20px"><div class="progress-fill" style="width:35%"></div></div>
-<div class="stat-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
-<div class="glass" style="padding:20px"><h4 style="margin:0 0 4px">Recrutement</h4><p style="font-size:13px;opacity:.4;margin:0 0 8px">Les bases pour bien recruter</p><div class="progress-track"><div class="progress-fill" style="width:60%"></div></div><button class="btn btn-ghost" style="width:auto;font-size:12px;height:32px;padding:0 12px;margin-top:8px">Continuer</button></div>
-<div class="glass" style="padding:20px"><h4 style="margin:0 0 4px">RGPD</h4><p style="font-size:13px;opacity:.4;margin:0 0 8px">Prot&eacute;ger les donn&eacute;es candidats</p><div class="progress-track"><div class="progress-fill" style="width:20%"></div></div><button class="btn btn-ghost" style="width:auto;font-size:12px;height:32px;padding:0 12px;margin-top:8px">Continuer</button></div>
-<div class="glass" style="padding:20px"><h4 style="margin:0 0 4px">Alternance</h4><p style="font-size:13px;opacity:.4;margin:0 0 8px">G&eacute;rer tuteurs et alternants</p><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div><button class="btn btn-ghost" style="width:auto;font-size:12px;height:32px;padding:0 12px;margin-top:8px">Commencer</button></div>
-</div>
-<div class="glass" style="padding:16px;margin-top:20px">
-<h4 style="margin:0 0 4px">D&eacute;fi du jour (optionnel)</h4>
-<p style="font-size:13px;opacity:.4;margin:4px 0 8px">R&eacute;dige une offre d&rsquo;emploi en moins de 5 minutes.</p>
-<button class="aurora-btn" onclick="toast('D&eacute;fi accept&eacute;. Bonne chance.','success')">Relever le d&eacute;fi</button>
-</div>
-</div>
-</div>
-
-<!-- ==================== PAGE 12: ANALYTICS ==================== -->
 <div id="page-analytics" class="page">
-<nav class="sidebar glass" id="sidebar-an"></nav>
-<div class="header glass"><h2>Tes r&eacute;sultats</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div class="stat-grid">
-<div class="stat-card glass"><div class="stat-val">18j</div><div class="stat-lbl">Temps moyen</div></div>
-<div class="stat-card glass"><div class="stat-val">72%</div><div class="stat-lbl">Conversion</div></div>
-<div class="stat-card glass"><div class="stat-val">4</div><div class="stat-lbl">Sources actives</div></div>
-<div class="stat-card glass"><div class="stat-val">12</div><div class="stat-lbl">Tes d&eacute;cisions ce mois</div></div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
-<div class="glass" style="padding:20px"><h4 style="margin:0 0 8px">Temps par &eacute;tape</h4><svg viewBox="0 0 200 100" class="chart"><rect x="10" y="30" width="25" height="70" rx="4" fill="#818CF8" opacity=".8"/><rect x="45" y="50" width="25" height="50" rx="4" fill="#818CF8" opacity=".6"/><rect x="80" y="20" width="25" height="80" rx="4" fill="#818CF8" opacity=".9"/><rect x="115" y="40" width="25" height="60" rx="4" fill="#818CF8" opacity=".7"/><rect x="150" y="60" width="25" height="40" rx="4" fill="#6EE7B7" opacity=".8"/></svg></div>
-<div class="glass" style="padding:20px"><h4 style="margin:0 0 8px">Taux de conversion</h4><svg viewBox="0 0 200 100" class="chart"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#818CF8" stop-opacity=".3"/><stop offset="100%" stop-color="#818CF8" stop-opacity="0"/></linearGradient></defs><polygon points="10,80 50,60 90,35 130,45 170,20 170,100 10,100" fill="url(#lg)"/><polyline points="10,80 50,60 90,35 130,45 170,20" fill="none" stroke="#818CF8" stroke-width="2" stroke-linecap="round"/></svg></div>
-<div class="glass" style="padding:20px"><h4 style="margin:0 0 8px">Sources</h4><svg viewBox="0 0 120 120" class="chart" style="height:120px;width:120px;margin:0 auto"><circle cx="60" cy="60" r="45" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="12"/><circle cx="60" cy="60" r="45" fill="none" stroke="#818CF8" stroke-width="12" stroke-dasharray="113 170" stroke-linecap="round" transform="rotate(-90 60 60)"/><circle cx="60" cy="60" r="45" fill="none" stroke="#6EE7B7" stroke-width="12" stroke-dasharray="57 226" stroke-dashoffset="-113" stroke-linecap="round" transform="rotate(-90 60 60)"/><circle cx="60" cy="60" r="45" fill="none" stroke="#FBBF9A" stroke-width="12" stroke-dasharray="40 243" stroke-dashoffset="-170" stroke-linecap="round" transform="rotate(-90 60 60)"/><text x="60" y="64" text-anchor="middle" fill="#F8F7F4" font-size="14" font-weight="700">4</text></svg></div>
-<div class="glass" style="padding:20px"><h4 style="margin:0 0 8px">Tes d&eacute;cisions</h4><table style="margin-top:8px"><tr><td style="opacity:.5">Candidats contact&eacute;s</td><td style="text-align:right;font-weight:600">8</td></tr><tr><td style="opacity:.5">Entretiens planifi&eacute;s</td><td style="text-align:right;font-weight:600">5</td></tr><tr><td style="opacity:.5">Offres envoy&eacute;es</td><td style="text-align:right;font-weight:600">2</td></tr><tr><td style="opacity:.5">Refus formul&eacute;s</td><td style="text-align:right;font-weight:600">3</td></tr></table></div>
-</div>
-</div>
+  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
+  <div class="main-content">
+    <div class="page-header"><h1 class="page-title">Analyses</h1><span class="pill pill-indigo">Mars 2026</span></div>
+    <div class="charts-grid">
+      <div class="chart-wrap"><div class="chart-title">Candidatures par mois</div><svg viewBox="0 0 300 160" style="width:100%;height:auto;">
+  <rect x="20" y="98" width="30" height="42" rx="4" fill="#818CF8" opacity="0.675"/>
+    <text x="35" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Oct</text>
+    <text x="35" y="94" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">28</text><rect x="60" y="77" width="30" height="63" rx="4" fill="#818CF8" opacity="0.7625"/>
+    <text x="75" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Nov</text>
+    <text x="75" y="73" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">42</text><rect x="100" y="84.5" width="30" height="55.5" rx="4" fill="#818CF8" opacity="0.73125"/>
+    <text x="115" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">DÃ©c</text>
+    <text x="115" y="80.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">37</text><rect x="140" y="57.5" width="30" height="82.5" rx="4" fill="#818CF8" opacity="0.84375"/>
+    <text x="155" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Jan</text>
+    <text x="155" y="53.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">55</text><rect x="180" y="45.5" width="30" height="94.5" rx="4" fill="#818CF8" opacity="0.89375"/>
+    <text x="195" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">FÃ©v</text>
+    <text x="195" y="41.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">63</text><rect x="220" y="33.5" width="30" height="106.5" rx="4" fill="#818CF8" opacity="0.94375"/>
+    <text x="235" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Mar</text>
+    <text x="235" y="29.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">71</text>
+</svg></div>
+      <div class="chart-wrap"><div class="chart-title">Statuts des candidats</div><svg viewBox="0 0 260 170" style="width:100%;height:auto;">
+  <path d="M80,80 L145.0,80.0 A65,65 0 0,1 16.2,92.2 Z" fill="#818CF8" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/><path d="M80,80 L16.2,92.2 A65,65 0 0,1 67.8,16.2 Z" fill="#6EE7B7" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/><path d="M80,80 L67.8,16.2 A65,65 0 0,1 137.0,48.7 Z" fill="#FBBF9A" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/><path d="M80,80 L137.0,48.7 A65,65 0 0,1 145.0,80.0 Z" fill="#C4B5FD" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+  <rect x="170" y="20" width="12" height="12" rx="2" fill="#818CF8"/><text x="188" y="31" fill="rgba(255,255,255,0.7)" font-size="11">Actifs (47%)</text><rect x="170" y="48" width="12" height="12" rx="2" fill="#6EE7B7"/><text x="188" y="59" fill="rgba(255,255,255,0.7)" font-size="11">ArchivÃ©s (25%)</text><rect x="170" y="76" width="12" height="12" rx="2" fill="#FBBF9A"/><text x="188" y="87" fill="rgba(255,255,255,0.7)" font-size="11">En attente (20%)</text><rect x="170" y="104" width="12" height="12" rx="2" fill="#C4B5FD"/><text x="188" y="115" fill="rgba(255,255,255,0.7)" font-size="11">RefusÃ©s (8%)</text>
+</svg></div>
+      <div class="chart-wrap"><div class="chart-title">Score moyen mensuel</div><svg viewBox="0 0 280 120" style="width:100%;height:auto;">
+  <polyline points="20.0,76.0 68.0,64.0 116.0,58.0 164.0,52.0 212.0,44.0 260.0,42.0" fill="none" stroke="#6EE7B7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="20.0" cy="76.0" r="4" fill="#6EE7B7"/><text x="20.0" y="68.0" text-anchor="middle" fill="#6EE7B7" font-size="10">62</text><text x="20.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Oct</text><circle cx="68.0" cy="64.0" r="4" fill="#6EE7B7"/><text x="68.0" y="56.0" text-anchor="middle" fill="#6EE7B7" font-size="10">68</text><text x="68.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Nov</text><circle cx="116.0" cy="58.0" r="4" fill="#6EE7B7"/><text x="116.0" y="50.0" text-anchor="middle" fill="#6EE7B7" font-size="10">71</text><text x="116.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">DÃ©c</text><circle cx="164.0" cy="52.0" r="4" fill="#6EE7B7"/><text x="164.0" y="44.0" text-anchor="middle" fill="#6EE7B7" font-size="10">74</text><text x="164.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Jan</text><circle cx="212.0" cy="44.0" r="4" fill="#6EE7B7"/><text x="212.0" y="36.0" text-anchor="middle" fill="#6EE7B7" font-size="10">78</text><text x="212.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">FÃ©v</text><circle cx="260.0" cy="42.0" r="4" fill="#6EE7B7"/><text x="260.0" y="34.0" text-anchor="middle" fill="#6EE7B7" font-size="10">79</text><text x="260.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Mar</text>
+</svg></div>
+      <div class="chart-wrap"><div class="chart-title">Sources de recrutement</div><svg viewBox="0 0 300 140" style="width:100%;height:auto;">
+  <text x="0" y="25" fill="rgba(255,255,255,0.6)" font-size="11">LinkedIn</text>
+    <rect x="75" y="15" width="180" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
+    <text x="261" y="26" fill="#C4B5FD" font-size="11" font-weight="600">45%</text><text x="0" y="55" fill="rgba(255,255,255,0.6)" font-size="11">Indeed</text>
+    <rect x="75" y="45" width="112.00000000000001" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
+    <text x="193" y="56" fill="#C4B5FD" font-size="11" font-weight="600">28%</text><text x="0" y="85" fill="rgba(255,255,255,0.6)" font-size="11">Cooptation</text>
+    <rect x="75" y="75" width="72" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
+    <text x="153" y="86" fill="#C4B5FD" font-size="11" font-weight="600">18%</text><text x="0" y="115" fill="rgba(255,255,255,0.6)" font-size="11">Direct</text>
+    <rect x="75" y="105" width="36" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
+    <text x="117" y="116" fill="#C4B5FD" font-size="11" font-weight="600">9%</text>
+</svg></div>
+    </div>
+    <div class="cards-grid" style="margin-top:20px;">
+      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Taux de rÃ©ponse</div><div class="stat-value" style="color:#6EE7B7;">94%</div><div class="stat-label">Vs 67% marchÃ©</div></div>
+      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Score moyen</div><div class="stat-value" style="color:#818CF8;">70.8</div><div class="stat-label">En hausse</div></div>
+      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">DÃ©lai moyen</div><div class="stat-value" style="color:#FBBF9A;">2.4j</div><div class="stat-label">Vs 18j marchÃ©</div></div>
+    </div>
+  </div>
+  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
 </div>
 
-<!-- ==================== PAGE 13: SETTINGS ==================== -->
 <div id="page-settings" class="page">
-<nav class="sidebar glass" id="sidebar-s"></nav>
-<div class="header glass"><h2>Param&egrave;tres</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div style="display:flex;flex-direction:column;gap:16px">
-<div class="glass" style="padding:24px"><h3 style="margin:0 0 12px">Profil</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="form-group"><label>Pr&eacute;nom</label><input class="input" value="Marie"></div><div class="form-group"><label>Nom</label><input class="input" value="Dupont"></div><div class="form-group"><label>Email</label><input class="input" value="marie@techcorp.fr"></div><div class="form-group"><label>Organisation</label><input class="input" value="TechCorp"></div></div><button class="btn btn-indigo" style="width:auto;padding:0 20px;height:40px;margin-top:12px" onclick="toast('Profil sauvegard&eacute;.','success')">Enregistrer</button></div>
-<div class="glass" style="padding:24px"><h3 style="margin:0 0 8px">Sensibilit&eacute; Aurora</h3><p style="font-size:13px;opacity:.35;margin:0 0 12px">Discr&egrave;te &rarr; Pr&eacute;sente</p><input type="range" min="1" max="5" value="3" style="width:100%"></div>
-<div class="glass" style="padding:24px"><h3 style="margin:0 0 12px">Int&eacute;grations</h3><div style="font-size:14px;display:flex;flex-direction:column;gap:8px"><div>Gmail <span style="color:#6EE7B7;margin-left:8px">Connect&eacute;</span></div><div style="opacity:.4">Google Calendar &mdash; Bient&ocirc;t</div><div style="opacity:.4">Make.com &mdash; Bient&ocirc;t</div></div></div>
-<button class="btn" style="background:#EF4444;color:#fff" onclick="logout()">Se d&eacute;connecter</button>
-</div>
-</div>
+  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon active" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
+  <div class="main-content">
+    <div class="page-header"><h1 class="page-title">ParamÃ¨tres</h1></div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Profil</div>
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#818CF8,#C4B5FD);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;">LD</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--text-primary);">Lauralie Daguzay</div>
+          <div style="font-size:13px;color:var(--text-secondary);">lauralie.daguzay@gmail.com</div>
+          <div style="font-size:12px;color:#818CF8;margin-top:2px;">Administratrice Â· Pineapp Inc</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <input class="input" type="text" value="Lauralie" placeholder="PrÃ©nom">
+        <input class="input" type="text" value="Daguzay" placeholder="Nom">
+        <input class="input" type="email" value="lauralie.daguzay@gmail.com" placeholder="Email">
+        <input class="input" type="text" value="Pineapp Inc" placeholder="Organisation">
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Notifications</div>
+      
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div><div style="font-size:14px;color:var(--text-primary);">Nouveaux candidats</div><div style="font-size:12px;color:var(--text-secondary);">Ãtre notifiÃ© Ã  chaque nouvelle candidature</div></div>
+        <div onclick="this.classList.toggle('on')" style="width:44px;height:24px;border-radius:12px;background:#818CF8;cursor:pointer;position:relative;transition:background 400ms;" class="on">
+          <div style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all 400ms;"></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div><div style="font-size:14px;color:var(--text-primary);">Suggestions Aurora</div><div style="font-size:12px;color:var(--text-secondary);">Recevoir les recommandations Aurora</div></div>
+        <div onclick="this.classList.toggle('on')" style="width:44px;height:24px;border-radius:12px;background:#818CF8;cursor:pointer;position:relative;transition:background 400ms;" class="on">
+          <div style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all 400ms;"></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div><div style="font-size:14px;color:var(--text-primary);">Relances automatiques</div><div style="font-size:12px;color:var(--text-secondary);">Aurora vous rappelle les candidats inactifs</div></div>
+        <div onclick="this.classList.toggle('on')" style="width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,0.15);cursor:pointer;position:relative;transition:background 400ms;" class="">
+          <div style="position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all 400ms;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">IntÃ©grations</div>
+      
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div><div style="font-size:14px;color:var(--text-primary);">Gmail</div><div style="font-size:12px;color:#6EE7B7;">ConnectÃ© Â· Lecture des candidatures</div></div>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px;">GÃ©rer</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div><div style="font-size:14px;color:var(--text-primary);">LinkedIn</div><div style="font-size:12px;color:rgba(255,255,255,0.3);">Non connectÃ©</div></div>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px;">Connecter</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+        <div><div style="font-size:14px;color:var(--text-primary);">Slack</div><div style="font-size:12px;color:rgba(255,255,255,0.3);">Non connectÃ©</div></div>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px;">Connecter</button>
+      </div>
+    </div>
+    <button class="btn btn-ghost" onclick="showPage('page-login')" style="color:#ef4444;border-color:rgba(239,68,68,0.3);margin-top:8px;">Se dÃ©connecter</button>
+  </div>
+  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
 </div>
 
-<!-- ==================== PAGE 14: AURORA CENTER ==================== -->
-<div id="page-aurora-center" class="page">
-<nav class="sidebar glass" id="sidebar-ac"></nav>
-<div class="header glass"><h2>Centre Aurora</h2><div class="header-right"><span class="moon-display">&#127765;</span></div></div>
-<div class="main">
-<div class="glass" style="padding:24px;margin-bottom:24px;border-left:3px solid #818CF8">
-<h3 style="margin:0 0 8px">Tout ce qu&rsquo;Aurora fait, en toute transparence.</h3>
-<p style="opacity:.5;margin:0;font-size:14px">Aurora ne fait rien sans te le dire. Ici, tu vois tout.</p>
-</div>
-<div class="stat-grid">
-<div class="stat-card glass"><div class="stat-val">7</div><div class="stat-lbl">Actions aujourd&rsquo;hui</div></div>
-<div class="stat-card glass"><div class="stat-val">89%</div><div class="stat-lbl">Suggestions accept&eacute;es</div></div>
-<div class="stat-card glass"><div class="stat-val">91%</div><div class="stat-lbl">Confiance moyenne</div></div>
-</div>
-<h3 style="margin-top:24px">Journal d&rsquo;aujourd&rsquo;hui</h3>
-<div class="glass" style="padding:16px;margin-top:8px;font-size:13px;display:flex;flex-direction:column;gap:10px">
-<div><span style="opacity:.4">09:12</span> &mdash; Candidature de Nadia analys&eacute;e, parce qu&rsquo;un tri rapide &eacute;vite de faire attendre.</div>
-<div><span style="opacity:.4">09:45</span> &mdash; Email de bienvenue propos&eacute; pour Nadia, parce qu&rsquo;accueillir vite fait la diff&eacute;rence.</div>
-<div><span style="opacity:.4">10:30</span> &mdash; Rappel entretien Camille jeudi, pour que tu puisses te pr&eacute;parer.</div>
-<div><span style="opacity:.4">11:00</span> &mdash; Veille RH : article sur le t&eacute;l&eacute;travail, parce que les candidats y sont sensibles.</div>
-<div><span style="opacity:.4">14:20</span> &mdash; Bilan tutoral dans 5 jours, parce que le point mi-parcours approche.</div>
-<div><span style="opacity:.4">15:00</span> &mdash; V&eacute;rification accords RGPD, parce que la loi demande une v&eacute;rification r&eacute;guli&egrave;re.</div>
-<div><span style="opacity:.4">16:30</span> &mdash; Score bien-&ecirc;tre recalcul&eacute; (82%), parce qu&rsquo;il est important de suivre la charge.</div>
-</div>
-<h3 style="margin-top:24px">&Agrave; venir</h3>
-<div class="glass" style="padding:16px;margin-top:8px;font-size:13px;opacity:.6">
-<div>&bull; Envoyer le r&eacute;cap de la semaine (vendredi)</div>
-<div>&bull; V&eacute;rifier les candidats sans r&eacute;ponse depuis 7 jours</div>
-<div>&bull; Mettre &agrave; jour les statistiques</div>
-</div>
-<h3 style="margin-top:24px">Suggestions refus&eacute;es</h3>
-<div class="glass" style="padding:16px;margin-top:8px;font-size:13px;opacity:.5">Aucune suggestion refus&eacute;e r&eacute;cemment. Aurora s&rsquo;adapte &agrave; tes choix.</div>
-<div style="margin-top:24px"><a href="#" onclick="toast('Page en pr&eacute;paration.','info');return false">Pourquoi Aurora existe &rarr;</a></div>
-</div>
+<!-- AURORA CHAT PANEL -->
+<div id="aurora-chat-panel" class="chat-panel">
+  <div class="chat-header">
+    <img src="https://drive.google.com/uc?export=view&id=1WfYrK0FDfZ_pSTjd3M9_jsj84bVy0s2D" class="chat-avatar" alt="Aurora" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\'width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#818CF8,#6EE7B7);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;\'>A</div>')">
+    <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#fff;">Aurora</div><div style="font-size:11px;color:#6EE7B7;">Disponible Â· H24</div></div>
+    <button onclick="toggleChat()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:20px;cursor:pointer;padding:4px;">Ã</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg msg-aurora">Bonjour. Je suis Aurora, votre assistante RH. Comment puis-je vous aider aujourd'hui ?</div>
+    <div class="chat-suggestions" style="display:flex;flex-wrap:wrap;gap:6px;padding:0 0 8px;">
+      <div class="chat-suggestion" onclick="askAurora('Comment fonctionne le score ?')">Score Aurora ?</div>
+      <div class="chat-suggestion" onclick="askAurora('Quel est le meilleur candidat ?')">Meilleur candidat ?</div>
+      <div class="chat-suggestion" onclick="askAurora('C\'est combien Auralis ?')">Tarifs ?</div>
+      <div class="chat-suggestion" onclick="askAurora('Comment fonctionne le RGPD ?')">RGPD ?</div>
+    </div>
+  </div>
+  <div class="chat-input-wrap">
+    <input class="chat-input" type="text" id="aurora-input" placeholder="Posez une question Ã  Aurora..." onkeydown="if(event.key==='Enter')sendAurora()">
+    <button class="chat-send" onclick="sendAurora()">â</button>
+  </div>
 </div>
 
-<script src="app.js" defer></script>
+<script>
+(function(){
+  // QA Database
+  const qa = [
+    {k:['score','calcul','critÃ¨re','comment fonctionne le score'],'r':'Le score Aurora combine 8 critÃ¨res : expÃ©rience, compÃ©tences, disponibilitÃ©, mobilitÃ©, stabilitÃ© du parcours, adÃ©quation culturelle, recommandations et motivation. Camille Moreau obtient 82/100 parce que son expÃ©rience full stack correspond exactement au poste et qu'elle est disponible immÃ©diatement.'},
+    {k:['temps','durÃ©e','combien de temps','traitement','traiter'],'r':'Avec Aurora, 2 Ã  4 minutes par profil. Sans Aurora, comptez 20 Ã  30 minutes. Vous gagnez en moyenne 3h par semaine sur 15 candidatures.'},
+    {k:['contacter','contact','camille','joindre','appeler'],'r':'Camille Moreau est joignable par email (camille.moreau@email.fr) ou LinkedIn. Je peux prÃ©parer un message personnalisÃ© pour vous, parce que les candidats rÃ©pondent 3x plus vite aux messages ciblÃ©s.'},
+    {k:['rgpd','conformitÃ©','donnÃ©es','gdpr','protection'],'r':'Auralis gÃ¨re automatiquement le RGPD : consentement recueilli Ã  la candidature, durÃ©e de conservation 2 ans, droit Ã  l'effacement sur demande. Vous avez 5 consentements actifs, 0 expirÃ©.'},
+    {k:['thomas','relancer','relance','inactif'],'r':'Thomas Petit est inactif depuis 8 jours. Je recommande une relance aujourd'hui parce qu'aprÃ¨s 10 jours, le taux de rÃ©ponse chute de 60%.'},
+    {k:['meilleur','classement','top','premier','prioritaire'],'r':'Camille Moreau avec 82/100. Ensuite Marie Dubois 78/100, Thomas Petit 71/100, Nadia Benzara 65/100, Sarah Martin 58/100. Voulez-vous que je compare deux profils en dÃ©tail ?'},
+    {k:['kanban','pipeline','Ã©tape','colonne'],'r':'Le kanban suit vos candidats en 5 Ã©tapes : Nouveau, PrÃ©sÃ©lectionnÃ©, Entretien, Offre, RefusÃ©. Glissez les cartes pour avancer un candidat. Aurora met Ã  jour les statuts automatiquement.'},
+    {k:['prix','tarif','coÃ»t','combien','abonnement','pineapp'],'r':'Auralis RH est proposÃ© par Pineapp Inc. Contactez lauralie.daguzay@gmail.com pour les tarifs et une dÃ©mo personnalisÃ©e.'},
+    {k:['rÃ©diger','offre','emploi','poste','annonce'],'r':'Je peux rÃ©diger une offre d'emploi en 2 minutes. Dites-moi : intitulÃ© du poste, compÃ©tences requises, localisation, type de contrat. Je gÃ©nÃ¨re une offre optimisÃ©e pour attirer les bons profils.'},
+    {k:['dÃ©lai','moyen','recrutement','vitesse','rapide'],'r':'Sur vos 5 candidats actifs : 2,4 jours en moyenne de la candidature Ã  la dÃ©cision. La moyenne du secteur est 18 jours. Aurora vous fait gagner 15 jours parce qu'elle prÃ©-qualifie instantanÃ©ment.'},
+    {k:['marie','paris','projet'],'r':'Marie Dubois, Paris, score 78/100, actuellement en phase d'entretien. Excellent profil pour un poste de chef de projet RH. RÃ©ponse attendue sous 48h.'},
+    {k:['nadia','marseille','ux','design'],'r':'Nadia Benzara, Marseille, score 65/100. Son profil est en phase d'offre. Je recommande de finaliser la dÃ©cision cette semaine, parce qu'elle a d'autres processus en cours.'},
+    {k:['sarah','lille','comm','communication'],'r':'Sarah Martin, Lille, score 58/100. Profil archivÃ© pour le moment. CompÃ©tences en communication solides mais disponibilitÃ© incertaine. Peut Ãªtre rÃ©activÃ©e si le besoin change.'},
+    {k:['gmail','email','message','mail'],'r':'Votre compte Gmail est connectÃ©. Aurora lit les nouvelles candidatures automatiquement et les intÃ¨gre dans votre pipeline. Vous pouvez aussi envoyer des messages directement depuis la messagerie Auralis.'},
+    {k:['analyse','statistique','analytique','rapport'],'r':'Vos analyses clÃ©s : taux de rÃ©ponse 94%, score moyen 70.8, dÃ©lai moyen 2.4j. Le recrutement le plus efficace vient de LinkedIn (45% des candidatures). Je gÃ©nÃ¨re un rapport complet chaque lundi.'},
+    {k:['aurora','qui es-tu','qu'es-tu','prÃ©sente'],'r':'Je suis Aurora, l'assistante RH intelligente de Pineapp Inc. Je lis les candidatures, analyse les profils, propose des prioritÃ©s et vous aide Ã  recruter 8x plus vite. Je suis disponible H24.'},
+    {k:['bonjour','salut','hello','bonsoir'],'r':'Bonjour. Je suis lÃ  pour vous aider. Vous pouvez me demander une analyse de candidat, une relance, ou des conseils sur votre recrutement.'},
+    {k:['merci','super','parfait','excellent'],'r':'Avec plaisir. Autre chose que je peux faire pour vous ?'},
+    {k:['semaine','lundi','mardi','planning','agenda'],'r':'Cette semaine : 8 entretiens planifiÃ©s, 3 nouvelles candidatures Ã  analyser, Thomas Petit Ã  relancer avant jeudi. Voulez-vous que je vous prÃ©pare un rÃ©capitulatif dÃ©taillÃ© ?'},
+    {k:['automatique','automatiser','gestion','ia','intelligence'],'r':'Auralis automatise : la lecture des candidatures Gmail, le scoring des profils, les relances des candidats inactifs, la gestion RGPD et les rapports hebdomadaires. Vous vous concentrez sur l'humain, je gÃ¨re le reste.'},
+  ];
+
+  window.currentObStep = 1;
+  window.totalObSteps = 5;
+
+  window.showPage = function(id) {
+    document.querySelectorAll('.page').forEach(p=>{p.style.display='none';p.classList.remove('active');});
+    const pg = document.getElementById(id);
+    if(pg){pg.style.display='block';pg.classList.add('active');}
+    // Score animation on dashboard
+    if(id==='page-dashboard') animateScore();
+    // Active sidebar icon
+    document.querySelectorAll('.sidebar-icon').forEach(i=>i.classList.remove('active'));
+    document.querySelectorAll('.mobile-nav-item').forEach(i=>i.classList.remove('active'));
+    const map = {'page-dashboard':0,'page-candidates':1,'page-kanban':2,'page-messaging':3,'page-analytics':4,'page-rgpd':5,'page-settings':6};
+    if(map[id]!==undefined){
+      const icons = document.querySelectorAll('.sidebar-icon');
+      if(icons[map[id]]) icons[map[id]].classList.add('active');
+    }
+  };
+
+  window.animateScore = function() {
+    const el = document.getElementById('hero-score');
+    const circle = document.getElementById('hero-score-circle');
+    if(!el) return;
+    let v=0;
+    const t = setInterval(()=>{
+      v++;
+      el.textContent = v;
+      if(circle) circle.style.setProperty('--pct', v);
+      if(v>=82) clearInterval(t);
+    }, 18);
+  };
+
+  window.toggleTheme = function() {
+    const body = document.body;
+    body.classList.toggle('light');
+    const btn = document.getElementById('theme-toggle');
+    if(btn) btn.textContent = body.classList.contains('light') ? 'ð' : 'â';
+  };
+
+  window.toggleChat = function() {
+    const panel = document.getElementById('aurora-chat-panel');
+    if(panel) panel.classList.toggle('open');
+  };
+
+  window.askAurora = function(q) {
+    addUserMsg(q);
+    getAuroraResponse(q);
+  };
+
+  window.sendAurora = function() {
+    const inp = document.getElementById('aurora-input');
+    if(!inp || !inp.value.trim()) return;
+    const txt = inp.value.trim();
+    inp.value = '';
+    addUserMsg(txt);
+    getAuroraResponse(txt);
+  };
+
+  function addUserMsg(txt) {
+    const msgs = document.getElementById('chat-messages');
+    if(!msgs) return;
+    const div = document.createElement('div');
+    div.className = 'msg msg-user';
+    div.textContent = txt;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function getAuroraResponse(txt) {
+    const msgs = document.getElementById('chat-messages');
+    if(!msgs) return;
+    // Typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'msg msg-aurora typing';
+    typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(()=>{
+      typing.remove();
+      const lower = txt.toLowerCase();
+      let response = null;
+      for(const item of qa){
+        if(item.k.some(k=>lower.includes(k))){response=item.r;break;}
+      }
+      if(!response) response = "Je n'ai pas encore de rÃ©ponse prÃ©cise sur ce sujet. Vous pouvez reformuler ou contacter Lauralie Daguzay directement Ã  lauralie.daguzay@gmail.com.";
+      const div = document.createElement('div');
+      div.className = 'msg msg-aurora';
+      div.textContent = response;
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 800 + Math.random()*400);
+  }
+
+  window.selectPersona = function(el){
+    document.querySelectorAll('.persona-card').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+  };
+
+  window.obStep = function(dir) {
+    const s = window.currentObStep;
+    const ns = s + dir;
+    if(ns < 1 || ns > window.totalObSteps) return;
+    const cur = document.getElementById('ob-step-'+s);
+    if(cur) cur.style.display='none';
+    window.currentObStep = ns;
+    const nxt = document.getElementById('ob-step-'+ns);
+    if(nxt) nxt.style.display='block';
+    // Update dots
+    const dots = document.querySelectorAll('#ob-dots .dot');
+    dots.forEach((d,i)=>d.classList.toggle('active',i===ns-1));
+    // Back button
+    const back = document.getElementById('ob-back');
+    if(back) back.style.display = ns > 1 ? 'block' : 'none';
+    // Next button
+    const next = document.getElementById('ob-next');
+    const nav = document.getElementById('ob-nav');
+    if(ns === window.totalObSteps) {
+      if(next) next.style.display='none';
+      if(back) back.style.display='none';
+      if(nav) nav.style.display='none';
+    } else {
+      if(next) next.style.display='block';
+    }
+  };
+
+  window.switchTab = function(name, el) {
+    document.querySelectorAll('#detail-tabs .tab').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    const tabIds = ['profil','entretiens','documents','notes','rgpd-c'];
+    tabIds.forEach(id=>{
+      const t = document.getElementById('tab-'+id);
+      if(t) t.style.display = id===name ? 'block' : 'none';
+    });
+  };
+
+  window.filterCandidates = function(q) {
+    const cards = document.querySelectorAll('#candidates-grid .candidate-card');
+    const lq = q.toLowerCase();
+    cards.forEach(c=>{
+      const name = c.dataset.name||'';
+      const city = c.dataset.city||'';
+      c.style.display = (name.includes(lq)||city.includes(lq)) ? 'block' : 'none';
+    });
+  };
+
+  window.sendMsg = function() {
+    const inp = document.getElementById('msg-input');
+    if(!inp||!inp.value.trim()) return;
+    const txt = inp.value.trim();
+    inp.value = '';
+    const area = document.querySelector('.msg-chat-messages');
+    if(!area) return;
+    const div = document.createElement('div');
+    div.className = 'msg msg-user';
+    div.textContent = txt;
+    area.appendChild(div);
+    area.scrollTop = area.scrollHeight;
+  };
+
+  // IIFE: Auto-start splash â login
+  const splashEl = document.getElementById('page-splash');
+  if(splashEl) {
+    splashEl.style.display = 'flex';
+    setTimeout(()=>showPage('page-login'), 4000);
+  }
+
+  // Dashboard score on load
+  setTimeout(()=>{
+    if(document.getElementById('page-dashboard').classList.contains('active')||
+       document.getElementById('page-dashboard').style.display==='block') animateScore();
+  }, 300);
+})();
+</script>
 </body>
 </html>
