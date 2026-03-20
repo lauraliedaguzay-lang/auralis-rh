@@ -9,1217 +9,1198 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --indigo:#818CF8;--mint:#6EE7B7;--peach:#FBBF9A;--violet:#C4B5FD;--cream:#F8F7F4;
-  --dark-bg:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;
-  --glass-bg:rgba(255,255,255,0.05);--glass-border:rgba(255,255,255,0.1);
-  --text-primary:#fff;--text-secondary:rgba(255,255,255,0.6);
-  --card-bg:rgba(255,255,255,0.06);--sidebar-bg:rgba(0,0,0,0.3);
+  --indigo:#818CF8;--mint:#6EE7B7;--peach:#FBBF9A;--lavender:#C4B5FD;--cream:#F8F7F4;
+  --bg:#04040e;
+  --glass-bg:rgba(255,255,255,0.06);--glass-border:rgba(129,140,248,0.12);
+  --text-primary:#F8F7F4;--text-secondary:rgba(248,247,244,0.6);
+  --transition:cubic-bezier(0.34,1.56,0.64,1) 280ms;
 }
 body.light{
-  --dark-bg:linear-gradient(135deg,#FFF8F0 0%,#FFF3E8 50%,#F8F7F4 100%);
-  --glass-bg:rgba(255,255,255,0.7);--glass-border:rgba(0,0,0,0.08);
+  --bg:linear-gradient(135deg,#FFF0E8 0%,#F9F0FF 50%,#EEF2FF 100%);
+  --glass-bg:rgba(255,255,255,0.72);--glass-border:rgba(129,140,248,0.18);
   --text-primary:#1a1a2e;--text-secondary:rgba(26,26,46,0.6);
-  --card-bg:rgba(255,255,255,0.8);--sidebar-bg:rgba(255,255,255,0.9);
 }
-body{font-family:'Plus Jakarta Sans',sans-serif;font-weight:400;background:var(--dark-bg);min-height:100vh;color:var(--text-primary);}
-.page{display:none;min-height:100vh;}
-.page.active{display:block;}
+html,body{height:100%;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text-primary);overflow:hidden;}
+body{background:var(--bg,#04040e);transition:background 450ms ease,color 450ms ease;}
 
-/* GLASS */
-.glass{background:var(--glass-bg);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--glass-border);border-radius:16px;}
+/* Cosmos background */
+#cosmos-bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+#cosmos-bg .halo{position:absolute;border-radius:50%;filter:blur(80px);}
+#cosmos-bg .halo-1{width:600px;height:600px;top:-100px;left:-150px;background:radial-gradient(ellipse,rgba(129,140,248,0.18) 0%,transparent 70%);}
+#cosmos-bg .halo-2{width:500px;height:500px;bottom:-100px;right:-100px;background:radial-gradient(ellipse,rgba(110,231,183,0.12) 0%,transparent 70%);}
+#cosmos-bg .halo-3{width:400px;height:400px;top:40%;left:40%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(196,181,253,0.10) 0%,transparent 70%);}
+#vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(4,4,14,0.7) 100%);}
+body.light #vignette{background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(200,180,255,0.2) 100%);}
+#noise{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.035;}
+#particles-canvas{position:fixed;inset:0;z-index:3;pointer-events:none;}
 
-/* AURORA BAR */
-.aurora-bar{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;padding:0 24px;z-index:100;}
-.aurora-dot{width:8px;height:8px;border-radius:50%;background:var(--indigo);animation:pulse 2s infinite;margin-right:10px;flex-shrink:0;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
-.aurora-label{color:rgba(255,255,255,0.7);font-size:13px;font-weight:500;}
-.aurora-ticker{position:fixed;bottom:80px;left:0;right:0;height:28px;background:rgba(129,140,248,0.08);border-top:1px solid rgba(129,140,248,0.15);display:flex;align-items:center;overflow:hidden;z-index:99;}
-.ticker-inner{white-space:nowrap;animation:ticker 30s linear infinite;color:rgba(255,255,255,0.5);font-size:12px;padding-left:100%;}
-@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-100%);}  }
-.aurora-chat-btn{margin-left:auto;width:40px;height:40px;border-radius:50%;background:rgba(129,140,248,0.2);border:1px solid rgba(129,140,248,0.4);color:var(--indigo);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 280ms cubic-bezier(0.34,1.56,0.64,1);}
-.aurora-chat-btn:hover{background:rgba(129,140,248,0.35);transform:scale(1.1);}
+/* Nav progress bar */
+#nav-progress{position:fixed;top:0;left:0;height:2px;z-index:9999;background:linear-gradient(90deg,var(--indigo),var(--mint));width:0%;transition:width 0.4s ease;}
 
-/* BUTTONS */
-.btn{padding:12px 24px;border-radius:12px;border:none;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:all 280ms cubic-bezier(0.34,1.56,0.64,1);}
-.btn-indigo{background:var(--indigo);color:#fff;}
-.btn-indigo:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(129,140,248,0.4);}
-.btn-peach{background:var(--peach);color:#1a1a2e;}
-.btn-peach:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(251,191,154,0.4);}
-.btn-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--glass-border);}
-.btn-ghost:hover{background:var(--glass-bg);color:var(--text-primary);}
-.btn-full{width:100%;}
+/* Pages */
+.page{display:none;position:fixed;inset:0;z-index:10;overflow-y:auto;}
+.page.active{display:flex;}
 
-/* INPUTS */
-.input{width:100%;padding:12px 16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:var(--text-primary);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;outline:none;transition:border 200ms;}
-.input::placeholder{color:rgba(255,255,255,0.35);}
-.input:focus{border-color:var(--indigo);}
-body.light .input{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1);color:#1a1a2e;}
-body.light .input::placeholder{color:rgba(0,0,0,0.3);}
+/* ===== SPLASH ===== */
+#page-splash{flex-direction:column;align-items:center;justify-content:center;background:#04040e;}
+body.light #page-splash{background:var(--bg);}
+.splash-logo{text-align:center;opacity:0;transform:translateY(24px);transition:opacity 600ms ease,transform 600ms ease;}
+.splash-logo.visible{opacity:1;transform:translateY(0);}
+.splash-brand{font-size:64px;font-weight:700;color:#F8F7F4;display:inline-flex;align-items:center;gap:12px;letter-spacing:-1px;}
+.splash-rh-badge{background:var(--indigo);color:#fff;font-size:13px;font-weight:600;padding:2px 8px;border-radius:8px;vertical-align:super;letter-spacing:0.05em;}
+.splash-by{display:block;letter-spacing:0.15em;color:rgba(255,255,255,0.38);font-size:12px;font-weight:400;margin-top:8px;text-transform:uppercase;}
+.splash-tagline{font-size:18px;font-weight:300;color:rgba(255,255,255,0.68);margin-top:48px;text-align:center;opacity:0;transform:translateY(16px);transition:opacity 600ms ease 300ms,transform 600ms ease 300ms;}
+.splash-tagline.visible{opacity:1;transform:translateY(0);}
+.splash-progress-wrap{margin-top:64px;text-align:center;opacity:0;transition:opacity 600ms ease 600ms;}
+.splash-progress-wrap.visible{opacity:1;}
+.splash-progress-bar{width:220px;height:2px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;margin:0 auto;}
+.splash-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--indigo),var(--mint));border-radius:2px;transition:width 3.2s linear;}
+.splash-hint{font-size:11px;color:rgba(255,255,255,0.22);margin-top:12px;}
+.splash-aurora{position:absolute;bottom:40px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity 600ms ease 900ms;}
+.splash-aurora.visible{opacity:1;}
+.aurora-dot-pulse{width:8px;height:8px;border-radius:50%;background:var(--indigo);animation:pulse-dot 1.8s ease-in-out infinite;}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(129,140,248,0.5);}50%{box-shadow:0 0 0 8px rgba(129,140,248,0);}}
+.splash-aurora-text{font-size:12px;color:rgba(255,255,255,0.45);font-style:italic;}
 
-/* SIDEBAR */
-.sidebar{position:fixed;left:0;top:0;bottom:80px;width:72px;background:var(--sidebar-bg);backdrop-filter:blur(20px);border-right:1px solid var(--glass-border);display:flex;flex-direction:column;align-items:center;padding:16px 0;z-index:50;gap:4px;}
-.sidebar-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 200ms;color:rgba(255,255,255,0.4);font-size:20px;}
-.sidebar-icon:hover,.sidebar-icon.active{background:rgba(129,140,248,0.15);color:var(--indigo);}
-.main-content{margin-left:72px;padding:24px;padding-bottom:120px;}
+/* ===== LOGIN ===== */
+#page-login{flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.login-card{
+  background:rgba(10,8,25,0.72);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid rgba(129,140,248,0.18);
+  border-radius:28px;
+  padding:44px 40px;
+  width:100%;max-width:420px;
+  position:relative;overflow:hidden;
+}
+body.light .login-card{background:rgba(255,255,255,0.82);}
+.login-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(129,140,248,0.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.login-header{text-align:center;margin-bottom:28px;}
+.login-brand-name{font-size:26px;font-weight:700;color:var(--indigo);display:inline-flex;align-items:center;gap:8px;}
+.login-by{display:block;letter-spacing:0.12em;color:var(--text-secondary);font-size:11px;margin-top:6px;text-transform:uppercase;}
+.login-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-top:20px;}
+.login-sub{font-size:13px;color:rgba(248,247,244,0.48);margin-top:6px;}
+body.light .login-sub{color:rgba(26,26,46,0.48);}
+.login-btn{
+  width:100%;padding:14px 20px;border-radius:14px;border:1px solid var(--glass-border);
+  background:var(--glass-bg);cursor:pointer;font-family:inherit;font-size:14px;font-weight:500;
+  color:var(--text-primary);display:flex;align-items:center;justify-content:center;gap:12px;
+  transition:all var(--transition);margin-top:12px;
+  backdrop-filter:blur(20px);
+}
+.login-btn:hover{background:rgba(255,255,255,0.1);transform:translateY(-1px);}
+body.light .login-btn{background:rgba(255,255,255,0.85);color:#1a1a2e;border-color:rgba(129,140,248,0.2);}
+.login-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--text-secondary);font-size:12px;}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--glass-border);}
+.login-input-wrap{position:relative;margin-top:12px;}
+.login-input{
+  width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--glass-border);
+  background:var(--glass-bg);font-family:inherit;font-size:14px;color:var(--text-primary);
+  outline:none;transition:border-color 280ms ease;backdrop-filter:blur(20px);
+}
+body.light .login-input{background:rgba(255,255,255,0.85);color:#1a1a2e;}
+.login-input::placeholder{color:var(--text-secondary);font-style:italic;}
+.login-input:focus{border-color:rgba(129,140,248,0.5);}
+.eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-secondary);padding:4px;}
+.login-forgot{text-align:right;margin-top:8px;}
+.login-forgot a{color:var(--indigo);font-size:12px;text-decoration:none;}
+.btn-primary{
+  width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;font-family:inherit;
+  font-size:15px;font-weight:600;color:#fff;margin-top:16px;
+  background:linear-gradient(135deg,var(--indigo),#6366F1);
+  box-shadow:0 4px 24px rgba(129,140,248,0.35);
+  transition:all var(--transition);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 32px rgba(129,140,248,0.5);}
+.btn-demo{
+  width:100%;padding:14px;border-radius:14px;border:none;cursor:pointer;font-family:inherit;
+  font-size:14px;font-weight:500;color:#1a1a2e;margin-top:10px;
+  background:linear-gradient(135deg,#FBBF9A,#F59E6A);
+  transition:all var(--transition);
+}
+.btn-demo:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(251,191,154,0.4);}
+.login-fine{font-size:11px;color:rgba(248,247,244,0.28);text-align:center;margin-top:12px;}
+body.light .login-fine{color:rgba(26,26,46,0.4);}
+.login-rgpd{font-size:11px;color:rgba(248,247,244,0.18);text-align:center;margin-top:8px;}
+body.light .login-rgpd{color:rgba(26,26,46,0.28);}
 
-/* HEADER */
-.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
-.page-title{font-size:22px;font-weight:700;color:var(--text-primary);}
-.pill{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;}
-.pill-indigo{background:rgba(129,140,248,0.2);color:var(--indigo);border:1px solid rgba(129,140,248,0.3);}
-.pill-peach{background:rgba(251,191,154,0.2);color:#f59e0b;border:1px solid rgba(251,191,154,0.3);}
-.pill-mint{background:rgba(110,231,183,0.2);color:var(--mint);border:1px solid rgba(110,231,183,0.3);}
+/* Aurora bar (global bottom fixed) */
+#aurora-bar{
+  position:fixed;bottom:0;left:0;right:0;height:80px;z-index:500;
+  background:rgba(5,5,15,0.88);backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border-top:1px solid transparent;
+  display:flex;align-items:center;padding:0 24px;gap:14px;
+}
+#aurora-bar::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,rgba(129,140,248,0.4) 20%,rgba(110,231,183,0.3) 50%,rgba(129,140,248,0.4) 80%,transparent 100%);
+}
+body.light #aurora-bar{background:rgba(255,255,255,0.88);}
+.aurora-dot{width:8px;height:8px;border-radius:50%;background:var(--indigo);flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite;}
+.aurora-label{font-size:11px;font-weight:600;color:var(--indigo);text-transform:uppercase;letter-spacing:0.08em;flex-shrink:0;}
+.aurora-sep{width:1px;height:28px;background:var(--glass-border);flex-shrink:0;}
+.aurora-msg{flex:1;min-width:0;}
+.aurora-msg-main{font-size:13px;font-weight:500;color:var(--text-primary);}
+.aurora-msg-sub{font-size:11px;color:var(--text-secondary);font-style:italic;margin-top:2px;}
+.aurora-actions{display:flex;gap:8px;flex-shrink:0;}
+.aurora-btn{padding:8px 16px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;
+  background:var(--indigo);color:#fff;transition:all 200ms ease;}
+.aurora-btn:hover{background:#6366F1;transform:scale(1.02);}
+.aurora-h24-btn{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--glass-border);
+  background:var(--glass-bg);cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;
+  color:var(--indigo);display:flex;align-items:center;justify-content:center;transition:all 200ms ease;
+  backdrop-filter:blur(20px);
+}
+.aurora-h24-btn:hover{background:rgba(129,140,248,0.15);}
 
-/* CARDS */
-.card{background:var(--card-bg);backdrop-filter:blur(16px);border:1px solid var(--glass-border);border-radius:16px;padding:24px;}
-.stat-card{text-align:center;}
-.stat-value{font-size:36px;font-weight:700;margin:8px 0 4px;}
-.stat-label{font-size:13px;color:var(--text-secondary);}
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px;}
+/* ===== APP LAYOUT ===== */
+#page-app{display:none;flex-direction:row;height:100%;}
+#page-app.active{display:flex;}
 
-/* SCORE CIRCLE */
-.score-circle{width:80px;height:80px;border-radius:50%;background:conic-gradient(var(--indigo) calc(var(--pct)*1%),rgba(255,255,255,0.1) 0);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;position:relative;}
-.score-circle::before{content:'';position:absolute;width:62px;height:62px;border-radius:50%;background:var(--card-bg);}
-.score-circle span{position:relative;z-index:1;}
+/* Sidebar */
+#sidebar{
+  width:72px;height:100%;flex-shrink:0;
+  background:rgba(5,5,15,0.72);backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border-right:1px solid var(--glass-border);
+  display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:0;z-index:100;
+}
+body.light #sidebar{background:rgba(255,255,255,0.78);}
+.sidebar-logo{font-size:20px;font-weight:700;color:var(--indigo);margin-bottom:32px;letter-spacing:-0.5px;}
+.sidebar-group{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%;}
+.sidebar-sep{width:32px;height:1px;background:var(--glass-border);margin:12px 0;}
+.sidebar-btn{
+  width:44px;height:44px;border-radius:12px;border:none;cursor:pointer;
+  background:transparent;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;
+  transition:all 200ms ease;position:relative;font-size:18px;
+}
+.sidebar-btn:hover,.sidebar-btn.active{background:rgba(129,140,248,0.15);color:var(--indigo);}
+.sidebar-btn .tooltip{
+  position:absolute;left:56px;top:50%;transform:translateY(-50%);
+  background:rgba(10,8,25,0.92);color:#fff;font-size:12px;font-weight:500;
+  padding:6px 12px;border-radius:8px;white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity 150ms ease;border:1px solid var(--glass-border);
+}
+.sidebar-btn:hover .tooltip{opacity:1;}
+body.light .sidebar-btn .tooltip{background:rgba(255,255,255,0.95);color:#1a1a2e;}
+.sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.theme-toggle{
+  width:40px;height:22px;border-radius:11px;border:1px solid var(--glass-border);
+  background:var(--glass-bg);cursor:pointer;position:relative;transition:all 450ms ease;padding:0;
+}
+.theme-toggle-thumb{
+  width:16px;height:16px;border-radius:50%;background:var(--indigo);
+  position:absolute;top:2px;left:2px;transition:transform 450ms ease;
+}
+body.light .theme-toggle-thumb{transform:translateX(18px);background:#FBBF9A;}
 
-/* TOGGLE */
-.theme-toggle{position:fixed;top:20px;right:20px;z-index:200;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:var(--text-primary);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 400ms ease;}
-.theme-toggle:hover{background:rgba(255,255,255,0.2);}
+/* Main area */
+#main-area{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
 
-/* PROGRESS BAR SPLASH */
-@keyframes progressSplash{from{width:0}to{width:100%}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+/* Header */
+#app-header{
+  height:52px;flex-shrink:0;
+  background:rgba(5,5,15,0.6);backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--glass-border);
+  display:flex;align-items:center;padding:0 20px;gap:12px;
+}
+body.light #app-header{background:rgba(255,255,255,0.7);}
+.header-greeting{font-size:14px;font-weight:500;color:var(--text-primary);flex:1;}
+.header-date{font-size:12px;color:var(--text-secondary);}
+.header-pills{display:flex;gap:8px;}
+.header-pill{
+  padding:5px 12px;border-radius:20px;border:1px solid var(--glass-border);
+  background:var(--glass-bg);font-size:11px;font-weight:500;
+  color:var(--text-secondary);backdrop-filter:blur(10px);cursor:pointer;
+  transition:all 200ms ease;
+}
+.header-pill:hover{border-color:var(--indigo);color:var(--indigo);}
+.header-pill.active{background:rgba(129,140,248,0.15);border-color:rgba(129,140,248,0.3);color:var(--indigo);}
 
-/* CANDIDATE CARD */
-.candidate-card{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:16px;padding:20px;transition:all 200ms;}
-.candidate-card:hover{transform:translateY(-3px);border-color:rgba(129,140,248,0.3);}
-.avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;}
-.score-badge{padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(129,140,248,0.2);color:var(--indigo);}
+/* Content area */
+#content-area{flex:1;overflow-y:auto;padding:20px;padding-bottom:100px;}
+.content-page{display:none;}
+.content-page.active{display:block;}
 
-/* KANBAN */
-.kanban-wrap{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px;}
-.kanban-col{min-width:220px;flex-shrink:0;background:var(--card-bg);border:1px solid var(--glass-border);border-radius:16px;padding:16px;}
-.kanban-col-header{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
-.kanban-item{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:10px;padding:12px;margin-bottom:8px;font-size:13px;cursor:grab;}
+/* Glass card base */
+.glass-card{
+  background:var(--glass-bg);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:20px;padding:24px;
+  transition:all var(--transition);
+}
+body.light .glass-card{background:rgba(255,255,255,0.75);}
 
-/* CHAT */
-.chat-panel{position:fixed;top:0;right:-400px;width:380px;height:100vh;background:rgba(4,4,14,0.95);backdrop-filter:blur(24px);border-left:1px solid rgba(255,255,255,0.1);z-index:500;transition:right 400ms ease;display:flex;flex-direction:column;}
-.chat-panel.open{right:0;}
-.chat-header{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:12px;}
-.chat-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--indigo);}
-.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
-.msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;}
-.msg-aurora{background:rgba(129,140,248,0.15);border:1px solid rgba(129,140,248,0.2);align-self:flex-start;border-bottom-left-radius:4px;}
-.msg-user{background:rgba(129,140,248,0.3);align-self:flex-end;border-bottom-right-radius:4px;}
-.typing{display:flex;gap:4px;align-items:center;padding:8px 12px;}
-.typing-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);animation:typing 1.2s infinite;}
+/* ===== DASHBOARD ===== */
+.dashboard-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+@media(min-width:900px){.dashboard-grid{grid-template-columns:3fr 2fr;}}
+.hero-card{position:relative;}
+.aurora-suggestion-label{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:600;color:var(--indigo);text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:14px;
+}
+.aurora-suggestion-label::before{content:'â';font-size:8px;}
+.hero-sep{height:1px;background:var(--glass-border);margin:14px 0;}
+.hero-name{font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:4px;}
+.hero-location{font-size:14px;color:rgba(248,247,244,0.55);}
+body.light .hero-location{color:rgba(26,26,46,0.55);}
+.hero-justif{margin:16px 0;}
+.hero-justif p{font-size:13px;font-style:italic;line-height:1.7;}
+.hero-justif p:nth-child(1){color:rgba(248,247,244,0.55);}
+.hero-justif p:nth-child(2){color:rgba(248,247,244,0.47);}
+.hero-justif p:nth-child(3){color:rgba(248,247,244,0.38);}
+body.light .hero-justif p:nth-child(1){color:rgba(26,26,46,0.55);}
+body.light .hero-justif p:nth-child(2){color:rgba(26,26,46,0.47);}
+body.light .hero-justif p:nth-child(3){color:rgba(26,26,46,0.38);}
+.hero-score-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;}
+.hero-score{font-size:56px;font-weight:700;color:var(--indigo);line-height:1;text-shadow:0 0 20px rgba(129,140,248,0.35);}
+.hero-actions{display:flex;gap:8px;}
+.btn-contact{
+  padding:10px 20px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;
+  font-size:13px;font-weight:600;color:#fff;
+  background:linear-gradient(135deg,var(--indigo),#6366F1);transition:all var(--transition);
+}
+.btn-contact:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(129,140,248,0.4);}
+.btn-profile{
+  padding:10px 20px;border-radius:12px;border:1px solid var(--glass-border);cursor:pointer;
+  font-family:inherit;font-size:13px;font-weight:500;color:var(--text-primary);
+  background:var(--glass-bg);transition:all var(--transition);backdrop-filter:blur(10px);
+}
+.btn-profile:hover{background:rgba(255,255,255,0.1);}
+.hero-level{margin-top:16px;}
+.level-label{font-size:11px;color:var(--text-secondary);margin-bottom:6px;}
+.level-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+.level-fill{height:100%;width:35%;background:linear-gradient(90deg,var(--indigo),var(--mint));border-radius:4px;}
+
+/* Stat cards */
+.stats-grid{display:flex;flex-direction:column;gap:12px;}
+.stat-card{text-align:center;padding:20px;}
+.stat-number{font-size:42px;font-weight:700;line-height:1;}
+.stat-number.indigo{color:var(--indigo);}
+.stat-number.mint{color:var(--mint);}
+.stat-label{font-size:12px;color:var(--text-secondary);margin-top:4px;}
+.stat-italic{font-size:12px;font-style:italic;color:var(--text-secondary);text-align:center;padding:16px;}
+
+/* Ticker */
+#ticker-wrap{
+  position:fixed;bottom:80px;left:72px;right:0;height:28px;
+  background:rgba(5,5,15,0.6);backdrop-filter:blur(20px);overflow:hidden;
+  border-top:1px solid var(--glass-border);display:flex;align-items:center;
+  z-index:200;
+}
+body.light #ticker-wrap{background:rgba(255,255,255,0.6);}
+#ticker{display:flex;gap:60px;white-space:nowrap;animation:ticker-scroll 40s linear infinite;}
+#ticker:hover{animation-play-state:paused;}
+@keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.ticker-item{font-size:11px;display:inline-flex;align-items:center;gap:8px;padding:0 4px;}
+.ticker-item.type-a{color:rgba(129,140,248,0.8);}
+.ticker-item.type-b{color:rgba(110,231,183,0.8);}
+.ticker-item.type-c{color:rgba(251,191,154,0.8);}
+.ticker-item.type-d{color:rgba(196,181,253,0.8);}
+.ticker-sep{color:rgba(255,255,255,0.15);}
+
+/* ===== CANDIDATES PAGE ===== */
+.candidates-list{display:flex;flex-direction:column;gap:12px;margin-top:16px;}
+.candidate-row{
+  display:flex;align-items:center;padding:16px 20px;gap:16px;cursor:pointer;
+  transition:all var(--transition);
+}
+.candidate-row:hover{background:rgba(129,140,248,0.08);}
+.candidate-avatar{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;
+  background:linear-gradient(135deg,rgba(129,140,248,0.3),rgba(196,181,253,0.2));
+  color:var(--indigo);border:1px solid rgba(129,140,248,0.2);
+}
+.candidate-info{flex:1;min-width:0;}
+.candidate-name{font-size:14px;font-weight:600;color:var(--text-primary);}
+.candidate-meta{font-size:12px;color:var(--text-secondary);margin-top:2px;}
+.candidate-score{
+  font-size:22px;font-weight:700;color:var(--indigo);
+  text-shadow:0 0 12px rgba(129,140,248,0.3);flex-shrink:0;
+}
+.score-badge{
+  font-size:11px;font-weight:500;padding:4px 10px;border-radius:8px;margin-left:8px;flex-shrink:0;
+}
+.score-badge.high{background:rgba(110,231,183,0.15);color:var(--mint);}
+.score-badge.mid{background:rgba(129,140,248,0.15);color:var(--indigo);}
+.score-badge.low{background:rgba(251,191,154,0.15);color:var(--peach);}
+
+/* ===== KANBAN ===== */
+.kanban-board{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;margin-top:16px;}
+.kanban-col{min-width:220px;flex-shrink:0;}
+.kanban-col-title{font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.kanban-col-count{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:6px;padding:1px 7px;font-size:11px;}
+.kanban-card{padding:14px;border-radius:14px;margin-bottom:8px;cursor:pointer;transition:all var(--transition);}
+.kanban-card:hover{transform:translateY(-2px);}
+.kanban-card-name{font-size:13px;font-weight:600;color:var(--text-primary);}
+.kanban-card-role{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+.kanban-card-score{font-size:19px;font-weight:700;color:var(--indigo);float:right;}
+
+/* ===== MESSAGING ===== */
+.messages-layout{display:grid;grid-template-columns:240px 1fr;gap:16px;height:calc(100vh - 220px);margin-top:16px;}
+.msg-list{display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
+.msg-list-item{padding:12px 16px;border-radius:14px;cursor:pointer;border:1px solid transparent;transition:all 200ms ease;}
+.msg-list-item:hover,.msg-list-item.active{border-color:rgba(129,140,248,0.25);background:rgba(129,140,248,0.08);}
+.msg-list-name{font-size:13px;font-weight:600;color:var(--text-primary);}
+.msg-list-preview{font-size:11px;color:var(--text-secondary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-chat{display:flex;flex-direction:column;}
+.msg-chat-header{padding:16px 20px;border-bottom:1px solid var(--glass-border);}
+.msg-bubbles{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;}
+.bubble{max-width:70%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;}
+.bubble.me{align-self:flex-end;background:linear-gradient(135deg,var(--indigo),#6366F1);color:#fff;border-radius:14px 14px 4px 14px;}
+.bubble.them{align-self:flex-start;background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-primary);border-radius:14px 14px 14px 4px;}
+.msg-input-row{display:flex;gap:10px;padding:12px 20px;border-top:1px solid var(--glass-border);}
+.msg-input{flex:1;padding:12px 16px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass-bg);font-family:inherit;font-size:13px;color:var(--text-primary);outline:none;}
+.msg-send-btn{padding:12px 20px;border-radius:12px;border:none;background:var(--indigo);color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;}
+
+/* ===== ANALYTICS ===== */
+.analytics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:16px;}
+.analytics-big-card{padding:28px;}
+.analytics-metric{font-size:48px;font-weight:700;color:var(--indigo);line-height:1;}
+.analytics-metric.mint{color:var(--mint);}
+.analytics-metric.peach{color:var(--peach);}
+.analytics-metric-label{font-size:13px;color:var(--text-secondary);margin-top:6px;}
+.bar-chart{margin-top:20px;}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.bar-name{font-size:12px;color:var(--text-secondary);width:100px;flex-shrink:0;}
+.bar-track{flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--indigo),var(--mint));}
+.bar-val{font-size:12px;font-weight:600;color:var(--indigo);width:28px;text-align:right;flex-shrink:0;}
+
+/* ===== RGPD ===== */
+.rgpd-list{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.rgpd-item{display:flex;align-items:center;gap:14px;padding:16px 20px;}
+.rgpd-status{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.rgpd-status.active{background:var(--mint);}
+.rgpd-status.pending{background:var(--peach);}
+.rgpd-info{flex:1;}
+.rgpd-name{font-size:13px;font-weight:600;color:var(--text-primary);}
+.rgpd-date{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+.rgpd-btn{padding:6px 14px;border-radius:8px;border:1px solid var(--glass-border);background:var(--glass-bg);font-size:11px;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all 200ms ease;}
+.rgpd-btn:hover{color:var(--indigo);border-color:rgba(129,140,248,0.3);}
+
+/* ===== SETTINGS ===== */
+.settings-section{margin-bottom:28px;}
+.settings-section-title{font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--glass-border);}
+.settings-row:last-child{border-bottom:none;}
+.settings-label{font-size:13px;font-weight:500;color:var(--text-primary);}
+.settings-sub{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+.toggle-switch{width:44px;height:24px;border-radius:12px;background:rgba(129,140,248,0.3);cursor:pointer;position:relative;border:none;transition:background 300ms ease;}
+.toggle-switch.on{background:var(--indigo);}
+.toggle-switch-thumb{width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:transform 300ms ease;}
+.toggle-switch.on .toggle-switch-thumb{transform:translateX(20px);}
+
+/* ===== AURORA H24 PANEL ===== */
+#aurora-panel{
+  position:fixed;top:0;right:-420px;width:420px;height:100%;z-index:1000;
+  background:rgba(5,5,15,0.94);backdrop-filter:blur(40px) saturate(180%);
+  border-left:1px solid var(--glass-border);
+  transition:right 350ms cubic-bezier(0.34,1.56,0.64,1);
+  display:flex;flex-direction:column;
+}
+body.light #aurora-panel{background:rgba(255,255,255,0.96);}
+#aurora-panel.open{right:0;}
+.panel-header{padding:20px 24px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:14px;}
+.panel-avatar img{width:40px;height:40px;border-radius:50%;border:2.5px solid var(--indigo);object-fit:cover;}
+.panel-title{flex:1;}
+.panel-name{font-size:15px;font-weight:700;color:var(--text-primary);}
+.panel-status{font-size:11px;color:var(--mint);}
+.panel-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--glass-border);background:var(--glass-bg);cursor:pointer;color:var(--text-secondary);font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 200ms ease;}
+.panel-close:hover{color:var(--text-primary);background:rgba(255,255,255,0.1);}
+.panel-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
+.panel-bubble{max-width:85%;padding:12px 16px;font-size:13px;line-height:1.6;}
+.panel-bubble.aurora{align-self:flex-start;background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.2);border-radius:16px 16px 16px 4px;color:var(--text-primary);}
+.panel-bubble.user{align-self:flex-end;background:linear-gradient(135deg,var(--indigo),#6366F1);color:#fff;border-radius:16px 16px 4px 16px;}
+.typing-indicator{display:flex;gap:4px;align-items:center;padding:12px 16px;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--indigo);animation:typing-wave 1.2s ease-in-out infinite;}
 .typing-dot:nth-child(2){animation-delay:0.2s;}
 .typing-dot:nth-child(3){animation-delay:0.4s;}
-@keyframes typing{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-.chat-suggestions{padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px;}
-.chat-suggestion{padding:6px 10px;border-radius:999px;background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);color:var(--indigo);font-size:11px;cursor:pointer;transition:all 200ms;}
-.chat-suggestion:hover{background:rgba(129,140,248,0.25);}
-.chat-input-wrap{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;}
-.chat-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;padding:10px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;outline:none;}
-.chat-input:focus{border-color:var(--indigo);}
-.chat-send{width:36px;height:36px;border-radius:8px;background:var(--indigo);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+@keyframes typing-wave{0%,80%,100%{transform:translateY(0);opacity:0.5;}40%{transform:translateY(-8px);opacity:1;}}
+.panel-input-area{padding:16px 20px;border-top:1px solid var(--glass-border);display:flex;gap:10px;}
+.panel-input{flex:1;padding:12px 16px;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass-bg);font-family:inherit;font-size:13px;color:var(--text-primary);outline:none;}
+body.light .panel-input{background:rgba(255,255,255,0.85);color:#1a1a2e;}
+.panel-input::placeholder{color:var(--text-secondary);}
+.panel-send{padding:12px 16px;border-radius:12px;border:none;background:var(--indigo);color:#fff;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:all 200ms ease;}
+.panel-send:hover{background:#6366F1;}
 
-/* TABS */
-.tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(255,255,255,0.05);padding:4px;border-radius:12px;}
-.tab{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:var(--text-secondary);transition:all 200ms;}
-.tab.active{background:var(--indigo);color:#fff;}
+/* ===== PAGE TITLES ===== */
+.page-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--text-secondary);margin-bottom:16px;}
 
-/* MOBILE */
-@media(max-width:767px){
-  .sidebar{display:none;}
-  .main-content{margin-left:0;padding:16px;padding-bottom:180px;}
-  .mobile-nav{display:flex!important;}
-  .theme-toggle{top:12px;right:12px;}
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  #sidebar{display:none;}
+  #mobile-nav{display:flex;}
+  #ticker-wrap{left:0;}
+  .messages-layout{grid-template-columns:1fr;}
+  .kanban-board{flex-direction:column;}
+  .dashboard-grid{grid-template-columns:1fr;}
+  #aurora-panel{width:100%;right:-100%;bottom:0;top:auto;height:70vh;border-radius:20px 20px 0 0;border-left:none;border-top:1px solid var(--glass-border);}
+  #aurora-panel.open{right:0;}
 }
-.mobile-nav{display:none;position:fixed;bottom:80px;left:0;right:0;height:56px;background:rgba(0,0,0,0.8);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.08);align-items:center;justify-content:space-around;z-index:101;}
-.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;color:rgba(255,255,255,0.4);font-size:10px;cursor:pointer;padding:8px 12px;}
-.mobile-nav-item.active,.mobile-nav-item:hover{color:var(--indigo);}
-.mobile-nav-item svg{width:22px;height:22px;}
+#mobile-nav{
+  display:none;position:fixed;bottom:80px;left:0;right:0;height:64px;z-index:400;
+  background:rgba(5,5,15,0.88);backdrop-filter:blur(30px);border-top:1px solid var(--glass-border);
+  justify-content:space-around;align-items:center;
+}
+body.light #mobile-nav{background:rgba(255,255,255,0.9);}
+.mob-nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;color:var(--text-secondary);font-size:20px;padding:8px 16px;}
+.mob-nav-btn span{font-size:9px;font-weight:500;}
+.mob-nav-btn.active{color:var(--indigo);}
 
-/* ONBOARDING */
-.onboarding-wrap{max-width:600px;margin:0 auto;padding:40px 20px 120px;}
-.progress-dots{display:flex;gap:8px;justify-content:center;margin-bottom:40px;}
-.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 400ms;}
-.dot.active{background:var(--indigo);width:24px;border-radius:4px;}
-.persona-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:20px 0;}
-.persona-card{padding:16px;border-radius:12px;border:2px solid var(--glass-border);background:var(--card-bg);cursor:pointer;text-align:center;transition:all 200ms;}
-.persona-card.selected,.persona-card:hover{border-color:var(--indigo);background:rgba(129,140,248,0.1);}
-.persona-icon{font-size:28px;margin-bottom:8px;}
-.persona-label{font-size:13px;font-weight:500;}
-
-/* MESSAGING */
-.msg-layout{display:grid;grid-template-columns:280px 1fr;gap:0;height:calc(100vh - 200px);min-height:400px;}
-.msg-contacts{border-right:1px solid var(--glass-border);overflow-y:auto;}
-.msg-contact{padding:14px 16px;display:flex;gap:12px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.04);}
-.msg-contact:hover,.msg-contact.active{background:rgba(129,140,248,0.1);}
-.msg-chat{display:flex;flex-direction:column;padding:16px;}
-.msg-chat-messages{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
-@media(max-width:600px){.msg-layout{grid-template-columns:1fr;}.msg-contacts{display:none;}}
-
-/* RGPD */
-.rgpd-card{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--card-bg);border:1px solid var(--glass-border);border-radius:12px;margin-bottom:10px;}
-.status-dot{width:10px;height:10px;border-radius:50%;}
-
-/* SVG Charts */
-.chart-wrap{background:var(--card-bg);border:1px solid var(--glass-border);border-radius:16px;padding:20px;}
-.chart-title{font-size:14px;font-weight:600;margin-bottom:16px;color:var(--text-primary);}
-.charts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
 </style>
 </head>
 <body>
 
+<!-- Cosmos background -->
+<div id="cosmos-bg">
+  <div class="halo halo-1"></div>
+  <div class="halo halo-2"></div>
+  <div class="halo halo-3"></div>
+</div>
+<div id="vignette"></div>
+<svg id="noise" xmlns="http://www.w3.org/2000/svg" width="300" height="300">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter>
+  <rect width="300" height="300" filter="url(#n)" opacity="1"/>
+</svg>
+<canvas id="particles-canvas"></canvas>
+<div id="nav-progress"></div>
 
-<div id="page-splash" class="page active" style="background:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;">
-  <div style="text-align:center;opacity:0;animation:fadeUp 0.7s 0.3s forwards;">
-    <div style="display:inline-flex;align-items:center;gap:12px;margin-bottom:16px;">
-      <span style="font-size:64px;font-weight:700;letter-spacing:-2px;color:#fff;">Auralis</span>
-      <span style="background:#818CF8;color:#fff;font-size:16px;font-weight:700;padding:4px 12px;border-radius:999px;letter-spacing:0.05em;">RH</span>
+<!-- ===== SPLASH PAGE ===== -->
+<div class="page active" id="page-splash">
+  <div class="splash-logo" id="splash-logo">
+    <div class="splash-brand">
+      Auralis<span class="splash-rh-badge">RH</span>
     </div>
-    <p style="font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:14px;">by Pineapp Inc</p>
-    <p style="font-size:18px;font-weight:300;color:rgba(255,255,255,0.7);">Tu recrutes. Aurora veille.</p>
+    <span class="splash-by">by Pineapp Inc</span>
   </div>
-  <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.08);">
-    <div id="splash-bar" style="height:100%;background:linear-gradient(90deg,#818CF8,#6EE7B7);width:0%;animation:progressSplash 3.2s 0.9s ease-out forwards;"></div>
+  <div class="splash-tagline" id="splash-tagline">Tu recrutes. Aurora veille.</div>
+  <div class="splash-progress-wrap" id="splash-progress-wrap">
+    <div class="splash-progress-bar">
+      <div class="splash-progress-fill" id="splash-fill"></div>
+    </div>
+    <div class="splash-hint">PrÃ©paration de ton espace de travail</div>
+  </div>
+  <div class="splash-aurora" id="splash-aurora">
+    <div class="aurora-dot-pulse"></div>
+    <span class="splash-aurora-text">Aurora se prÃ©pare</span>
   </div>
 </div>
 
-<div id="page-login" class="page" style="background:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;">
-  <div class="glass" style="width:100%;max-width:420px;padding:40px;position:relative;">
-    <div style="text-align:center;margin-bottom:32px;">
-      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <span style="font-size:26px;font-weight:700;color:#fff;">Auralis</span>
-        <span style="background:#818CF8;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;">RH</span>
+<!-- ===== LOGIN PAGE ===== -->
+<div class="page" id="page-login">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-brand-name">
+        Auralis<span class="splash-rh-badge" style="font-size:11px;">RH</span>
       </div>
-      <p style="color:rgba(255,255,255,0.5);font-size:14px;">Bienvenue sur Auralis RH</p>
+      <span class="login-by">by Pineapp Inc</span>
+      <div class="login-title">Bienvenue</div>
+      <div class="login-sub">Comment veux-tu te connecter ?</div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-      <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;gap:10px;justify-content:center;padding:12px 20px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 200ms;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-        <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Continuer avec Google
+
+    <!-- Google button -->
+    <button class="login-btn" onclick="showPage('app')">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+      Continuer avec Google
+    </button>
+
+    <!-- Microsoft button -->
+    <button class="login-btn" onclick="showPage('app')">
+      <svg width="18" height="18" viewBox="0 0 18 18"><rect x="1" y="1" width="7.5" height="7.5" fill="#F35325"/><rect x="9.5" y="1" width="7.5" height="7.5" fill="#81BC06"/><rect x="1" y="9.5" width="7.5" height="7.5" fill="#05A6F0"/><rect x="9.5" y="9.5" width="7.5" height="7.5" fill="#FFBA08"/></svg>
+      Continuer avec Microsoft
+    </button>
+
+    <!-- Apple Mail button -->
+    <button class="login-btn" onclick="showPage('app')">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="3" width="16" height="12" rx="2" stroke="white" stroke-width="1.5"/><path d="M1 5.5L9 11L17 5.5" stroke="white" stroke-width="1.5"/></svg>
+      Continuer avec Apple Mail
+    </button>
+
+    <div class="login-divider">ou par email</div>
+
+    <div class="login-input-wrap">
+      <input class="login-input" type="email" placeholder="ton@email.com">
+    </div>
+
+    <div class="login-input-wrap" style="margin-top:10px;">
+      <input class="login-input" type="password" id="pwd-input" placeholder="Mot de passe" style="padding-right:44px;">
+      <button class="eye-btn" onclick="togglePwd()" type="button">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><ellipse cx="9" cy="9" rx="7" ry="4.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="1.3"/></svg>
       </button>
-      <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;gap:10px;justify-content:center;padding:12px 20px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 200ms;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-        <svg viewBox="0 0 24 24" width="20" height="20"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="13" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="13" width="10" height="10" fill="#00A4EF"/><rect x="13" y="13" width="10" height="10" fill="#FFB900"/></svg>
-        Continuer avec Microsoft
+    </div>
+
+    <div class="login-forgot"><a href="#">Mot de passe oubliÃ© â</a></div>
+
+    <button class="btn-primary" onclick="showPage('app')">AccÃ©der Ã  mon espace</button>
+    <button class="btn-demo" onclick="showPage('app')">Essayer en mode dÃ©mo</button>
+
+    <div class="login-fine">14 jours gratuit Â· sans carte bancaire</div>
+    <div class="login-rgpd">ð¡ DonnÃ©es protÃ©gÃ©es Â· RGPD Â· ð«ð· HÃ©bergÃ© en France</div>
+  </div>
+
+  <!-- Aurora bar on login -->
+  <div id="aurora-bar-login" style="position:fixed;bottom:0;left:0;right:0;height:64px;background:rgba(5,5,15,0.88);backdrop-filter:blur(40px);border-top:1px solid rgba(129,140,248,0.12);display:flex;align-items:center;padding:0 24px;gap:12px;z-index:500;">
+    <div style="width:7px;height:7px;border-radius:50%;background:#818CF8;"></div>
+    <span style="font-size:13px;color:rgba(248,247,244,0.6);font-style:italic;">PremiÃ¨re fois ? Je peux t'aider Ã  configurer ton espace.</span>
+  </div>
+</div>
+
+<!-- ===== APP PAGE ===== -->
+<div class="page" id="page-app" style="display:none;">
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <div class="sidebar-logo">A</div>
+    <div class="sidebar-group">
+      <button class="sidebar-btn active" onclick="switchContent('dashboard')" id="btn-dashboard">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="tooltip">Dashboard</span>
       </button>
-      <button class="btn" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;display:flex;align-items:center;gap:10px;justify-content:center;padding:12px 20px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 200ms;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-        Continuer avec Apple Mail
+      <button class="sidebar-btn" onclick="switchContent('candidates')" id="btn-candidates">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 17c0-3.31 3.13-6 7-6s7 2.69 7 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="tooltip">Candidats</span>
+      </button>
+      <button class="sidebar-btn" onclick="switchContent('kanban')" id="btn-kanban">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="4" width="4" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="4" width="4" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="4" width="4" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="tooltip">Pipeline</span>
       </button>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-      <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
-      <span style="color:rgba(255,255,255,0.4);font-size:12px;">ou</span>
-      <div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div>
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-group">
+      <button class="sidebar-btn" onclick="switchContent('messaging')" id="btn-messaging">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H7l-4 3V5a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="tooltip">Messagerie</span>
+      </button>
+      <button class="sidebar-btn" onclick="switchContent('analytics')" id="btn-analytics">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polyline points="2,14 6,9 10,11 14,5 18,8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="tooltip">Analytics</span>
+      </button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
-      <input class="input" type="email" placeholder="Email professionnel">
-      <input class="input" type="password" placeholder="Mot de passe">
+    <div class="sidebar-sep"></div>
+    <div class="sidebar-group">
+      <button class="sidebar-btn" onclick="switchContent('rgpd')" id="btn-rgpd">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L4 5v5c0 4.4 2.5 7.8 6 9 3.5-1.2 6-4.6 6-9V5z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span class="tooltip">RGPD</span>
+      </button>
+      <button class="sidebar-btn" onclick="switchContent('settings')" id="btn-settings">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span class="tooltip">ParamÃ¨tres</span>
+      </button>
     </div>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <button class="btn btn-indigo btn-full" onclick="showPage('page-onboarding')">AccÃ©der Ã  mon espace</button>
-      <button class="btn btn-peach btn-full" onclick="showPage('page-dashboard')">Essayer en mode dÃ©mo</button>
+    <div class="sidebar-bottom">
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle-btn" title="ThÃ¨me sombre/clair">
+        <div class="theme-toggle-thumb"></div>
+      </button>
     </div>
   </div>
-  <div class="aurora-bar">
-    <div class="aurora-dot"></div>
-    <span class="aurora-label">Aurora Â· Disponible</span>
-  </div>
-</div>
 
-<div id="page-onboarding" class="page" style="background:radial-gradient(ellipse at 15% 85%,rgba(129,140,248,0.14) 0%,transparent 65%),radial-gradient(ellipse at 85% 15%,rgba(110,231,183,0.09) 0%,transparent 65%),#04040e;min-height:100vh;padding-bottom:80px;">
-  <div class="onboarding-wrap">
-    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:32px;padding-top:40px;">
-      <span style="font-size:20px;font-weight:700;color:#fff;">Auralis</span>
-      <span style="background:#818CF8;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;">RH</span>
-    </div>
-    <div class="progress-dots" id="ob-dots">
-      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
-    <!-- Step 1 -->
-    <div id="ob-step-1">
-      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Quel est votre profil ?</h2>
-      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Choisissez le profil qui vous correspond le mieux</p>
-      <div class="persona-grid">
-        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð¥</div><div class="persona-label">RH GÃ©nÃ©raliste</div></div>
-        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð¢</div><div class="persona-label">DRH</div></div>
-        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð¯</div><div class="persona-label">Recruteur indÃ©pendant</div></div>
-        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð</div><div class="persona-label">Startup</div></div>
-        <div class="persona-card" onclick="selectPersona(this)"><div class="persona-icon">ð</div><div class="persona-label">Cabinet RH</div></div>
+  <!-- Main area -->
+  <div id="main-area">
+    <!-- Header -->
+    <div id="app-header">
+      <span id="header-emoji">âï¸</span>
+      <span class="header-greeting" id="header-greeting">Bonne journÃ©e, Lauralie</span>
+      <span class="header-date" id="header-date">Vendredi 20 mars</span>
+      <div class="header-pills">
+        <span class="header-pill active" onclick="switchContent('dashboard')">Dashboard</span>
+        <span class="header-pill" onclick="switchContent('candidates')">Candidats</span>
+        <span class="header-pill" onclick="showAuroraPanel()">Aurora H24</span>
       </div>
-    </div>
-    <!-- Step 2 -->
-    <div id="ob-step-2" style="display:none;">
-      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Comment vous appelez-vous ?</h2>
-      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Aurora vous appellera par votre prÃ©nom</p>
-      <input class="input" type="text" placeholder="Votre prÃ©nom" style="margin-bottom:12px;">
-    </div>
-    <!-- Step 3 -->
-    <div id="ob-step-3" style="display:none;">
-      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Votre organisation ?</h2>
-      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Nom de votre entreprise ou cabinet</p>
-      <input class="input" type="text" placeholder="Nom de l'organisation" style="margin-bottom:12px;">
-    </div>
-    <!-- Step 4 -->
-    <div id="ob-step-4" style="display:none;">
-      <h2 style="font-size:24px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px;">Quels modules souhaitez-vous ?</h2>
-      <p style="color:rgba(255,255,255,0.5);text-align:center;font-size:14px;margin-bottom:24px;">Vous pourrez modifier cela plus tard</p>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        
-        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
-          <input type="checkbox" checked style="accent-color:#818CF8;width:16px;height:16px;">
-          <span style="font-size:14px;color:#fff;">Suggestions Aurora</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
-          <input type="checkbox" checked style="accent-color:#818CF8;width:16px;height:16px;">
-          <span style="font-size:14px;color:#fff;">Pipeline candidats</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
-          <input type="checkbox" checked style="accent-color:#818CF8;width:16px;height:16px;">
-          <span style="font-size:14px;color:#fff;">Analyses RH</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
-          <input type="checkbox"  style="accent-color:#818CF8;width:16px;height:16px;">
-          <span style="font-size:14px;color:#fff;">RGPD auto</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
-          <input type="checkbox"  style="accent-color:#818CF8;width:16px;height:16px;">
-          <span style="font-size:14px;color:#fff;">Messagerie</span>
-        </label>
-        <label style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;">
-          <input type="checkbox"  style="accent-color:#818CF8;width:16px;height:16px;">
-          <span style="font-size:14px;color:#fff;">Rapports</span>
-        </label>
-      </div>
-    </div>
-    <!-- Step 5 -->
-    <div id="ob-step-5" style="display:none;">
-      <div style="background:linear-gradient(135deg,rgba(129,140,248,0.15),rgba(110,231,183,0.08));border:1px solid rgba(129,140,248,0.3);border-radius:20px;padding:32px;text-align:center;margin-bottom:24px;">
-        <div style="width:72px;height:72px;border-radius:50%;overflow:hidden;margin:0 auto 20px;border:3px solid #818CF8;">
-          <img src="https://drive.google.com/uc?export=view&id=1WfYrK0FDfZ_pSTjd3M9_jsj84bVy0s2D" alt="Aurora" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#818CF8,#6EE7B7);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;&quot;>A</div>'">
-        </div>
-        <h2 style="font-size:22px;font-weight:700;color:#fff;margin-bottom:12px;">Je m'appelle Aurora.</h2>
-        <p style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.7;max-width:400px;margin:0 auto 24px;">Je suis votre assistante RH intelligente. Je lis vos candidatures, je classe les profils, je vous fais gagner 3h par semaine. Par oÃ¹ voulez-vous commencer ?</p>
-        <button class="btn btn-indigo" onclick="showPage('page-dashboard')" style="font-size:15px;padding:14px 32px;">AccÃ©der au tableau de bord</button>
-      </div>
-    </div>
-    <!-- Navigation -->
-    <div id="ob-nav" style="display:flex;gap:12px;justify-content:center;margin-top:32px;">
-      <button id="ob-back" class="btn btn-ghost" onclick="obStep(-1)" style="display:none;">Retour</button>
-      <button id="ob-next" class="btn btn-indigo" onclick="obStep(1)">Suivant</button>
-    </div>
-  </div>
-</div>
-
-<div id="page-dashboard" class="page">
-  
-<nav class="sidebar" id="main-sidebar">
-  <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;">
-    <span style="font-size:14px;font-weight:700;color:#818CF8;">A</span>
-  </div>
-  <div class="sidebar-icon active" onclick="showPage('page-dashboard')" title="Tableau de bord"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-candidates')" title="Candidats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-kanban')" title="Kanban"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-messaging')" title="Messagerie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-analytics')" title="Analyses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-rgpd')" title="RGPD"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-  <div style="flex:1;"></div>
-  <div class="sidebar-icon" onclick="showPage('page-settings')" title="ParamÃ¨tres"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-</nav>
-  
-<nav class="mobile-nav" id="mobile-nav">
-  <div class="mobile-nav-item active" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Accueil</span></div>
-  <div class="mobile-nav-item" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Candidats</span></div>
-  <div class="mobile-nav-item" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg><span>Kanban</span></div>
-  <div class="mobile-nav-item" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span></div>
-  <div class="mobile-nav-item" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Stats</span></div>
-</nav>
-  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Basculer le thÃ¨me">ð</button>
-  <div class="main-content">
-    <!-- HEADER -->
-    <div class="page-header">
-      <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
-          <span style="font-size:20px;">ð¤</span>
-          <span style="font-size:20px;font-weight:700;color:var(--text-primary);">Bonne journÃ©e, Lauralie</span>
-        </div>
-        <div style="font-size:13px;color:var(--text-secondary);">Vendredi 20 mars 2026</div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <span class="pill pill-indigo">3 nouveaux</span>
-        <span class="pill pill-peach">1 urgent</span>
-        <span class="pill pill-mint">82% actifs</span>
-      </div>
+      <button class="theme-toggle" onclick="toggleTheme()" style="margin-left:12px;" title="ThÃ¨me">
+        <div class="theme-toggle-thumb"></div>
+      </button>
     </div>
 
-    <!-- HERO AURORA CARD -->
-    <div class="card" style="border-left:3px solid #818CF8;margin-bottom:20px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span style="width:6px;height:6px;border-radius:50%;background:#818CF8;animation:pulse 2s infinite;display:inline-block;"></span>
-          <span style="font-size:12px;font-weight:600;color:#818CF8;letter-spacing:0.05em;">AURORA Â· SUGGESTION</span>
-        </div>
-        <span style="font-size:11px;color:var(--text-secondary);">Mise Ã  jour il y a 2 min</span>
-      </div>
-      <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
-        <div style="flex:1;min-width:200px;">
-          <h3 style="font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Camille Moreau</h3>
-          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:16px;">Lyon Â· DÃ©veloppeuse Full Stack</p>
-          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
-            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);">
-              <span style="color:#6EE7B7;font-weight:700;">â</span> ExpÃ©rience parfaitement alignÃ©e avec le poste
+    <!-- Content -->
+    <div id="content-area">
+
+      <!-- DASHBOARD -->
+      <div class="content-page active" id="content-dashboard">
+        <div class="dashboard-grid">
+          <!-- Hero card -->
+          <div class="glass-card hero-card">
+            <div class="aurora-suggestion-label">Aurora Â· Suggestion</div>
+            <div class="hero-sep"></div>
+            <div class="hero-score-row">
+              <div>
+                <div class="hero-name">Camille Moreau</div>
+                <div class="hero-location">Lyon Â· DÃ©veloppeuse Full-Stack</div>
+              </div>
+              <div class="hero-score">82</div>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);">
-              <span style="color:#6EE7B7;font-weight:700;">â</span> DisponibilitÃ© immÃ©diate confirmÃ©e
+            <div class="hero-justif">
+              <p>Similaire Ã  tes 3 derniÃ¨res recrues rÃ©ussies.</p>
+              <p>Son profil dÃ©passe ta moyenne de 8 points.</p>
+              <p>Elle attend depuis J+2 â fenÃªtre optimale.</p>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);">
-              <span style="color:#6EE7B7;font-weight:700;">â</span> RecommandÃ©e par 2 contacts de votre rÃ©seau
+            <div class="hero-actions">
+              <button class="btn-contact" onclick="showAuroraPanel()">Contacter</button>
+              <button class="btn-profile" onclick="switchContent('candidates')">Voir le profil</button>
+            </div>
+            <div class="hero-level">
+              <div class="level-label">ââââââââââ Niveau 2 Â· Recrutement actif</div>
+              <div class="level-bar"><div class="level-fill"></div></div>
             </div>
           </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-indigo" onclick="showPage('page-candidate-detail')">Voir le profil</button>
-            <button class="btn btn-ghost">Passer</button>
-          </div>
-        </div>
-        <div style="text-align:center;">
-          <div class="score-circle" style="--pct:82;" id="hero-score-circle">
-            <span id="hero-score">0</span>
-          </div>
-          <div style="font-size:11px;color:var(--text-secondary);margin-top:6px;">Score Aurora</div>
-        </div>
-      </div>
-    </div>
 
-    <!-- STAT CARDS -->
-    <div class="cards-grid">
-      <div class="card stat-card">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Candidats actifs</div>
-        <div class="stat-value" style="color:#6EE7B7;">47</div>
-        <div class="stat-label">+3 cette semaine</div>
-      </div>
-      <div class="card stat-card">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Entretiens</div>
-        <div class="stat-value" style="color:#818CF8;">8</div>
-        <div class="stat-label">Cette semaine</div>
-      </div>
-      <div class="card stat-card">
-        <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Temps de traitement</div>
-        <div class="stat-value" style="color:#FBBF9A;">2.4j</div>
-        <div class="stat-label">Vs 18j marchÃ©</div>
-      </div>
-    </div>
-
-    <!-- RECENT ACTIVITY -->
-    <div class="card" style="margin-bottom:20px;">
-      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">ActivitÃ© rÃ©cente</div>
-      
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6EE7B722,#6EE7B744);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#6EE7B7;flex-shrink:0;">C</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
-          <div style="font-size:12px;color:var(--text-secondary);">Candidature reÃ§ue Â· Lyon</div>
-        </div>
-        <div style="font-size:11px;color:var(--text-secondary);">Il y a 2 min</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#818CF822,#818CF844);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#818CF8;flex-shrink:0;">M</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
-          <div style="font-size:12px;color:var(--text-secondary);">Entretien planifiÃ© Â· Paris</div>
-        </div>
-        <div style="font-size:11px;color:var(--text-secondary);">Il y a 1h</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FBBF9A22,#FBBF9A44);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#FBBF9A;flex-shrink:0;">T</div>
-        <div style="flex:1;">
-          <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
-          <div style="font-size:12px;color:var(--text-secondary);">Relance envoyÃ©e Â· Bordeaux</div>
-        </div>
-        <div style="font-size:11px;color:var(--text-secondary);">Il y a 3h</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- AURORA TICKER -->
-  <div class="aurora-ticker">
-    <div class="ticker-inner">Aurora a analysÃ© 3 nouveaux profils Â· Camille Moreau recommandÃ©e en prioritÃ© Â· Thomas Petit Ã  relancer cette semaine Â· Consentements RGPD Ã  jour Â· 82% de candidats actifs cette semaine Â· Aurora optimise votre pipeline en temps rÃ©el &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-  </div>
-  <!-- AURORA BAR -->
-  <div class="aurora-bar">
-    <div class="aurora-dot"></div>
-    <span class="aurora-label">Aurora Â· Active</span>
-    <button class="aurora-chat-btn" onclick="toggleChat()" title="Parler Ã  Aurora">?</button>
-  </div>
-</div>
-
-<div id="page-candidates" class="page">
-  <nav class="sidebar">
-    <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div>
-    <div class="sidebar-icon" onclick="showPage('page-dashboard')" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
-    <div class="sidebar-icon active" onclick="showPage('page-candidates')" title="Candidats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-    <div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
-    <div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-    <div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-    <div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-    <div style="flex:1;"></div>
-    <div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-  </nav>
-  <div class="main-content">
-    <div class="page-header">
-      <h1 class="page-title">Candidats</h1>
-      <input class="input" type="search" placeholder="Rechercher par nom ou ville..." id="candidate-search" oninput="filterCandidates(this.value)" style="width:260px;">
-    </div>
-    <div id="candidates-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
-      
-      <div class="candidate-card" data-name="camille moreau" data-city="lyon">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <div class="avatar" style="background:linear-gradient(135deg,#818CF833,#818CF855);color:#818CF8;">CM</div>
-          <div>
-            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Lyon Â· DÃ©veloppeuse Full Stack</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <span class="score-badge">82/100</span>
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#6EE7B722;color:#6EE7B7;border:1px solid #6EE7B744;">Active</span>
-        </div>
-        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
-      </div>
-      <div class="candidate-card" data-name="marie dubois" data-city="paris">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <div class="avatar" style="background:linear-gradient(135deg,#C4B5FD33,#C4B5FD55);color:#C4B5FD;">MD</div>
-          <div>
-            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Paris Â· Chef de projet RH</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <span class="score-badge">78/100</span>
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#818CF822;color:#818CF8;border:1px solid #818CF844;">En entretien</span>
-        </div>
-        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
-      </div>
-      <div class="candidate-card" data-name="thomas petit" data-city="bordeaux">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <div class="avatar" style="background:linear-gradient(135deg,#6EE7B733,#6EE7B755);color:#6EE7B7;">TP</div>
-          <div>
-            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Bordeaux Â· Data Analyst</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <span class="score-badge">71/100</span>
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#FBBF9A22;color:#FBBF9A;border:1px solid #FBBF9A44;">En attente</span>
-        </div>
-        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
-      </div>
-      <div class="candidate-card" data-name="nadia benzara" data-city="marseille">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <div class="avatar" style="background:linear-gradient(135deg,#FBBF9A33,#FBBF9A55);color:#FBBF9A;">NB</div>
-          <div>
-            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Nadia Benzara</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Marseille Â· UX Designer</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <span class="score-badge">65/100</span>
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b44;">Ã relancer</span>
-        </div>
-        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
-      </div>
-      <div class="candidate-card" data-name="sarah martin" data-city="lille">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <div class="avatar" style="background:linear-gradient(135deg,#C4B5FD33,#C4B5FD55);color:#C4B5FD;">SM</div>
-          <div>
-            <div style="font-size:15px;font-weight:600;color:var(--text-primary);">Sarah Martin</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Lille Â· ChargÃ©e de communication</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-          <span class="score-badge">58/100</span>
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:#ef444422;color:#ef4444;border:1px solid #ef444444;">ArchivÃ©e</span>
-        </div>
-        <button class="btn btn-indigo btn-full" onclick="showPage('page-candidate-detail')" style="font-size:13px;padding:9px;">Voir le profil</button>
-      </div>
-    </div>
-  </div>
-  <div class="aurora-ticker"><div class="ticker-inner">5 candidats actifs Â· Camille Moreau recommandÃ©e Â· Thomas Petit Ã  relancer Â· Aurora analyse en continu &nbsp;&nbsp;&nbsp;&nbsp;</div></div>
-  <div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
-  <nav class="mobile-nav">
-    <div class="mobile-nav-item" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Accueil</span></div>
-    <div class="mobile-nav-item active" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>Candidats</span></div>
-    <div class="mobile-nav-item" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg><span>Kanban</span></div>
-    <div class="mobile-nav-item" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Messages</span></div>
-    <div class="mobile-nav-item" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Stats</span></div>
-  </nav>
-</div>
-
-<div id="page-kanban" class="page">
-  <nav class="sidebar">
-  <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div>
-  <div class="sidebar-icon" onclick="showPage('page-dashboard')" title="Dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-  <div style="flex:1;"></div>
-  <div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-</nav>
-  <div class="main-content">
-    <div class="page-header"><h1 class="page-title">Pipeline Candidats</h1><span class="pill pill-indigo">5 candidats</span></div>
-    <div class="kanban-wrap" id="kanban-board">
-      <div class="kanban-col" style="border-top:3px solid #818CF8;">
-        <div class="kanban-col-header"><span style="color:#818CF8;">Nouveau</span><span class="pill pill-indigo" style="font-size:11px;">2</span></div>
-        <div class="kanban-item">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Camille Moreau</div>
-          <div style="font-size:11px;color:var(--text-secondary);">Lyon Â· Score 82</div>
-          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">DÃ©veloppeuse Full Stack</div>
-        </div>
-        <div class="kanban-item">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Sarah Martin</div>
-          <div style="font-size:11px;color:var(--text-secondary);">Lille Â· Score 58</div>
-          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">ChargÃ©e de comm.</div>
-        </div>
-      </div>
-      <div class="kanban-col" style="border-top:3px solid #C4B5FD;">
-        <div class="kanban-col-header"><span style="color:#C4B5FD;">PrÃ©sÃ©lectionnÃ©</span><span style="background:rgba(196,181,253,0.2);color:#C4B5FD;border:1px solid rgba(196,181,253,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">1</span></div>
-        <div class="kanban-item">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Marie Dubois</div>
-          <div style="font-size:11px;color:var(--text-secondary);">Paris Â· Score 78</div>
-          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Chef de projet RH</div>
-        </div>
-      </div>
-      <div class="kanban-col" style="border-top:3px solid #6EE7B7;">
-        <div class="kanban-col-header"><span style="color:#6EE7B7;">Entretien</span><span style="background:rgba(110,231,183,0.2);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">1</span></div>
-        <div class="kanban-item">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Thomas Petit</div>
-          <div style="font-size:11px;color:var(--text-secondary);">Bordeaux Â· Score 71</div>
-          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">Data Analyst</div>
-        </div>
-      </div>
-      <div class="kanban-col" style="border-top:3px solid #FBBF9A;">
-        <div class="kanban-col-header"><span style="color:#FBBF9A;">Offre</span><span style="background:rgba(251,191,154,0.2);color:#FBBF9A;border:1px solid rgba(251,191,154,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">1</span></div>
-        <div class="kanban-item">
-          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Nadia Benzara</div>
-          <div style="font-size:11px;color:var(--text-secondary);">Marseille Â· Score 65</div>
-          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">UX Designer</div>
-        </div>
-      </div>
-      <div class="kanban-col" style="border-top:3px solid #ef4444;">
-        <div class="kanban-col-header"><span style="color:#ef4444;">RefusÃ©</span><span style="background:rgba(239,68,68,0.2);color:#ef4444;border:1px solid rgba(239,68,68,0.3);font-size:11px;padding:2px 8px;border-radius:999px;">0</span></div>
-        <div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:12px;">Aucun refus</div>
-      </div>
-    </div>
-  </div>
-  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· 5 candidats actifs Â· RGPD Ã  jour Â· Camille Moreau prioritaire &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
-</div>
-
-<div id="page-messaging" class="page">
-  <nav class="sidebar">
-  <div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div>
-  <div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-  <div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-  <div style="flex:1;"></div>
-  <div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06-.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
-</nav>
-  <div class="main-content" style="padding:24px 24px 120px;">
-    <div class="page-header"><h1 class="page-title">Messagerie</h1></div>
-    <div class="card" style="padding:0;overflow:hidden;">
-      <div class="msg-layout">
-        <div class="msg-contacts">
-          <div style="padding:12px 16px;font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid rgba(255,255,255,0.06);">Conversations</div>
-          
-          <div class="msg-contact active">
-            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#818CF833,#818CF855);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#818CF8;flex-shrink:0;">CM</div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
-              <div style="font-size:11px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Merci pour votre retour</div>
+          <!-- Stats -->
+          <div class="stats-grid">
+            <div class="glass-card stat-card">
+              <div class="stat-number indigo">5</div>
+              <div class="stat-label">candidatures actives</div>
             </div>
-            <span style="font-size:10px;color:var(--text-secondary);">2 min</span>
-          </div>
-          <div class="msg-contact ">
-            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#C4B5FD33,#C4B5FD55);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#C4B5FD;flex-shrink:0;">MD</div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
-              <div style="font-size:11px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Je suis disponible mardi</div>
+            <div class="glass-card stat-card">
+              <div class="stat-number mint">2</div>
+              <div class="stat-label">entretiens cette semaine</div>
             </div>
-            <span style="font-size:10px;color:var(--text-secondary);">1h</span>
-          </div>
-          <div class="msg-contact ">
-            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6EE7B733,#6EE7B755);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#6EE7B7;flex-shrink:0;">TP</div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
-              <div style="font-size:11px;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Bien reÃ§u, merci</div>
-            </div>
-            <span style="font-size:10px;color:var(--text-secondary);">3h</span>
-          </div>
-        </div>
-        <div class="msg-chat" style="background:rgba(0,0,0,0.1);">
-          <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);font-size:14px;font-weight:600;color:var(--text-primary);">Camille Moreau Â· Lyon</div>
-          <div class="msg-chat-messages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;">
-            <div class="msg msg-aurora">Bonjour Camille, nous avons bien reÃ§u votre candidature pour le poste de DÃ©veloppeuse Full Stack. Votre profil nous intÃ©resse, parce que votre expÃ©rience correspond exactement Ã  nos besoins.</div>
-            <div class="msg msg-user">Bonjour, merci beaucoup pour votre retour rapide. Je suis disponible pour un entretien Ã  partir de lundi prochain.</div>
-            <div class="msg msg-aurora">Parfait. Je vous propose lundi 23 mars Ã  10h ou 14h. Lequel vous convient le mieux ?</div>
-            <div class="msg msg-user">14h me convient parfaitement. Merci pour votre retour.</div>
-          </div>
-          <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:8px;">
-            <input class="chat-input" type="text" placeholder="Ãcrire un message..." id="msg-input">
-            <button class="chat-send" onclick="sendMsg()">â</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· 5 candidats actifs Â· RGPD Ã  jour &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
-</div>
-
-<div id="page-candidate-detail" class="page">
-  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
-  <div class="main-content">
-    <button class="btn btn-ghost" onclick="showPage('page-candidates')" style="margin-bottom:20px;font-size:13px;">â Retour aux candidats</button>
-    <div class="card" style="margin-bottom:20px;">
-      <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
-        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#818CF822,#818CF844);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#818CF8;flex-shrink:0;">CM</div>
-        <div style="flex:1;">
-          <h1 style="font-size:24px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Camille Moreau</h1>
-          <p style="color:var(--text-secondary);font-size:14px;margin-bottom:12px;">Lyon, France Â· DÃ©veloppeuse Full Stack Â· Disponible immÃ©diatement</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <span class="score-badge" style="font-size:14px;padding:6px 14px;">Score 82/100</span>
-            <span class="pill pill-mint">Active</span>
-            <span class="pill pill-indigo">Prioritaire</span>
-          </div>
-        </div>
-        <div class="score-circle" style="--pct:82;"><span style="font-size:20px;font-weight:700;">82</span></div>
-      </div>
-    </div>
-    <div class="tabs" id="detail-tabs">
-      <div class="tab active" onclick="switchTab('profil',this)">Profil</div>
-      <div class="tab" onclick="switchTab('entretiens',this)">Entretiens</div>
-      <div class="tab" onclick="switchTab('documents',this)">Documents</div>
-      <div class="tab" onclick="switchTab('notes',this)">Notes</div>
-      <div class="tab" onclick="switchTab('rgpd-c',this)">RGPD</div>
-    </div>
-    <div id="tab-profil">
-      <div class="cards-grid">
-        <div class="card">
-          <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:12px;">CompÃ©tences</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            <span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">React</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">TypeScript</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">Node.js</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">PostgreSQL</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">Docker</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">GraphQL</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">Python</span><span style="padding:4px 10px;border-radius:8px;background:rgba(129,140,248,0.12);color:#818CF8;font-size:12px;border:1px solid rgba(129,140,248,0.2);">AWS</span>
-          </div>
-        </div>
-        <div class="card">
-          <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:12px;">Analyse Aurora</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">ExpÃ©rience</span><span style="color:#6EE7B7;font-weight:700;">90%</span></div>
-              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:90%;background:#6EE7B7;border-radius:2px;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">CompÃ©tences</span><span style="color:#818CF8;font-weight:700;">85%</span></div>
-              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:85%;background:#818CF8;border-radius:2px;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">DisponibilitÃ©</span><span style="color:#6EE7B7;font-weight:700;">100%</span></div>
-              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:100%;background:#6EE7B7;border-radius:2px;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span style="color:var(--text-secondary);">AdÃ©quation</span><span style="color:#C4B5FD;font-weight:700;">78%</span></div>
-              <div style="height:4px;background:rgba(255,255,255,0.1);border-radius:2px;"><div style="height:100%;width:78%;background:#C4B5FD;border-radius:2px;"></div></div>
+            <div class="glass-card stat-italic">
+              Aujourd'hui tu as traitÃ© 4 candidatures.
             </div>
           </div>
         </div>
       </div>
-      <div class="card">
-        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-secondary);margin-bottom:16px;">Parcours professionnel</div>
-        
-        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-          <div style="width:2px;background:rgba(129,140,248,0.3);border-radius:1px;flex-shrink:0;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Lead Developer</div>
-            <div style="font-size:12px;color:#818CF8;">Startup Lyon Tech</div>
-            <div style="font-size:11px;color:var(--text-secondary);">2022 â prÃ©sent Â· 2 ans</div>
+
+      <!-- CANDIDATES -->
+      <div class="content-page" id="content-candidates">
+        <div class="page-title">Candidats</div>
+        <div class="page-sub">5 profils actifs Â· Aurora les surveille</div>
+        <div class="candidates-list">
+          <div class="glass-card candidate-row" onclick="showAuroraPanel()">
+            <div class="candidate-avatar">CM</div>
+            <div class="candidate-info">
+              <div class="candidate-name">Camille Moreau</div>
+              <div class="candidate-meta">Lyon Â· DÃ©veloppeuse Full-Stack Â· J+2</div>
+            </div>
+            <span class="score-badge high">Optimal</span>
+            <div class="candidate-score">82</div>
           </div>
-        </div>
-        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-          <div style="width:2px;background:rgba(129,140,248,0.3);border-radius:1px;flex-shrink:0;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">DÃ©veloppeuse Full Stack</div>
-            <div style="font-size:12px;color:#818CF8;">Agence Digital</div>
-            <div style="font-size:11px;color:var(--text-secondary);">2019 â 2022 Â· 3 ans</div>
+          <div class="glass-card candidate-row" onclick="showAuroraPanel()">
+            <div class="candidate-avatar">MC</div>
+            <div class="candidate-info">
+              <div class="candidate-name">Marie Chauvet</div>
+              <div class="candidate-meta">Paris Â· ChargÃ©e de mission RH Â· J+5</div>
+            </div>
+            <span class="score-badge high">Chaud</span>
+            <div class="candidate-score">78</div>
           </div>
-        </div>
-        <div style="display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-          <div style="width:2px;background:rgba(129,140,248,0.3);border-radius:1px;flex-shrink:0;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">DÃ©veloppeuse Junior</div>
-            <div style="font-size:12px;color:#818CF8;">Freelance</div>
-            <div style="font-size:11px;color:var(--text-secondary);">2017 â 2019 Â· 2 ans</div>
+          <div class="glass-card candidate-row" onclick="showAuroraPanel()">
+            <div class="candidate-avatar">NB</div>
+            <div class="candidate-info">
+              <div class="candidate-name">Nadia Bensalem</div>
+              <div class="candidate-meta">Marseille Â· Gestionnaire carriÃ¨res Â· J+8</div>
+            </div>
+            <span class="score-badge mid">TiÃ¨de</span>
+            <div class="candidate-score">71</div>
+          </div>
+          <div class="glass-card candidate-row" onclick="showAuroraPanel()">
+            <div class="candidate-avatar">TL</div>
+            <div class="candidate-info">
+              <div class="candidate-name">Thomas Lebrun</div>
+              <div class="candidate-meta">Bordeaux Â· Assistant RH Â· J+3</div>
+            </div>
+            <span class="score-badge mid">Actif</span>
+            <div class="candidate-score">65</div>
+          </div>
+          <div class="glass-card candidate-row" onclick="showAuroraPanel()">
+            <div class="candidate-avatar">SA</div>
+            <div class="candidate-info">
+              <div class="candidate-name">Sophie Andrieu</div>
+              <div class="candidate-meta">Strasbourg Â· Coordinatrice RH Â· J+12</div>
+            </div>
+            <span class="score-badge low">Froid</span>
+            <div class="candidate-score">58</div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="tab-entretiens" style="display:none;">
-      <div class="card"><p style="color:var(--text-secondary);font-size:14px;">Entretien planifiÃ© : Lundi 23 mars 2026 Ã  14h. Format : VisioconfÃ©rence. Intervieweur : Lauralie Daguzay.</p></div>
-    </div>
-    <div id="tab-documents" style="display:none;">
-      <div class="card">
-        
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-          <span style="font-size:20px;">ð</span>
-          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text-primary);">CV_Camille_Moreau.pdf</div><div style="font-size:11px;color:var(--text-secondary);">CV Â· 12 mars 2026</div></div>
-          <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;">TÃ©lÃ©charger</button>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-          <span style="font-size:20px;">ð</span>
-          <div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text-primary);">Lettre_Motivation.pdf</div><div style="font-size:11px;color:var(--text-secondary);">Lettre de motivation Â· 12 mars 2026</div></div>
-          <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;">TÃ©lÃ©charger</button>
+
+      <!-- KANBAN -->
+      <div class="content-page" id="content-kanban">
+        <div class="page-title">Pipeline</div>
+        <div class="page-sub">Vue kanban de ton recrutement</div>
+        <div class="kanban-board">
+          <div class="kanban-col">
+            <div class="kanban-col-title">Nouveau <span class="kanban-col-count">2</span></div>
+            <div class="glass-card kanban-card">
+              <span class="kanban-card-score">71</span>
+              <div class="kanban-card-name">Nadia Bensalem</div>
+              <div class="kanban-card-role">Gestionnaire carriÃ¨res</div>
+            </div>
+            <div class="glass-card kanban-card">
+              <span class="kanban-card-score">58</span>
+              <div class="kanban-card-name">Sophie Andrieu</div>
+              <div class="kanban-card-role">Coordinatrice RH</div>
+            </div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-title">ContactÃ© <span class="kanban-col-count">1</span></div>
+            <div class="glass-card kanban-card">
+              <span class="kanban-card-score">65</span>
+              <div class="kanban-card-name">Thomas Lebrun</div>
+              <div class="kanban-card-role">Assistant RH</div>
+            </div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-title">Entretien <span class="kanban-col-count">1</span></div>
+            <div class="glass-card kanban-card">
+              <span class="kanban-card-score">78</span>
+              <div class="kanban-card-name">Marie Chauvet</div>
+              <div class="kanban-card-role">ChargÃ©e mission RH</div>
+            </div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-title">Top choix <span class="kanban-col-count">1</span></div>
+            <div class="glass-card kanban-card" style="border-color:rgba(129,140,248,0.3);background:rgba(129,140,248,0.08);">
+              <span class="kanban-card-score">82</span>
+              <div class="kanban-card-name">Camille Moreau</div>
+              <div class="kanban-card-role">DÃ©veloppeuse Full-Stack</div>
+            </div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-title">Offre <span class="kanban-col-count">0</span></div>
+            <div style="font-size:12px;color:var(--text-secondary);padding:12px 0;font-style:italic;">Aucune offre envoyÃ©e</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div id="tab-notes" style="display:none;">
-      <div class="card"><textarea class="input" rows="6" placeholder="Ajouter une note sur cette candidate..."></textarea></div>
-    </div>
-    <div id="tab-rgpd-c" style="display:none;">
-      <div class="card"><p style="color:var(--text-secondary);font-size:14px;">Consentement RGPD : Actif depuis le 12 mars 2026. DurÃ©e de conservation : 2 ans. Droit Ã  l'effacement disponible.</p></div>
-    </div>
+
+      <!-- MESSAGING -->
+      <div class="content-page" id="content-messaging">
+        <div class="page-title">Messagerie</div>
+        <div class="page-sub">Conversations avec vos candidats</div>
+        <div class="messages-layout">
+          <div class="glass-card msg-list">
+            <div class="msg-list-item active">
+              <div class="msg-list-name">Camille Moreau</div>
+              <div class="msg-list-preview">Merci pour votre rÃ©ponseâ¦</div>
+            </div>
+            <div class="msg-list-item">
+              <div class="msg-list-name">Marie Chauvet</div>
+              <div class="msg-list-preview">Je suis disponible jeudiâ¦</div>
+            </div>
+            <div class="msg-list-item">
+              <div class="msg-list-name">Thomas Lebrun</div>
+              <div class="msg-list-preview">Bien reÃ§u, merci !</div>
+            </div>
+          </div>
+          <div class="glass-card msg-chat">
+            <div class="msg-chat-header">
+              <div class="candidate-name">Camille Moreau</div>
+              <div class="candidate-meta">Lyon Â· DÃ©veloppeuse Full-Stack Â· 82 pts</div>
+            </div>
+            <div class="msg-bubbles">
+              <div class="bubble them">Bonjour, j'ai bien reÃ§u votre message concernant le poste.</div>
+              <div class="bubble me">Bonjour Camille, effectivement votre profil nous intÃ©resse beaucoup.</div>
+              <div class="bubble them">Merci ! Je serais disponible cette semaine pour un entretien.</div>
+              <div class="bubble me">Parfait. Jeudi 14h vous conviendrait ?</div>
+              <div class="bubble them">Tout Ã  fait, c'est notÃ©. Ã jeudi !</div>
+            </div>
+            <div class="msg-input-row">
+              <input class="msg-input" placeholder="Ãcrire un messageâ¦">
+              <button class="msg-send-btn">Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="content-page" id="content-analytics">
+        <div class="page-title">Analytics</div>
+        <div class="page-sub">Tableau de bord de votre recrutement</div>
+        <div class="analytics-grid">
+          <div class="glass-card analytics-big-card">
+            <div class="analytics-metric">5</div>
+            <div class="analytics-metric-label">Candidats actifs</div>
+          </div>
+          <div class="glass-card analytics-big-card">
+            <div class="analytics-metric mint">74</div>
+            <div class="analytics-metric-label">Score moyen</div>
+          </div>
+          <div class="glass-card analytics-big-card">
+            <div class="analytics-metric peach">2</div>
+            <div class="analytics-metric-label">Entretiens planifiÃ©s</div>
+          </div>
+          <div class="glass-card analytics-big-card">
+            <div class="analytics-metric" style="color:var(--lavender);">J+5</div>
+            <div class="analytics-metric-label">DÃ©lai moyen de rÃ©ponse</div>
+          </div>
+        </div>
+        <div class="glass-card" style="margin-top:16px;padding:24px;">
+          <div class="page-sub" style="margin-bottom:16px;">Scores par candidat</div>
+          <div class="bar-chart">
+            <div class="bar-row"><span class="bar-name">Camille M.</span><div class="bar-track"><div class="bar-fill" style="width:82%"></div></div><span class="bar-val">82</span></div>
+            <div class="bar-row"><span class="bar-name">Marie C.</span><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div><span class="bar-val">78</span></div>
+            <div class="bar-row"><span class="bar-name">Nadia B.</span><div class="bar-track"><div class="bar-fill" style="width:71%"></div></div><span class="bar-val">71</span></div>
+            <div class="bar-row"><span class="bar-name">Thomas L.</span><div class="bar-track"><div class="bar-fill" style="width:65%"></div></div><span class="bar-val">65</span></div>
+            <div class="bar-row"><span class="bar-name">Sophie A.</span><div class="bar-track"><div class="bar-fill" style="width:58%"></div></div><span class="bar-val">58</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RGPD -->
+      <div class="content-page" id="content-rgpd">
+        <div class="page-title">DonnÃ©es & RGPD</div>
+        <div class="page-sub">Consentements et protection des donnÃ©es</div>
+        <div class="glass-card" style="margin-bottom:16px;padding:20px;">
+          <div style="display:flex;gap:24px;flex-wrap:wrap;">
+            <div><div style="font-size:24px;font-weight:700;color:var(--mint);">5</div><div style="font-size:12px;color:var(--text-secondary);">Consentements actifs</div></div>
+            <div><div style="font-size:24px;font-weight:700;color:var(--peach);">0</div><div style="font-size:12px;color:var(--text-secondary);">En attente</div></div>
+            <div><div style="font-size:24px;font-weight:700;color:var(--lavender);">0</div><div style="font-size:12px;color:var(--text-secondary);">AnonymisÃ©s</div></div>
+          </div>
+        </div>
+        <div class="rgpd-list">
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Camille Moreau</div><div class="rgpd-date">Consentement actif Â· Expire le 20/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Marie Chauvet</div><div class="rgpd-date">Consentement actif Â· Expire le 15/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Nadia Bensalem</div><div class="rgpd-date">Consentement actif Â· Expire le 10/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Thomas Lebrun</div><div class="rgpd-date">Consentement actif Â· Expire le 18/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Sophie Andrieu</div><div class="rgpd-date">Consentement actif Â· Expire le 08/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="content-page" id="content-settings">
+        <div class="page-title">ParamÃ¨tres</div>
+        <div class="page-sub">Configuration de votre espace Auralis RH</div>
+        <div class="settings-section">
+          <div class="settings-section-title">Compte</div>
+          <div class="glass-card">
+            <div class="settings-row"><div><div class="settings-label">Lauralie Daguzay</div><div class="settings-sub">lauralie.daguzay@gmail.com</div></div><button class="rgpd-btn">Modifier</button></div>
+            <div class="settings-row"><div><div class="settings-label">Notifications email</div><div class="settings-sub">Recevoir les rapports hebdomadaires</div></div><button class="toggle-switch on" onclick="this.classList.toggle('on')"><div class="toggle-switch-thumb"></div></button></div>
+            <div class="settings-row"><div><div class="settings-label">Mode Aurora H24</div><div class="settings-sub">Assistance intelligente toujours active</div></div><button class="toggle-switch on" onclick="this.classList.toggle('on')"><div class="toggle-switch-thumb"></div></button></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-title">Apparence</div>
+          <div class="glass-card">
+            <div class="settings-row"><div><div class="settings-label">ThÃ¨me sombre/clair</div><div class="settings-sub">Cosmos sombre ou clartÃ© lumineuse</div></div><button class="toggle-switch" id="settings-theme-toggle" onclick="toggleTheme();this.classList.toggle('on')"><div class="toggle-switch-thumb"></div></button></div>
+          </div>
+        </div>
+        <div class="settings-section">
+          <div class="settings-section-title">IntÃ©grations</div>
+          <div class="glass-card">
+            <div class="settings-row"><div><div class="settings-label">Gmail</div><div class="settings-sub">ConnectÃ© via OAuth Â· Lecture seule</div></div><span style="font-size:11px;color:var(--mint);font-weight:600;">Actif</span></div>
+            <div class="settings-row"><div><div class="settings-label">Google Sheets</div><div class="settings-sub">Tableau de bord analytics</div></div><span style="font-size:11px;color:var(--mint);font-weight:600;">Actif</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end content-area -->
+  </div><!-- end main-area -->
+</div><!-- end page-app -->
+
+<!-- Ticker -->
+<div id="ticker-wrap" style="display:none;">
+  <div id="ticker">
+    <span class="ticker-item type-a">Aurora Â· Camille Moreau a le meilleur profil de la semaine</span>
+    <span class="ticker-sep">Â·</span>
+    <span class="ticker-item type-b">Marie Chauvet Â· Entretien planifiÃ© jeudi 14h00</span>
+    <span class="ticker-sep">Â·</span>
+    <span class="ticker-item type-c">Rappel Â· Thomas Lebrun attend depuis 3 jours</span>
+    <span class="ticker-sep">Â·</span>
+    <span class="ticker-item type-d">RGPD Â· 5 consentements actifs Â· 0 Ã  renouveler</span>
+    <span class="ticker-sep">Â·</span>
+    <span class="ticker-item type-a">Aurora Â· Camille Moreau a le meilleur profil de la semaine</span>
+    <span class="ticker-sep">Â·</span>
+    <span class="ticker-item type-b">Marie Chauvet Â· Entretien planifiÃ© jeudi 14h00</span>
+    <span class="ticker-sep">Â·</span>
+    <span class="ticker-item type-c">Rappel Â· Thomas Lebrun attend depuis 3 jours</span>
+    <span class="ticker-sep">Â·</span>
+    <span class="ticker-item type-d">RGPD Â· 5 consentements actifs Â· 0 Ã  renouveler</span>
   </div>
-  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
 </div>
 
-<div id="page-rgpd" class="page">
-  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
-  <div class="main-content">
-    <div class="page-header">
-      <h1 class="page-title">RGPD & ConformitÃ©</h1>
-      <div style="display:flex;gap:8px;">
-        <span class="pill pill-mint">5 actifs</span>
-        <span class="pill" style="background:rgba(239,68,68,0.15);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">0 expirÃ©</span>
-      </div>
-    </div>
-    <div class="cards-grid" style="margin-bottom:20px;">
-      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Consentements</div><div class="stat-value" style="color:#6EE7B7;">5/5</div><div class="stat-label">Tous actifs</div></div>
-      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Conservation</div><div class="stat-value" style="color:#818CF8;">2 ans</div><div class="stat-label">Politique en vigueur</div></div>
-      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">DerniÃ¨re audit</div><div class="stat-value" style="color:#FBBF9A;">20 mars</div><div class="stat-label">Ã jour</div></div>
-    </div>
-    <div class="card" style="margin-bottom:20px;">
-      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Consentements candidats</div>
-      
-      <div class="rgpd-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="status-dot" style="background:#6EE7B7;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Camille Moreau</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 12 mars 2026 Â· Expire le 12 mars 2028</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
-          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
-        </div>
-      </div>
-      <div class="rgpd-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="status-dot" style="background:#6EE7B7;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Marie Dubois</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 8 mars 2026 Â· Expire le 8 mars 2028</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
-          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
-        </div>
-      </div>
-      <div class="rgpd-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="status-dot" style="background:#6EE7B7;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Thomas Petit</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 5 mars 2026 Â· Expire le 5 mars 2028</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
-          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
-        </div>
-      </div>
-      <div class="rgpd-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="status-dot" style="background:#6EE7B7;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Nadia Benzara</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 1 mars 2026 Â· Expire le 1 mars 2028</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
-          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
-        </div>
-      </div>
-      <div class="rgpd-card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div class="status-dot" style="background:#6EE7B7;"></div>
-          <div>
-            <div style="font-size:14px;font-weight:600;color:var(--text-primary);">Sarah Martin</div>
-            <div style="font-size:12px;color:var(--text-secondary);">Depuis le 15 fÃ©v. 2026 Â· Expire le 15 fÃ©v. 2028</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <span style="font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(110,231,183,0.15);color:#6EE7B7;border:1px solid rgba(110,231,183,0.3);">Actif</span>
-          <button class="btn btn-ghost" style="font-size:12px;padding:5px 10px;color:#ef4444;border-color:rgba(239,68,68,0.2);">Supprimer</button>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">Politique de conservation</div>
-      <p style="font-size:14px;color:var(--text-secondary);line-height:1.7;">Les donnÃ©es des candidats sont conservÃ©es pendant 2 ans aprÃ¨s la derniÃ¨re interaction. PassÃ© ce dÃ©lai, elles sont automatiquement anonymisÃ©es. Les candidats peuvent exercer leur droit Ã  l'effacement Ã  tout moment via la messagerie Auralis.</p>
-    </div>
+<!-- Aurora bar -->
+<div id="aurora-bar" style="display:none;">
+  <div class="aurora-dot"></div>
+  <span class="aurora-label">Suggestion</span>
+  <div class="aurora-sep"></div>
+  <div class="aurora-msg">
+    <div class="aurora-msg-main" id="aurora-main-text">Camille attend depuis 2 jours.</div>
+    <div class="aurora-msg-sub" id="aurora-sub-text">FenÃªtre optimale de contact â son score de 82 est le plus Ã©levÃ©.</div>
   </div>
-  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
+  <div class="aurora-actions">
+    <button class="aurora-btn" onclick="showAuroraPanel()">Contacter Camille</button>
+    <button class="aurora-h24-btn" onclick="showAuroraPanel()">?</button>
+  </div>
 </div>
 
-<div id="page-analytics" class="page">
-  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
-  <div class="main-content">
-    <div class="page-header"><h1 class="page-title">Analyses</h1><span class="pill pill-indigo">Mars 2026</span></div>
-    <div class="charts-grid">
-      <div class="chart-wrap"><div class="chart-title">Candidatures par mois</div><svg viewBox="0 0 300 160" style="width:100%;height:auto;">
-  <rect x="20" y="98" width="30" height="42" rx="4" fill="#818CF8" opacity="0.675"/>
-    <text x="35" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Oct</text>
-    <text x="35" y="94" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">28</text><rect x="60" y="77" width="30" height="63" rx="4" fill="#818CF8" opacity="0.7625"/>
-    <text x="75" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Nov</text>
-    <text x="75" y="73" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">42</text><rect x="100" y="84.5" width="30" height="55.5" rx="4" fill="#818CF8" opacity="0.73125"/>
-    <text x="115" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">DÃ©c</text>
-    <text x="115" y="80.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">37</text><rect x="140" y="57.5" width="30" height="82.5" rx="4" fill="#818CF8" opacity="0.84375"/>
-    <text x="155" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Jan</text>
-    <text x="155" y="53.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">55</text><rect x="180" y="45.5" width="30" height="94.5" rx="4" fill="#818CF8" opacity="0.89375"/>
-    <text x="195" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">FÃ©v</text>
-    <text x="195" y="41.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">63</text><rect x="220" y="33.5" width="30" height="106.5" rx="4" fill="#818CF8" opacity="0.94375"/>
-    <text x="235" y="155" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9">Mar</text>
-    <text x="235" y="29.5" text-anchor="middle" fill="#818CF8" font-size="10" font-weight="600">71</text>
-</svg></div>
-      <div class="chart-wrap"><div class="chart-title">Statuts des candidats</div><svg viewBox="0 0 260 170" style="width:100%;height:auto;">
-  <path d="M80,80 L145.0,80.0 A65,65 0 0,1 16.2,92.2 Z" fill="#818CF8" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/><path d="M80,80 L16.2,92.2 A65,65 0 0,1 67.8,16.2 Z" fill="#6EE7B7" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/><path d="M80,80 L67.8,16.2 A65,65 0 0,1 137.0,48.7 Z" fill="#FBBF9A" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/><path d="M80,80 L137.0,48.7 A65,65 0 0,1 145.0,80.0 Z" fill="#C4B5FD" opacity="0.85" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
-  <rect x="170" y="20" width="12" height="12" rx="2" fill="#818CF8"/><text x="188" y="31" fill="rgba(255,255,255,0.7)" font-size="11">Actifs (47%)</text><rect x="170" y="48" width="12" height="12" rx="2" fill="#6EE7B7"/><text x="188" y="59" fill="rgba(255,255,255,0.7)" font-size="11">ArchivÃ©s (25%)</text><rect x="170" y="76" width="12" height="12" rx="2" fill="#FBBF9A"/><text x="188" y="87" fill="rgba(255,255,255,0.7)" font-size="11">En attente (20%)</text><rect x="170" y="104" width="12" height="12" rx="2" fill="#C4B5FD"/><text x="188" y="115" fill="rgba(255,255,255,0.7)" font-size="11">RefusÃ©s (8%)</text>
-</svg></div>
-      <div class="chart-wrap"><div class="chart-title">Score moyen mensuel</div><svg viewBox="0 0 280 120" style="width:100%;height:auto;">
-  <polyline points="20.0,76.0 68.0,64.0 116.0,58.0 164.0,52.0 212.0,44.0 260.0,42.0" fill="none" stroke="#6EE7B7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="20.0" cy="76.0" r="4" fill="#6EE7B7"/><text x="20.0" y="68.0" text-anchor="middle" fill="#6EE7B7" font-size="10">62</text><text x="20.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Oct</text><circle cx="68.0" cy="64.0" r="4" fill="#6EE7B7"/><text x="68.0" y="56.0" text-anchor="middle" fill="#6EE7B7" font-size="10">68</text><text x="68.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Nov</text><circle cx="116.0" cy="58.0" r="4" fill="#6EE7B7"/><text x="116.0" y="50.0" text-anchor="middle" fill="#6EE7B7" font-size="10">71</text><text x="116.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">DÃ©c</text><circle cx="164.0" cy="52.0" r="4" fill="#6EE7B7"/><text x="164.0" y="44.0" text-anchor="middle" fill="#6EE7B7" font-size="10">74</text><text x="164.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Jan</text><circle cx="212.0" cy="44.0" r="4" fill="#6EE7B7"/><text x="212.0" y="36.0" text-anchor="middle" fill="#6EE7B7" font-size="10">78</text><text x="212.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">FÃ©v</text><circle cx="260.0" cy="42.0" r="4" fill="#6EE7B7"/><text x="260.0" y="34.0" text-anchor="middle" fill="#6EE7B7" font-size="10">79</text><text x="260.0" y="115.0" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Mar</text>
-</svg></div>
-      <div class="chart-wrap"><div class="chart-title">Sources de recrutement</div><svg viewBox="0 0 300 140" style="width:100%;height:auto;">
-  <text x="0" y="25" fill="rgba(255,255,255,0.6)" font-size="11">LinkedIn</text>
-    <rect x="75" y="15" width="180" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
-    <text x="261" y="26" fill="#C4B5FD" font-size="11" font-weight="600">45%</text><text x="0" y="55" fill="rgba(255,255,255,0.6)" font-size="11">Indeed</text>
-    <rect x="75" y="45" width="112.00000000000001" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
-    <text x="193" y="56" fill="#C4B5FD" font-size="11" font-weight="600">28%</text><text x="0" y="85" fill="rgba(255,255,255,0.6)" font-size="11">Cooptation</text>
-    <rect x="75" y="75" width="72" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
-    <text x="153" y="86" fill="#C4B5FD" font-size="11" font-weight="600">18%</text><text x="0" y="115" fill="rgba(255,255,255,0.6)" font-size="11">Direct</text>
-    <rect x="75" y="105" width="36" height="16" rx="4" fill="#C4B5FD" opacity="0.8"/>
-    <text x="117" y="116" fill="#C4B5FD" font-size="11" font-weight="600">9%</text>
-</svg></div>
-    </div>
-    <div class="cards-grid" style="margin-top:20px;">
-      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Taux de rÃ©ponse</div><div class="stat-value" style="color:#6EE7B7;">94%</div><div class="stat-label">Vs 67% marchÃ©</div></div>
-      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">Score moyen</div><div class="stat-value" style="color:#818CF8;">70.8</div><div class="stat-label">En hausse</div></div>
-      <div class="card stat-card"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:4px;">DÃ©lai moyen</div><div class="stat-value" style="color:#FBBF9A;">2.4j</div><div class="stat-label">Vs 18j marchÃ©</div></div>
-    </div>
-  </div>
-  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
+<!-- Mobile nav -->
+<div id="mobile-nav">
+  <button class="mob-nav-btn active" onclick="switchContent('dashboard')"><span>â</span><span>Home</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('candidates')"><span>ð¤</span><span>Candidats</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('kanban')"><span>â¤</span><span>Pipeline</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('messaging')"><span>â</span><span>Messages</span></button>
+  <button class="mob-nav-btn" onclick="showAuroraPanel()"><span>â¦</span><span>Aurora</span></button>
 </div>
 
-<div id="page-settings" class="page">
-  <nav class="sidebar"><div style="display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-bottom:12px;"><span style="font-size:14px;font-weight:700;color:#818CF8;">A</span></div><div class="sidebar-icon" onclick="showPage('page-dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="sidebar-icon" onclick="showPage('page-candidates')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="sidebar-icon" onclick="showPage('page-kanban')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="5" height="14"/><rect x="10" y="3" width="5" height="9"/><rect x="17" y="3" width="5" height="11"/></svg></div><div class="sidebar-icon" onclick="showPage('page-messaging')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="sidebar-icon" onclick="showPage('page-analytics')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="sidebar-icon" onclick="showPage('page-rgpd')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1;"></div><div class="sidebar-icon active" onclick="showPage('page-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="3"/></svg></div></nav>
-  <div class="main-content">
-    <div class="page-header"><h1 class="page-title">ParamÃ¨tres</h1></div>
-    <div class="card" style="margin-bottom:16px;">
-      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Profil</div>
-      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#818CF8,#C4B5FD);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;">LD</div>
-        <div>
-          <div style="font-size:16px;font-weight:700;color:var(--text-primary);">Lauralie Daguzay</div>
-          <div style="font-size:13px;color:var(--text-secondary);">lauralie.daguzay@gmail.com</div>
-          <div style="font-size:12px;color:#818CF8;margin-top:2px;">Administratrice Â· Pineapp Inc</div>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <input class="input" type="text" value="Lauralie" placeholder="PrÃ©nom">
-        <input class="input" type="text" value="Daguzay" placeholder="Nom">
-        <input class="input" type="email" value="lauralie.daguzay@gmail.com" placeholder="Email">
-        <input class="input" type="text" value="Pineapp Inc" placeholder="Organisation">
-      </div>
+<!-- Aurora H24 Panel -->
+<div id="aurora-panel">
+  <div class="panel-header">
+    <div class="panel-avatar">
+      <img src="https://drive.google.com/uc?export=view&id=1WfYrK0FDfZ_pSTjd3M9_jsj84bVy0s2D" alt="Aurora" style="width:40px;height:40px;border-radius:50%;border:2.5px solid #818CF8;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<div style=\'width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#818CF8,#C4B5FD);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:16px;border:2.5px solid #818CF8;\'>A</div>'">
     </div>
-    <div class="card" style="margin-bottom:16px;">
-      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">Notifications</div>
-      
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div><div style="font-size:14px;color:var(--text-primary);">Nouveaux candidats</div><div style="font-size:12px;color:var(--text-secondary);">Ãtre notifiÃ© Ã  chaque nouvelle candidature</div></div>
-        <div onclick="this.classList.toggle('on')" style="width:44px;height:24px;border-radius:12px;background:#818CF8;cursor:pointer;position:relative;transition:background 400ms;" class="on">
-          <div style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all 400ms;"></div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div><div style="font-size:14px;color:var(--text-primary);">Suggestions Aurora</div><div style="font-size:12px;color:var(--text-secondary);">Recevoir les recommandations Aurora</div></div>
-        <div onclick="this.classList.toggle('on')" style="width:44px;height:24px;border-radius:12px;background:#818CF8;cursor:pointer;position:relative;transition:background 400ms;" class="on">
-          <div style="position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all 400ms;"></div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div><div style="font-size:14px;color:var(--text-primary);">Relances automatiques</div><div style="font-size:12px;color:var(--text-secondary);">Aurora vous rappelle les candidats inactifs</div></div>
-        <div onclick="this.classList.toggle('on')" style="width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,0.15);cursor:pointer;position:relative;transition:background 400ms;" class="">
-          <div style="position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all 400ms;"></div>
-        </div>
-      </div>
+    <div class="panel-title">
+      <div class="panel-name">Aurora</div>
+      <div class="panel-status">Active Â· H24</div>
     </div>
-    <div class="card" style="margin-bottom:16px;">
-      <div style="font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:16px;">IntÃ©grations</div>
-      
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div><div style="font-size:14px;color:var(--text-primary);">Gmail</div><div style="font-size:12px;color:#6EE7B7;">ConnectÃ© Â· Lecture des candidatures</div></div>
-        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px;">GÃ©rer</button>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div><div style="font-size:14px;color:var(--text-primary);">LinkedIn</div><div style="font-size:12px;color:rgba(255,255,255,0.3);">Non connectÃ©</div></div>
-        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px;">Connecter</button>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div><div style="font-size:14px;color:var(--text-primary);">Slack</div><div style="font-size:12px;color:rgba(255,255,255,0.3);">Non connectÃ©</div></div>
-        <button class="btn btn-ghost" style="font-size:12px;padding:6px 14px;">Connecter</button>
-      </div>
-    </div>
-    <button class="btn btn-ghost" onclick="showPage('page-login')" style="color:#ef4444;border-color:rgba(239,68,68,0.3);margin-top:8px;">Se dÃ©connecter</button>
+    <button class="panel-close" onclick="closeAuroraPanel()">â</button>
   </div>
-  <div class="aurora-ticker"><div class="ticker-inner">Aurora analyse en continu Â· RGPD Ã  jour Â· 5 candidats actifs &nbsp;&nbsp;&nbsp;&nbsp;</div></div><div class="aurora-bar"><div class="aurora-dot"></div><span class="aurora-label">Aurora Â· Active</span><button class="aurora-chat-btn" onclick="toggleChat()">?</button></div>
-</div>
-
-<!-- AURORA CHAT PANEL -->
-<div id="aurora-chat-panel" class="chat-panel">
-  <div class="chat-header">
-    <img src="https://drive.google.com/uc?export=view&id=1WfYrK0FDfZ_pSTjd3M9_jsj84bVy0s2D" class="chat-avatar" alt="Aurora" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div style=\'width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#818CF8,#6EE7B7);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;\'>A</div>')">
-    <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#fff;">Aurora</div><div style="font-size:11px;color:#6EE7B7;">Disponible Â· H24</div></div>
-    <button onclick="toggleChat()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:20px;cursor:pointer;padding:4px;">Ã</button>
+  <div class="panel-messages" id="panel-messages">
+    <div class="panel-bubble aurora">Bonjour Lauralie. Je suis Aurora, ton assistant RH intelligent. Que puis-je faire pour toi aujourd'hui ?</div>
+    <div class="panel-bubble aurora">Tu peux me demander des suggestions sur tes candidats, des conseils de recrutement, ou me poser n'importe quelle question RH.</div>
   </div>
-  <div class="chat-messages" id="chat-messages">
-    <div class="msg msg-aurora">Bonjour. Je suis Aurora, votre assistante RH. Comment puis-je vous aider aujourd'hui ?</div>
-    <div class="chat-suggestions" style="display:flex;flex-wrap:wrap;gap:6px;padding:0 0 8px;">
-      <div class="chat-suggestion" onclick="askAurora('Comment fonctionne le score ?')">Score Aurora ?</div>
-      <div class="chat-suggestion" onclick="askAurora('Quel est le meilleur candidat ?')">Meilleur candidat ?</div>
-      <div class="chat-suggestion" onclick="askAurora('C\'est combien Auralis ?')">Tarifs ?</div>
-      <div class="chat-suggestion" onclick="askAurora('Comment fonctionne le RGPD ?')">RGPD ?</div>
-    </div>
-  </div>
-  <div class="chat-input-wrap">
-    <input class="chat-input" type="text" id="aurora-input" placeholder="Posez une question Ã  Aurora..." onkeydown="if(event.key==='Enter')sendAurora()">
-    <button class="chat-send" onclick="sendAurora()">â</button>
+  <div class="panel-input-area">
+    <input class="panel-input" id="panel-input" placeholder="Pose-moi une questionâ¦" onkeydown="if(event.key==='Enter')sendAuroraMsg()">
+    <button class="panel-send" onclick="sendAuroraMsg()">Envoyer</button>
   </div>
 </div>
+<!-- Overlay for panel -->
+<div id="panel-overlay" onclick="closeAuroraPanel()" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.3);backdrop-filter:blur(2px);"></div>
 
 <script>
+// ===== PARTICLES =====
 (function(){
-  // QA Database
-  const qa = [
-    {k:['score','calcul','critÃ¨re','comment fonctionne le score'],'r':'Le score Aurora combine 8 critÃ¨res : expÃ©rience, compÃ©tences, disponibilitÃ©, mobilitÃ©, stabilitÃ© du parcours, adÃ©quation culturelle, recommandations et motivation. Camille Moreau obtient 82/100 parce que son expÃ©rience full stack correspond exactement au poste et qu'elle est disponible immÃ©diatement.'},
-    {k:['temps','durÃ©e','combien de temps','traitement','traiter'],'r':'Avec Aurora, 2 Ã  4 minutes par profil. Sans Aurora, comptez 20 Ã  30 minutes. Vous gagnez en moyenne 3h par semaine sur 15 candidatures.'},
-    {k:['contacter','contact','camille','joindre','appeler'],'r':'Camille Moreau est joignable par email (camille.moreau@email.fr) ou LinkedIn. Je peux prÃ©parer un message personnalisÃ© pour vous, parce que les candidats rÃ©pondent 3x plus vite aux messages ciblÃ©s.'},
-    {k:['rgpd','conformitÃ©','donnÃ©es','gdpr','protection'],'r':'Auralis gÃ¨re automatiquement le RGPD : consentement recueilli Ã  la candidature, durÃ©e de conservation 2 ans, droit Ã  l'effacement sur demande. Vous avez 5 consentements actifs, 0 expirÃ©.'},
-    {k:['thomas','relancer','relance','inactif'],'r':'Thomas Petit est inactif depuis 8 jours. Je recommande une relance aujourd'hui parce qu'aprÃ¨s 10 jours, le taux de rÃ©ponse chute de 60%.'},
-    {k:['meilleur','classement','top','premier','prioritaire'],'r':'Camille Moreau avec 82/100. Ensuite Marie Dubois 78/100, Thomas Petit 71/100, Nadia Benzara 65/100, Sarah Martin 58/100. Voulez-vous que je compare deux profils en dÃ©tail ?'},
-    {k:['kanban','pipeline','Ã©tape','colonne'],'r':'Le kanban suit vos candidats en 5 Ã©tapes : Nouveau, PrÃ©sÃ©lectionnÃ©, Entretien, Offre, RefusÃ©. Glissez les cartes pour avancer un candidat. Aurora met Ã  jour les statuts automatiquement.'},
-    {k:['prix','tarif','coÃ»t','combien','abonnement','pineapp'],'r':'Auralis RH est proposÃ© par Pineapp Inc. Contactez lauralie.daguzay@gmail.com pour les tarifs et une dÃ©mo personnalisÃ©e.'},
-    {k:['rÃ©diger','offre','emploi','poste','annonce'],'r':'Je peux rÃ©diger une offre d'emploi en 2 minutes. Dites-moi : intitulÃ© du poste, compÃ©tences requises, localisation, type de contrat. Je gÃ©nÃ¨re une offre optimisÃ©e pour attirer les bons profils.'},
-    {k:['dÃ©lai','moyen','recrutement','vitesse','rapide'],'r':'Sur vos 5 candidats actifs : 2,4 jours en moyenne de la candidature Ã  la dÃ©cision. La moyenne du secteur est 18 jours. Aurora vous fait gagner 15 jours parce qu'elle prÃ©-qualifie instantanÃ©ment.'},
-    {k:['marie','paris','projet'],'r':'Marie Dubois, Paris, score 78/100, actuellement en phase d'entretien. Excellent profil pour un poste de chef de projet RH. RÃ©ponse attendue sous 48h.'},
-    {k:['nadia','marseille','ux','design'],'r':'Nadia Benzara, Marseille, score 65/100. Son profil est en phase d'offre. Je recommande de finaliser la dÃ©cision cette semaine, parce qu'elle a d'autres processus en cours.'},
-    {k:['sarah','lille','comm','communication'],'r':'Sarah Martin, Lille, score 58/100. Profil archivÃ© pour le moment. CompÃ©tences en communication solides mais disponibilitÃ© incertaine. Peut Ãªtre rÃ©activÃ©e si le besoin change.'},
-    {k:['gmail','email','message','mail'],'r':'Votre compte Gmail est connectÃ©. Aurora lit les nouvelles candidatures automatiquement et les intÃ¨gre dans votre pipeline. Vous pouvez aussi envoyer des messages directement depuis la messagerie Auralis.'},
-    {k:['analyse','statistique','analytique','rapport'],'r':'Vos analyses clÃ©s : taux de rÃ©ponse 94%, score moyen 70.8, dÃ©lai moyen 2.4j. Le recrutement le plus efficace vient de LinkedIn (45% des candidatures). Je gÃ©nÃ¨re un rapport complet chaque lundi.'},
-    {k:['aurora','qui es-tu','qu'es-tu','prÃ©sente'],'r':'Je suis Aurora, l'assistante RH intelligente de Pineapp Inc. Je lis les candidatures, analyse les profils, propose des prioritÃ©s et vous aide Ã  recruter 8x plus vite. Je suis disponible H24.'},
-    {k:['bonjour','salut','hello','bonsoir'],'r':'Bonjour. Je suis lÃ  pour vous aider. Vous pouvez me demander une analyse de candidat, une relance, ou des conseils sur votre recrutement.'},
-    {k:['merci','super','parfait','excellent'],'r':'Avec plaisir. Autre chose que je peux faire pour vous ?'},
-    {k:['semaine','lundi','mardi','planning','agenda'],'r':'Cette semaine : 8 entretiens planifiÃ©s, 3 nouvelles candidatures Ã  analyser, Thomas Petit Ã  relancer avant jeudi. Voulez-vous que je vous prÃ©pare un rÃ©capitulatif dÃ©taillÃ© ?'},
-    {k:['automatique','automatiser','gestion','ia','intelligence'],'r':'Auralis automatise : la lecture des candidatures Gmail, le scoring des profils, les relances des candidats inactifs, la gestion RGPD et les rapports hebdomadaires. Vous vous concentrez sur l'humain, je gÃ¨re le reste.'},
-  ];
-
-  window.currentObStep = 1;
-  window.totalObSteps = 5;
-
-  window.showPage = function(id) {
-    document.querySelectorAll('.page').forEach(p=>{p.style.display='none';p.classList.remove('active');});
-    const pg = document.getElementById(id);
-    if(pg){pg.style.display='block';pg.classList.add('active');}
-    // Score animation on dashboard
-    if(id==='page-dashboard') animateScore();
-    // Active sidebar icon
-    document.querySelectorAll('.sidebar-icon').forEach(i=>i.classList.remove('active'));
-    document.querySelectorAll('.mobile-nav-item').forEach(i=>i.classList.remove('active'));
-    const map = {'page-dashboard':0,'page-candidates':1,'page-kanban':2,'page-messaging':3,'page-analytics':4,'page-rgpd':5,'page-settings':6};
-    if(map[id]!==undefined){
-      const icons = document.querySelectorAll('.sidebar-icon');
-      if(icons[map[id]]) icons[map[id]].classList.add('active');
-    }
-  };
-
-  window.animateScore = function() {
-    const el = document.getElementById('hero-score');
-    const circle = document.getElementById('hero-score-circle');
-    if(!el) return;
-    let v=0;
-    const t = setInterval(()=>{
-      v++;
-      el.textContent = v;
-      if(circle) circle.style.setProperty('--pct', v);
-      if(v>=82) clearInterval(t);
-    }, 18);
-  };
-
-  window.toggleTheme = function() {
-    const body = document.body;
-    body.classList.toggle('light');
-    const btn = document.getElementById('theme-toggle');
-    if(btn) btn.textContent = body.classList.contains('light') ? 'ð' : 'â';
-  };
-
-  window.toggleChat = function() {
-    const panel = document.getElementById('aurora-chat-panel');
-    if(panel) panel.classList.toggle('open');
-  };
-
-  window.askAurora = function(q) {
-    addUserMsg(q);
-    getAuroraResponse(q);
-  };
-
-  window.sendAurora = function() {
-    const inp = document.getElementById('aurora-input');
-    if(!inp || !inp.value.trim()) return;
-    const txt = inp.value.trim();
-    inp.value = '';
-    addUserMsg(txt);
-    getAuroraResponse(txt);
-  };
-
-  function addUserMsg(txt) {
-    const msgs = document.getElementById('chat-messages');
-    if(!msgs) return;
-    const div = document.createElement('div');
-    div.className = 'msg msg-user';
-    div.textContent = txt;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-  }
-
-  function getAuroraResponse(txt) {
-    const msgs = document.getElementById('chat-messages');
-    if(!msgs) return;
-    // Typing indicator
-    const typing = document.createElement('div');
-    typing.className = 'msg msg-aurora typing';
-    typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-    msgs.appendChild(typing);
-    msgs.scrollTop = msgs.scrollHeight;
-    setTimeout(()=>{
-      typing.remove();
-      const lower = txt.toLowerCase();
-      let response = null;
-      for(const item of qa){
-        if(item.k.some(k=>lower.includes(k))){response=item.r;break;}
-      }
-      if(!response) response = "Je n'ai pas encore de rÃ©ponse prÃ©cise sur ce sujet. Vous pouvez reformuler ou contacter Lauralie Daguzay directement Ã  lauralie.daguzay@gmail.com.";
-      const div = document.createElement('div');
-      div.className = 'msg msg-aurora';
-      div.textContent = response;
-      msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
-    }, 800 + Math.random()*400);
-  }
-
-  window.selectPersona = function(el){
-    document.querySelectorAll('.persona-card').forEach(c=>c.classList.remove('selected'));
-    el.classList.add('selected');
-  };
-
-  window.obStep = function(dir) {
-    const s = window.currentObStep;
-    const ns = s + dir;
-    if(ns < 1 || ns > window.totalObSteps) return;
-    const cur = document.getElementById('ob-step-'+s);
-    if(cur) cur.style.display='none';
-    window.currentObStep = ns;
-    const nxt = document.getElementById('ob-step-'+ns);
-    if(nxt) nxt.style.display='block';
-    // Update dots
-    const dots = document.querySelectorAll('#ob-dots .dot');
-    dots.forEach((d,i)=>d.classList.toggle('active',i===ns-1));
-    // Back button
-    const back = document.getElementById('ob-back');
-    if(back) back.style.display = ns > 1 ? 'block' : 'none';
-    // Next button
-    const next = document.getElementById('ob-next');
-    const nav = document.getElementById('ob-nav');
-    if(ns === window.totalObSteps) {
-      if(next) next.style.display='none';
-      if(back) back.style.display='none';
-      if(nav) nav.style.display='none';
-    } else {
-      if(next) next.style.display='block';
-    }
-  };
-
-  window.switchTab = function(name, el) {
-    document.querySelectorAll('#detail-tabs .tab').forEach(t=>t.classList.remove('active'));
-    el.classList.add('active');
-    const tabIds = ['profil','entretiens','documents','notes','rgpd-c'];
-    tabIds.forEach(id=>{
-      const t = document.getElementById('tab-'+id);
-      if(t) t.style.display = id===name ? 'block' : 'none';
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  const colors=['rgba(129,140,248,0.4)','rgba(110,231,183,0.3)','rgba(196,181,253,0.35)','rgba(251,191,154,0.25)'];
+  for(let i=0;i<40;i++){
+    particles.push({
+      x:Math.random()<0.5?(Math.random()*150):(window.innerWidth-Math.random()*150),
+      y:Math.random()*window.innerHeight,
+      r:Math.random()*2+0.5,
+      vx:(Math.random()-0.5)*0.3,
+      vy:(Math.random()-0.5)*0.3,
+      c:colors[Math.floor(Math.random()*colors.length)],
+      o:Math.random()*0.6+0.2
     });
-  };
-
-  window.filterCandidates = function(q) {
-    const cards = document.querySelectorAll('#candidates-grid .candidate-card');
-    const lq = q.toLowerCase();
-    cards.forEach(c=>{
-      const name = c.dataset.name||'';
-      const city = c.dataset.city||'';
-      c.style.display = (name.includes(lq)||city.includes(lq)) ? 'block' : 'none';
-    });
-  };
-
-  window.sendMsg = function() {
-    const inp = document.getElementById('msg-input');
-    if(!inp||!inp.value.trim()) return;
-    const txt = inp.value.trim();
-    inp.value = '';
-    const area = document.querySelector('.msg-chat-messages');
-    if(!area) return;
-    const div = document.createElement('div');
-    div.className = 'msg msg-user';
-    div.textContent = txt;
-    area.appendChild(div);
-    area.scrollTop = area.scrollHeight;
-  };
-
-  // IIFE: Auto-start splash â login
-  const splashEl = document.getElementById('page-splash');
-  if(splashEl) {
-    splashEl.style.display = 'flex';
-    setTimeout(()=>showPage('page-login'), 4000);
   }
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>canvas.width)p.vx*=-1;
+      if(p.y<0||p.y>canvas.height)p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.c;
+      ctx.globalAlpha=p.o;
+      ctx.fill();
+      ctx.globalAlpha=1;
+    });
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
 
-  // Dashboard score on load
+// ===== THEME =====
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  const isLight=document.body.classList.contains('light');
+  localStorage.setItem('auralis-theme',isLight?'light':'dark');
+  // Update all toggle thumbs
+  document.querySelectorAll('.theme-toggle-thumb').forEach(t=>{
+    t.style.transform=isLight?'translateX(18px)':'translateX(0)';
+    t.style.background=isLight?'#FBBF9A':'#818CF8';
+  });
+}
+if(localStorage.getItem('auralis-theme')==='light'){
+  document.body.classList.add('light');
   setTimeout(()=>{
-    if(document.getElementById('page-dashboard').classList.contains('active')||
-       document.getElementById('page-dashboard').style.display==='block') animateScore();
-  }, 300);
+    document.querySelectorAll('.theme-toggle-thumb').forEach(t=>{
+      t.style.transform='translateX(18px)';t.style.background='#FBBF9A';
+    });
+  },100);
+}
+
+// ===== NAV PROGRESS =====
+function animateProgress(){
+  const bar=document.getElementById('nav-progress');
+  bar.style.width='0%';
+  bar.style.transition='none';
+  setTimeout(()=>{
+    bar.style.transition='width 0.5s ease';
+    bar.style.width='70%';
+    setTimeout(()=>{
+      bar.style.width='100%';
+      setTimeout(()=>{bar.style.width='0%';bar.style.transition='none';},400);
+    },300);
+  },10);
+}
+
+// ===== PAGE NAVIGATION =====
+const auroraMessages={
+  dashboard:{main:'Camille attend depuis 2 jours.',sub:'FenÃªtre optimale de contact â son score de 82 est le plus Ã©levÃ©.'},
+  candidates:{main:'5 candidats actifs surveillÃ©s.',sub:'Marie Chauvet a un entretien jeudi â pense Ã  prÃ©parer tes questions.'},
+  kanban:{main:'Pipeline Ã  jour.',sub:'1 candidat en phase finale. 2 entretiens cette semaine.'},
+  messaging:{main:'Camille a rÃ©pondu hier soir.',sub:'Elle est disponible jeudi 14h pour un entretien.'},
+  analytics:{main:'Ton score moyen est de 74.',sub:'Camille Moreau dÃ©passe la moyenne de 8 points.'},
+  rgpd:{main:'Tous les consentements sont actifs.',sub:'Prochain renouvellement dans 173 jours.'},
+  settings:{main:'ParamÃ¨tres de ton espace.',sub:'Gmail connectÃ© Â· Notifications actives.'}
+};
+
+function showPage(pageId){
+  animateProgress();
+  document.querySelectorAll('.page').forEach(p=>{p.style.display='none';p.classList.remove('active');});
+  const target=document.getElementById('page-'+pageId);
+  if(target){
+    target.style.display='flex';
+    target.classList.add('active');
+  }
+  if(pageId==='app'){
+    document.getElementById('ticker-wrap').style.display='flex';
+    document.getElementById('aurora-bar').style.display='flex';
+    setHeaderTime();
+    switchContent('dashboard');
+  }
+}
+
+function switchContent(contentId){
+  animateProgress();
+  document.querySelectorAll('.content-page').forEach(p=>p.classList.remove('active'));
+  const target=document.getElementById('content-'+contentId);
+  if(target)target.classList.add('active');
+  // Update sidebar active
+  document.querySelectorAll('.sidebar-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('btn-'+contentId);
+  if(btn)btn.classList.add('active');
+  // Update mobile nav
+  document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));
+  // Update aurora message
+  const msgs=auroraMessages[contentId]||auroraMessages.dashboard;
+  document.getElementById('aurora-main-text').textContent=msgs.main;
+  document.getElementById('aurora-sub-text').textContent=msgs.sub;
+}
+
+// ===== HEADER TIME =====
+function setHeaderTime(){
+  const now=new Date();
+  const h=now.getHours();
+  let emoji='âï¸',greeting='Bonne journÃ©e';
+  if(h>=5&&h<9){emoji='ð¤';greeting='Bonne matinÃ©e';}
+  else if(h>=9&&h<12){emoji='âï¸';greeting='Bonne matinÃ©e';}
+  else if(h>=12&&h<17){emoji='âï¸';greeting='Bon aprÃ¨s-midi';}
+  else if(h>=17&&h<20){emoji='ð';greeting='Bonne soirÃ©e';}
+  else{emoji='ð';greeting='Bonsoir';}
+  const el=document.getElementById('header-emoji');
+  const gr=document.getElementById('header-greeting');
+  const dt=document.getElementById('header-date');
+  if(el)el.textContent=emoji;
+  if(gr)gr.textContent=greeting+', Lauralie';
+  const days=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const months=['janvier','fÃ©vrier','mars','avril','mai','juin','juillet','aoÃ»t','septembre','octobre','novembre','dÃ©cembre'];
+  if(dt)dt.textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()];
+}
+
+// ===== PASSWORD TOGGLE =====
+function togglePwd(){
+  const inp=document.getElementById('pwd-input');
+  if(inp)inp.type=inp.type==='password'?'text':'password';
+}
+
+// ===== AURORA H24 PANEL =====
+const auroraQA=[
+  {q:'Quel candidat me recommandes-tu ?',a:'Camille Moreau est ton meilleur profil cette semaine â score 82, similaire Ã  tes 3 derniÃ¨res recrues rÃ©ussies. J+2 est la fenÃªtre optimale de contact.'},
+  {q:'Comment amÃ©liorer mon process ?',a:'Deux actions concrÃ¨tes : 1) RÃ©pondre Ã  Camille aujourd\'hui avant J+3. 2) Planifier l\'entretien de Marie Chauvet pour jeudi 14h. Tu peux faire les deux en moins de 10 minutes.'},
+  {q:'Quand contacter Sophie Andrieu ?',a:'Sophie est Ã  J+12 â la fenÃªtre optimale est passÃ©e. Je te recommande une relance courte et sincÃ¨re. Si pas de rÃ©ponse sous 48h, archive le profil.'},
+  {q:'Comment fonctionne le score ?',a:'Le score est calculÃ© sur 5 critÃ¨res : correspondance poste (30%), expÃ©rience (25%), disponibilitÃ© (20%), rÃ©activitÃ© (15%), donnÃ©es comportementales (10%). 82 = excellent profil.'},
+  {q:'Qu\'est-ce que le RGPD implique ?',a:'Pour chaque candidat, tu dois : avoir un consentement explicite, informer de la durÃ©e de conservation (6 mois max), permettre l\'accÃ¨s et la suppression. Tous tes consentements sont actifs.'},
+  {q:'Comment planifier un entretien ?',a:'Va dans la fiche candidat, clique "Planifier". Je suggÃ¨re crÃ©neaux disponibles selon ton agenda. Pour Marie Chauvet : jeudi 14h-15h est libre.'},
+  {q:'Quelle est la moyenne de mes scores ?',a:'Moyenne actuelle : 74 points. Camille (82) et Marie (78) sont au-dessus. Thomas (65) et Sophie (58) nÃ©cessitent plus d\'attention ou d\'archivage.'},
+  {q:'As-tu des modÃ¨les d\'email ?',a:'Oui, 2 templates disponibles : 1) Email de bienvenue candidat (personnalisÃ©), 2) Rapport hebdomadaire RH. Je peux les envoyer automatiquement Ã  ta place.'},
+  {q:'Combien de temps pour recruter ?',a:'Sur tes donnÃ©es historiques : 18 jours en moyenne de la candidature Ã  l\'offre. Camille pourrait Ãªtre en offre dans 14 jours si tu agis aujourd\'hui.'},
+  {q:'Comment fonctionne Aurora ?',a:'Je suis une IA spÃ©cialisÃ©e RH. J\'analyse tes candidats, surveille les dÃ©lais, gÃ©nÃ¨re des suggestions proactives et t\'aide Ã  recruter mieux et plus vite. Je tourne 24h/24.'},
+  {q:'Quand relancer Thomas Lebrun ?',a:'Thomas est Ã  J+3 aprÃ¨s contact. FenÃªtre idÃ©ale : aujourd\'hui ou demain matin. Un message court comme "Avez-vous pu consulter notre proposition ?" fonctionne bien.'},
+  {q:'Nadia Bensalem vaut-elle le coup ?',a:'Score 71 â profil solide pour Marseille. Sa spÃ©cialitÃ© gestion de carriÃ¨res correspond Ã  2 de tes offres ouvertes. Je la classerais en prioritÃ© 2 derriÃ¨re Camille.'},
+  {q:'Quelle est ma conversion actuelle ?',a:'5 candidatures actives / 1 en phase finale = 20% de taux de conversion entretien. Dans ton secteur RH, la moyenne est 15%. Tu es au-dessus.'},
+  {q:'Peux-tu envoyer un email pour moi ?',a:'Oui, je peux prÃ©parer et envoyer des emails Ã  tes candidats â relances, confirmations d\'entretien, offres. Dis-moi Ã  qui et dans quel but, je rÃ©dige la version idÃ©ale.'},
+  {q:'Comment archiver un candidat ?',a:'Dans la fiche candidat, bouton "Archiver". Le profil est conservÃ© 6 mois (RGPD) puis anonymisÃ© automatiquement. Le candidat en est informÃ© par email.'},
+  {q:'Quel jour poster mes offres ?',a:'Les meilleures offres sont postÃ©es mardi et mercredi matin entre 9h et 11h â taux d\'application 34% plus Ã©levÃ©. Ãvite les vendredi aprÃ¨s 15h.'},
+  {q:'DonnÃ©es hÃ©bergÃ©es oÃ¹ ?',a:'Toutes vos donnÃ©es sont hÃ©bergÃ©es en France (OVH, Paris), conformÃ©ment au RGPD. Pas de transfert hors UE. Chiffrement AES-256 au repos et TLS 1.3 en transit.'},
+  {q:'Comment fonctionne le mode dÃ©mo ?',a:'En mode dÃ©mo, tu explores Auralis avec 5 candidats fictifs. Toutes les fonctionnalitÃ©s sont actives. Pour connecter tes vraies donnÃ©es, crÃ©e un compte gratuit â 14 jours sans carte.'},
+  {q:'Peux-tu analyser mon offre d\'emploi ?',a:'Bien sÃ»r. Colle ton texte d\'offre ici ou dans l\'Ã©diteur d\'offres. Je l\'analyse selon 8 critÃ¨res (attractivitÃ©, clartÃ©, biais, mots-clÃ©s) et propose des amÃ©liorations.'},
+  {q:'Quand est-ce que tu dors ?',a:'Jamais. Je suis disponible 24h/24, 7j/7. C\'est l\'idÃ©e mÃªme d\'Aurora H24 â pendant que tu rÃ©cupÃ¨res, je continue Ã  surveiller tes candidats et Ã  prÃ©parer tes suggestions du lendemain.'}
+];
+
+function showAuroraPanel(){
+  document.getElementById('aurora-panel').classList.add('open');
+  document.getElementById('panel-overlay').style.display='block';
+}
+function closeAuroraPanel(){
+  document.getElementById('aurora-panel').classList.remove('open');
+  document.getElementById('panel-overlay').style.display='none';
+}
+function sendAuroraMsg(){
+  const input=document.getElementById('panel-input');
+  const msgs=document.getElementById('panel-messages');
+  const text=input.value.trim();
+  if(!text)return;
+  // Add user bubble
+  const userBubble=document.createElement('div');
+  userBubble.className='panel-bubble user';
+  userBubble.textContent=text;
+  msgs.appendChild(userBubble);
+  input.value='';
+  msgs.scrollTop=msgs.scrollHeight;
+  // Typing indicator
+  const typing=document.createElement('div');
+  typing.className='panel-bubble aurora typing-indicator';
+  typing.innerHTML='<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop=msgs.scrollHeight;
+  // Find best response
+  const lc=text.toLowerCase();
+  let response=null;
+  for(const qa of auroraQA){
+    const keywords=qa.q.toLowerCase().split(' ');
+    const matches=keywords.filter(k=>k.length>3&&lc.includes(k)).length;
+    if(matches>=1){response=qa.a;break;}
+  }
+  if(!response){
+    const fallbacks=[
+      'Je comprends ta question. Pour t\'aider au mieux, peux-tu prÃ©ciser un peu plus ? Je peux analyser tes candidats, te donner des conseils RH, ou t\'aider avec le RGPD.',
+      'Bonne question. En tant qu\'assistant RH, je peux t\'aider sur les candidats, les entretiens, les emails et le RGPD. Reformule et je te donne une rÃ©ponse prÃ©cise.',
+      'Je prends en compte ta demande. Deux pistes : 1) VÃ©rifier la fiche du candidat concernÃ©. 2) Me reposer la question avec son nom. Je t\'aide mieux avec plus de contexte.'
+    ];
+    response=fallbacks[Math.floor(Math.random()*fallbacks.length)];
+  }
+  setTimeout(()=>{
+    msgs.removeChild(typing);
+    const aurora=document.createElement('div');
+    aurora.className='panel-bubble aurora';
+    aurora.textContent=response;
+    msgs.appendChild(aurora);
+    msgs.scrollTop=msgs.scrollHeight;
+  },1200+Math.random()*600);
+}
+
+// ===== SPLASH SEQUENCE =====
+(function(){
+  // Slight delay then reveal elements
+  setTimeout(()=>{document.getElementById('splash-logo').classList.add('visible');},300);
+  setTimeout(()=>{document.getElementById('splash-tagline').classList.add('visible');},600);
+  setTimeout(()=>{
+    const wrap=document.getElementById('splash-progress-wrap');
+    wrap.classList.add('visible');
+    setTimeout(()=>{document.getElementById('splash-fill').style.width='100%';},50);
+  },900);
+  setTimeout(()=>{document.getElementById('splash-aurora').classList.add('visible');},1200);
+  // Auto redirect to login after 4000ms
+  setTimeout(()=>{showPage('login');},4000);
 })();
 </script>
 </body>
