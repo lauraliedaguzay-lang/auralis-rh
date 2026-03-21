@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<style id="critical-css">body{background:#04040e;margin:0;}@media(prefers-color-scheme:light){body{background:#faf8ff;}}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auralis RH â by Pineapp Inc</title>
+<title>Auralis RH - by Pineapp Inc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -29,6 +30,15 @@ body{background:var(--bg,#04040e);transition:background 450ms ease,color 450ms e
 #cosmos-bg .halo-1{width:600px;height:600px;top:-100px;left:-150px;background:radial-gradient(ellipse,rgba(129,140,248,0.18) 0%,transparent 70%);}
 #cosmos-bg .halo-2{width:500px;height:500px;bottom:-100px;right:-100px;background:radial-gradient(ellipse,rgba(110,231,183,0.12) 0%,transparent 70%);}
 #cosmos-bg .halo-3{width:400px;height:400px;top:40%;left:40%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(196,181,253,0.10) 0%,transparent 70%);}
+
+/* Background images */
+#bg-image{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:url('assets/bg_dark.png');background-size:cover;background-position:center;background-attachment:scroll;background-repeat:no-repeat;}
+body.light #bg-image{background-image:url('assets/bg_light.png');}
+/* Fallback gradients */
+@supports not (background-image:url('')) {
+  #bg-image{background:radial-gradient(ellipse at 20% 50%,#1a0533 0%,#0d1b4b 40%,#04040e 100%);}
+  body.light #bg-image{background:radial-gradient(ellipse at 70% 30%,#fce4ec 0%,#e8d5f5 40%,#faf8ff 100%);}
+}
 #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(4,4,14,0.7) 100%);}
 body.light #vignette{background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(200,180,255,0.2) 100%);}
 #noise{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.035;}
@@ -250,7 +260,7 @@ body.light .glass-card{background:rgba(255,255,255,0.75);}
   font-size:11px;font-weight:600;color:var(--indigo);text-transform:uppercase;letter-spacing:0.1em;
   margin-bottom:14px;
 }
-.aurora-suggestion-label::before{content:'â';font-size:8px;}
+.aurora-suggestion-label::before{content:'Ã¢ÂÂ';font-size:8px;}
 .hero-sep{height:1px;background:var(--glass-border);margin:14px 0;}
 .hero-name{font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:4px;}
 .hero-location{font-size:14px;color:rgba(248,247,244,0.55);}
@@ -461,11 +471,33 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
 .mob-nav-btn span{font-size:9px;font-weight:500;}
 .mob-nav-btn.active{color:var(--indigo);}
 
+
+/* LÃ©pine mode */
+#lepine-overlay{
+  display:none;position:fixed;inset:0;z-index:10000;
+  background:#04040e;
+  flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:40px;
+}
+#lepine-overlay.active{display:flex;}
+#lepine-overlay .lepine-logo{font-size:42px;font-weight:700;color:var(--indigo);margin-bottom:8px;}
+#lepine-overlay .lepine-rh{font-size:12px;font-weight:600;color:var(--indigo);background:rgba(129,140,248,0.15);padding:2px 8px;border-radius:6px;margin-left:4px;}
+#lepine-overlay .lepine-msg{font-size:18px;color:rgba(248,247,244,0.7);max-width:500px;line-height:1.7;margin-top:32px;font-style:italic;}
+#lepine-overlay .lepine-btn{margin-top:40px;padding:14px 32px;border-radius:14px;border:1px solid rgba(129,140,248,0.3);background:rgba(129,140,248,0.1);color:var(--indigo);font-size:15px;font-weight:600;cursor:pointer;transition:all 200ms ease;font-family:inherit;}
+#lepine-overlay .lepine-btn:hover{background:rgba(129,140,248,0.2);}
+body.light #lepine-overlay{background:#faf8ff;}
+body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
 </style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#04040e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Auralis RH">
 </head>
 <body>
 
 <!-- Cosmos background -->
+<div id="bg-image"></div>
 <div id="cosmos-bg">
   <div class="halo halo-1"></div>
   <div class="halo halo-2"></div>
@@ -487,7 +519,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
     </div>
     <span class="splash-by">by Pineapp Inc</span>
   </div>
-  <div class="splash-tagline" id="splash-tagline">Tu recrutes. Aurora veille.</div>
+  <div class="splash-tagline" id="splash-tagline">Tu dÃ©cides. Aurora prÃ©pare.</div>
   <div class="splash-progress-wrap" id="splash-progress-wrap">
     <div class="splash-progress-bar">
       <div class="splash-progress-fill" id="splash-fill"></div>
@@ -496,7 +528,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
   </div>
   <div class="splash-aurora" id="splash-aurora">
     <div class="aurora-dot-pulse"></div>
-    <span class="splash-aurora-text">Aurora se prÃ©pare</span>
+    <span class="splash-aurora-text">Je me prÃ©pare</span>
   </div>
 </div>
 
@@ -512,16 +544,16 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
       <div class="login-sub">Comment veux-tu te connecter ?</div>
     </div>
 
+    <!-- Microsoft button (primary) -->
+    <button class="login-btn" onclick="showPage('app')">
+      <svg width="18" height="18" viewBox="0 0 18 18"><rect x="1" y="1" width="7.5" height="7.5" fill="#F35325"/><rect x="9.5" y="1" width="7.5" height="7.5" fill="#81BC06"/><rect x="1" y="9.5" width="7.5" height="7.5" fill="#05A6F0"/><rect x="9.5" y="9.5" width="7.5" height="7.5" fill="#FFBA08"/></svg>
+      Continuer avec Microsoft
+    </button>
+
     <!-- Google button -->
     <button class="login-btn" onclick="showPage('app')">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
       Continuer avec Google
-    </button>
-
-    <!-- Microsoft button -->
-    <button class="login-btn" onclick="showPage('app')">
-      <svg width="18" height="18" viewBox="0 0 18 18"><rect x="1" y="1" width="7.5" height="7.5" fill="#F35325"/><rect x="9.5" y="1" width="7.5" height="7.5" fill="#81BC06"/><rect x="1" y="9.5" width="7.5" height="7.5" fill="#05A6F0"/><rect x="9.5" y="9.5" width="7.5" height="7.5" fill="#FFBA08"/></svg>
-      Continuer avec Microsoft
     </button>
 
     <!-- Apple Mail button -->
@@ -543,13 +575,13 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
       </button>
     </div>
 
-    <div class="login-forgot"><a href="#">Mot de passe oubliÃ© â</a></div>
+    <div class="login-forgot"><a href="#">Mot de passe oubliÃ© Ã¢ÂÂ</a></div>
 
     <button class="btn-primary" onclick="showPage('app')">AccÃ©der Ã  mon espace</button>
-    <button class="btn-demo" onclick="showPage('app')">Essayer en mode dÃ©mo</button>
+    <button class="btn-demo" onclick="showPage('app')">Essayer maintenant â</button>
 
     <div class="login-fine">14 jours gratuit Â· sans carte bancaire</div>
-    <div class="login-rgpd">ð¡ DonnÃ©es protÃ©gÃ©es Â· RGPD Â· ð«ð· HÃ©bergÃ© en France</div>
+    <div class="login-rgpd">Tes donnÃ©es restent en France. Toujours.</div>
   </div>
 
   <!-- Aurora bar on login -->
@@ -593,7 +625,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
     <div class="sidebar-group">
       <button class="sidebar-btn" onclick="switchContent('rgpd')" id="btn-rgpd">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L4 5v5c0 4.4 2.5 7.8 6 9 3.5-1.2 6-4.6 6-9V5z" stroke="currentColor" stroke-width="1.5"/></svg>
-        <span class="tooltip">RGPD</span>
+        <span class="tooltip">Mes donnÃ©es</span>
       </button>
       <button class="sidebar-btn" onclick="switchContent('settings')" id="btn-settings">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -611,7 +643,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
   <div id="main-area">
     <!-- Header -->
     <div id="app-header">
-      <span id="header-emoji">âï¸</span>
+      <span id="header-emoji">Ã¢ÂÂÃ¯Â¸Â</span>
       <span class="header-greeting" id="header-greeting">Bonne journÃ©e, Lauralie</span>
       <span class="header-date" id="header-date">Vendredi 20 mars</span>
       <div class="header-pills">
@@ -634,24 +666,27 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
           <div class="glass-card hero-card">
             <div class="aurora-suggestion-label">Aurora Â· Suggestion</div>
             <div class="hero-sep"></div>
-            <div class="hero-score-row">
-              <div>
-                <div class="hero-name">Camille Moreau</div>
-                <div class="hero-location">Lyon Â· DÃ©veloppeuse Full-Stack</div>
-              </div>
-              <div class="hero-score">82</div>
-            </div>
+            <div class="hero-name">Camille Moreau</div>
+            <div class="hero-location">Mairie de Lyon Â· Agent administratif Â· CatÃ©gorie B</div>
             <div class="hero-justif">
               <p>Similaire Ã  tes 3 derniÃ¨res recrues rÃ©ussies.</p>
               <p>Son profil dÃ©passe ta moyenne de 8 points.</p>
               <p>Elle attend depuis J+2 â fenÃªtre optimale.</p>
             </div>
+            <div class="hero-score-row">
+              <div class="hero-score">82</div>
+              <div style="font-size:11px;opacity:0.40;color:var(--text-secondary);">/ 100</div>
+            </div>
+            <div class="hero-actions">
+              <button class="btn-contact" onclick="showAuroraPanel()">Contacter</button>
+              <button class="btn-profile" onclick="showAuroraPanel()">Voir profil</button>
+            </div></div>
             <div class="hero-actions">
               <button class="btn-contact" onclick="showAuroraPanel()">Contacter</button>
               <button class="btn-profile" onclick="switchContent('candidates')">Voir le profil</button>
             </div>
             <div class="hero-level">
-              <div class="level-label">ââââââââââ Niveau 2 Â· Recrutement actif</div>
+              <div class="level-label">Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ Niveau 2 Â· Recrutement actif</div>
               <div class="level-bar"><div class="level-fill"></div></div>
             </div>
           </div>
@@ -676,13 +711,18 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
       <!-- CANDIDATES -->
       <div class="content-page" id="content-candidates">
         <div class="page-title">Candidats</div>
-        <div class="page-sub">5 profils actifs Â· Aurora les surveille</div>
+        <div class="page-sub"><div style="margin-bottom:12px;">
+  <input type="text" id="candidate-search" placeholder="Rechercher un candidat..." 
+    oninput="filterCandidates(this.value)"
+    style="width:100%;padding:10px 16px;border-radius:10px;border:1px solid var(--glass-border);background:var(--glass-bg);color:var(--text-primary);font-family:inherit;font-size:13px;outline:none;">
+</div>
+        5 profils actifs Â· Je les surveille</div>
         <div class="candidates-list">
           <div class="glass-card candidate-row" onclick="showAuroraPanel()">
             <div class="candidate-avatar">CM</div>
             <div class="candidate-info">
               <div class="candidate-name">Camille Moreau</div>
-              <div class="candidate-meta">Lyon Â· DÃ©veloppeuse Full-Stack Â· J+2</div>
+              <div class="candidate-meta">Mairie de Lyon Â· Agent administratif Â· CatÃ©gorie B Â· J+2</div>
             </div>
             <span class="score-badge high">Optimal</span>
             <div class="candidate-score">82</div>
@@ -691,7 +731,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
             <div class="candidate-avatar">MC</div>
             <div class="candidate-info">
               <div class="candidate-name">Marie Chauvet</div>
-              <div class="candidate-meta">Paris Â· ChargÃ©e de mission RH Â· J+5</div>
+              <div class="candidate-meta">Mairie de Paris Â· Ãducatrice de jeunes enfants Â· CatÃ©gorie B Â· J+5</div>
             </div>
             <span class="score-badge high">Chaud</span>
             <div class="candidate-score">78</div>
@@ -700,7 +740,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
             <div class="candidate-avatar">NB</div>
             <div class="candidate-info">
               <div class="candidate-name">Nadia Bensalem</div>
-              <div class="candidate-meta">Marseille Â· Gestionnaire carriÃ¨res Â· J+8</div>
+              <div class="candidate-meta">Mairie de Marseille Â· Technicienne voirie Â· CatÃ©gorie C Â· J+8</div>
             </div>
             <span class="score-badge mid">TiÃ¨de</span>
             <div class="candidate-score">71</div>
@@ -709,7 +749,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
             <div class="candidate-avatar">TL</div>
             <div class="candidate-info">
               <div class="candidate-name">Thomas Lebrun</div>
-              <div class="candidate-meta">Bordeaux Â· Assistant RH Â· J+3</div>
+              <div class="candidate-meta">Mairie de Bordeaux Â· Assistant social territorial Â· CatÃ©gorie B Â· J+3</div>
             </div>
             <span class="score-badge mid">Actif</span>
             <div class="candidate-score">65</div>
@@ -718,7 +758,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
             <div class="candidate-avatar">SA</div>
             <div class="candidate-info">
               <div class="candidate-name">Sophie Andrieu</div>
-              <div class="candidate-meta">Strasbourg Â· Coordinatrice RH Â· J+12</div>
+              <div class="candidate-meta">Mairie de Strasbourg Â· Animatrice pÃ©riscolaire Â· CatÃ©gorie C Â· J+12</div>
             </div>
             <span class="score-badge low">Froid</span>
             <div class="candidate-score">58</div>
@@ -736,40 +776,40 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
             <div class="glass-card kanban-card">
               <span class="kanban-card-score">71</span>
               <div class="kanban-card-name">Nadia Bensalem</div>
-              <div class="kanban-card-role">Gestionnaire carriÃ¨res</div>
+              <div class="kanban-card-role">Technicienne voirie Â· CatÃ©gorie C</div>
             </div>
             <div class="glass-card kanban-card">
               <span class="kanban-card-score">58</span>
               <div class="kanban-card-name">Sophie Andrieu</div>
-              <div class="kanban-card-role">Coordinatrice RH</div>
+              <div class="kanban-card-role">Animatrice pÃ©riscolaire Â· CatÃ©gorie C</div>
             </div>
           </div>
           <div class="kanban-col">
-            <div class="kanban-col-title">ContactÃ© <span class="kanban-col-count">1</span></div>
+            <div class="kanban-col-title">Je regarde <span class="kanban-col-count">1</span></div>
             <div class="glass-card kanban-card">
               <span class="kanban-card-score">65</span>
               <div class="kanban-card-name">Thomas Lebrun</div>
-              <div class="kanban-card-role">Assistant RH</div>
+              <div class="kanban-card-role">Assistant social territorial Â· CatÃ©gorie B</div>
             </div>
           </div>
           <div class="kanban-col">
-            <div class="kanban-col-title">Entretien <span class="kanban-col-count">1</span></div>
+            <div class="kanban-col-title">On se rencontre <span class="kanban-col-count">1</span></div>
             <div class="glass-card kanban-card">
               <span class="kanban-card-score">78</span>
               <div class="kanban-card-name">Marie Chauvet</div>
-              <div class="kanban-card-role">ChargÃ©e mission RH</div>
+              <div class="kanban-card-role">Ãducatrice de jeunes enfants Â· CatÃ©gorie B</div>
             </div>
           </div>
           <div class="kanban-col">
-            <div class="kanban-col-title">Top choix <span class="kanban-col-count">1</span></div>
+            <div class="kanban-col-title">Je dÃ©cide <span class="kanban-col-count">1</span></div>
             <div class="glass-card kanban-card" style="border-color:rgba(129,140,248,0.3);background:rgba(129,140,248,0.08);">
               <span class="kanban-card-score">82</span>
               <div class="kanban-card-name">Camille Moreau</div>
-              <div class="kanban-card-role">DÃ©veloppeuse Full-Stack</div>
+              <div class="kanban-card-role">Agent administratif Â· CatÃ©gorie B</div>
             </div>
           </div>
           <div class="kanban-col">
-            <div class="kanban-col-title">Offre <span class="kanban-col-count">0</span></div>
+            <div class="kanban-col-title">C'est notÃ© <span class="kanban-col-count">0</span></div>
             <div style="font-size:12px;color:var(--text-secondary);padding:12px 0;font-style:italic;">Aucune offre envoyÃ©e</div>
           </div>
         </div>
@@ -797,7 +837,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
           <div class="glass-card msg-chat">
             <div class="msg-chat-header">
               <div class="candidate-name">Camille Moreau</div>
-              <div class="candidate-meta">Lyon Â· DÃ©veloppeuse Full-Stack Â· 82 pts</div>
+              <div class="candidate-meta">Mairie de Lyon Â· Agent administratif Â· CatÃ©gorie B Â· 82 pts</div>
             </div>
             <div class="msg-bubbles">
               <div class="bubble them">Bonjour, j'ai bien reÃ§u votre message concernant le poste.</div>
@@ -850,7 +890,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
 
       <!-- RGPD -->
       <div class="content-page" id="content-rgpd">
-        <div class="page-title">DonnÃ©es & RGPD</div>
+        <div class="page-title">Mes donnÃ©es</div>
         <div class="page-sub">Consentements et protection des donnÃ©es</div>
         <div class="glass-card" style="margin-bottom:16px;padding:20px;">
           <div style="display:flex;gap:24px;flex-wrap:wrap;">
@@ -908,15 +948,11 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
     <span class="ticker-sep">Â·</span>
     <span class="ticker-item type-c">Rappel Â· Thomas Lebrun attend depuis 3 jours</span>
     <span class="ticker-sep">Â·</span>
-    <span class="ticker-item type-d">RGPD Â· 5 consentements actifs Â· 0 Ã  renouveler</span>
-    <span class="ticker-sep">Â·</span>
     <span class="ticker-item type-a">Aurora Â· Camille Moreau a le meilleur profil de la semaine</span>
     <span class="ticker-sep">Â·</span>
     <span class="ticker-item type-b">Marie Chauvet Â· Entretien planifiÃ© jeudi 14h00</span>
     <span class="ticker-sep">Â·</span>
     <span class="ticker-item type-c">Rappel Â· Thomas Lebrun attend depuis 3 jours</span>
-    <span class="ticker-sep">Â·</span>
-    <span class="ticker-item type-d">RGPD Â· 5 consentements actifs Â· 0 Ã  renouveler</span>
   </div>
 </div>
 
@@ -937,11 +973,11 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
 
 <!-- Mobile nav -->
 <div id="mobile-nav">
-  <button class="mob-nav-btn active" onclick="switchContent('dashboard')"><span>â</span><span>Home</span></button>
-  <button class="mob-nav-btn" onclick="switchContent('candidates')"><span>ð¤</span><span>Candidats</span></button>
-  <button class="mob-nav-btn" onclick="switchContent('kanban')"><span>â¤</span><span>Pipeline</span></button>
-  <button class="mob-nav-btn" onclick="switchContent('messaging')"><span>â</span><span>Messages</span></button>
-  <button class="mob-nav-btn" onclick="showAuroraPanel()"><span>â¦</span><span>Aurora</span></button>
+  <button class="mob-nav-btn active" onclick="switchContent('dashboard')"><span>Ã¢ÂÂ</span><span>Home</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('candidates')"><span>Ã°ÂÂÂ¤</span><span>Candidats</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('kanban')"><span>Ã¢ÂÂ¤</span><span>Pipeline</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('messaging')"><span>Ã¢ÂÂ</span><span>Messages</span></button>
+  <button class="mob-nav-btn" onclick="showAuroraPanel()"><span>â</span><span>Plus</span></button>
 </div>
 
 <!-- Aurora H24 Panel -->
@@ -954,7 +990,7 @@ body.light #mobile-nav{background:rgba(255,255,255,0.9);}
       <div class="panel-name">Aurora</div>
       <div class="panel-status">Active Â· H24</div>
     </div>
-    <button class="panel-close" onclick="closeAuroraPanel()">â</button>
+    <button class="panel-close" onclick="closeAuroraPanel()">Ã¢ÂÂ</button>
   </div>
   <div class="panel-messages" id="panel-messages">
     <div class="panel-bubble aurora">Bonjour Lauralie. Je suis Aurora, ton assistant RH intelligent. Que puis-je faire pour toi aujourd'hui ?</div>
@@ -1069,6 +1105,37 @@ function showPage(pageId){
   }
 }
 
+
+// Anti-burnout Aurora bar logic
+function getAuroraAntiBurnout(){
+  const now=new Date();
+  const h=now.getHours();
+  const day=now.getDay(); // 0=Sun, 1=Mon, 5=Fri
+  // After 20h: white static dot, message without action button
+  if(h>=20){
+    return {main:"C'est tard. \u00C7a peut attendre demain.",sub:'',dot:'white',noAction:true};
+  }
+  // Friday >= 17h
+  if(day===5 && h>=17){
+    return {main:'Belle semaine. Tu peux partir serein.',sub:'',dot:'default',noAction:true};
+  }
+  // Monday < 10h
+  if(day===1 && h<10){
+    return {main:'Bonne semaine. Par o\u00F9 tu veux commencer ?',sub:'',dot:'default',noAction:false,discreetBtn:true};
+  }
+  return null;
+}
+
+
+// Case-insensitive candidate search
+function filterCandidates(query){
+  const q=query.toLowerCase();
+  document.querySelectorAll('.candidate-row').forEach(row=>{
+    const text=row.textContent.toLowerCase();
+    row.style.display=text.includes(q)?'':'none';
+  });
+}
+
 function switchContent(contentId){
   animateProgress();
   document.querySelectorAll('.content-page').forEach(p=>p.classList.remove('active'));
@@ -1081,21 +1148,36 @@ function switchContent(contentId){
   // Update mobile nav
   document.querySelectorAll('.mob-nav-btn').forEach(b=>b.classList.remove('active'));
   // Update aurora message
-  const msgs=auroraMessages[contentId]||auroraMessages.dashboard;
-  document.getElementById('aurora-main-text').textContent=msgs.main;
-  document.getElementById('aurora-sub-text').textContent=msgs.sub;
+  const burnout=getAuroraAntiBurnout();
+  if(burnout){
+    document.getElementById('aurora-main-text').textContent=burnout.main;
+    document.getElementById('aurora-sub-text').textContent=burnout.sub;
+    const dot=document.querySelector('.aurora-dot');
+    if(dot&&burnout.dot==='white'){dot.style.background='#fff';dot.style.animation='none';}
+    const actions=document.querySelector('.aurora-actions');
+    if(actions&&burnout.noAction){actions.style.display='none';}
+    else if(actions){actions.style.display='flex';if(burnout.discreetBtn){actions.style.opacity='0.5';}}
+  } else {
+    const msgs=auroraMessages[contentId]||auroraMessages.dashboard;
+    document.getElementById('aurora-main-text').textContent=msgs.main;
+    document.getElementById('aurora-sub-text').textContent=msgs.sub;
+    const dot=document.querySelector('.aurora-dot');
+    if(dot){dot.style.background='';dot.style.animation='';}
+    const actions=document.querySelector('.aurora-actions');
+    if(actions){actions.style.display='flex';actions.style.opacity='1';}
+  }
 }
 
 // ===== HEADER TIME =====
 function setHeaderTime(){
   const now=new Date();
   const h=now.getHours();
-  let emoji='âï¸',greeting='Bonne journÃ©e';
-  if(h>=5&&h<9){emoji='ð¤';greeting='Bonne matinÃ©e';}
-  else if(h>=9&&h<12){emoji='âï¸';greeting='Bonne matinÃ©e';}
-  else if(h>=12&&h<17){emoji='âï¸';greeting='Bon aprÃ¨s-midi';}
-  else if(h>=17&&h<20){emoji='ð';greeting='Bonne soirÃ©e';}
-  else{emoji='ð';greeting='Bonsoir';}
+  let emoji='Ã¢ÂÂÃ¯Â¸Â',greeting='Bonne journÃ©e';
+  if(h>=5&&h<9){emoji='Ã°ÂÂÂ¤';greeting='Bonne matinÃ©e';}
+  else if(h>=9&&h<12){emoji='Ã¢ÂÂÃ¯Â¸Â';greeting='Bonne matinÃ©e';}
+  else if(h>=12&&h<17){emoji='Ã¢ÂÂÃ¯Â¸Â';greeting='Bon aprÃ¨s-midi';}
+  else if(h>=17&&h<20){emoji='Ã°ÂÂÂ';greeting='Bonne soirÃ©e';}
+  else{emoji='Ã°ÂÂÂ';greeting='Bonsoir';}
   const el=document.getElementById('header-emoji');
   const gr=document.getElementById('header-greeting');
   const dt=document.getElementById('header-date');
@@ -1134,7 +1216,27 @@ const auroraQA=[
   {q:'Comment fonctionne le mode dÃ©mo ?',a:'En mode dÃ©mo, tu explores Auralis avec 5 candidats fictifs. Toutes les fonctionnalitÃ©s sont actives. Pour connecter tes vraies donnÃ©es, crÃ©e un compte gratuit â 14 jours sans carte.'},
   {q:'Peux-tu analyser mon offre d\'emploi ?',a:'Bien sÃ»r. Colle ton texte d\'offre ici ou dans l\'Ã©diteur d\'offres. Je l\'analyse selon 8 critÃ¨res (attractivitÃ©, clartÃ©, biais, mots-clÃ©s) et propose des amÃ©liorations.'},
   {q:'Quand est-ce que tu dors ?',a:'Jamais. Je suis disponible 24h/24, 7j/7. C\'est l\'idÃ©e mÃªme d\'Aurora H24 â pendant que tu rÃ©cupÃ¨res, je continue Ã  surveiller tes candidats et Ã  prÃ©parer tes suggestions du lendemain.'}
-];
+,
+  {q:'Pourquoi vous et pas Berger-Levrault ?',a:'Berger-Levrault gÃ¨re la paie et la carriÃ¨re. Auralis gÃ¨re le recrutement avec une IA bienveillante. On ne remplace pas BL, on complÃ¨te : Aurora aide Ã  choisir le bon candidat, BL gÃ¨re ensuite sa carriÃ¨re administrative.'},
+  {q:'Comment prouvez-vous qu\'il n\'y a pas de discrimination ?',a:'Aurora ne voit jamais le nom, le genre, l\'Ã¢ge ou la photo. Le score est basÃ© uniquement sur les compÃ©tences, l\'expÃ©rience et l\'adÃ©quation au poste. Chaque dÃ©cision est traÃ§able et auditable. Un rapport de non-discrimination est exportable Ã  tout moment.'},
+  {q:'Que se passe-t-il si j\'arrÃªte l\'abonnement ?',a:'Tes donnÃ©es te restent. Tu peux exporter l\'intÃ©gralitÃ© en CSV avant la fin. AprÃ¨s rÃ©siliation, les donnÃ©es candidat sont anonymisÃ©es sous 30 jours conformÃ©ment au RGPD. Aucun piÃ¨ge, aucun engagement.'},
+  {q:'OÃ¹ sont hÃ©bergÃ©es les donnÃ©es ?',a:'Toutes les donnÃ©es sont hÃ©bergÃ©es en France chez OVH (datacenter de Paris). Pas de transfert hors Union EuropÃ©enne. Chiffrement AES-256 au repos, TLS 1.3 en transit. CertifiÃ© ISO 27001.'},
+  {q:'Aurora peut-elle se tromper ?',a:'Oui. Aurora est un outil d\'aide Ã  la dÃ©cision, pas un dÃ©cideur. Le score est une suggestion basÃ©e sur des donnÃ©es. C\'est toujours toi qui dÃ©cides. Si Aurora se trompe, tu peux corriger et elle apprend de tes retours.'},
+  {q:'Comment fonctionne le score exactement ?',a:'Le score est sur 100, calculÃ© sur 5 critÃ¨res pondÃ©rÃ©s : correspondance poste (30%), expÃ©rience (25%), disponibilitÃ© (20%), rÃ©activitÃ© (15%), donnÃ©es comportementales (10%). Chaque critÃ¨re est dÃ©taillÃ© dans la fiche candidat.'},
+  {q:'Est-ce conforme au RGPD ?',a:'EntiÃ¨rement. Consentement explicite de chaque candidat, droit d\'accÃ¨s, de rectification et de suppression, durÃ©e de conservation limitÃ©e Ã  6 mois, registre des traitements, DPO dÃ©signÃ©. Audit RGPD disponible sur demande.'},
+  {q:'Combien Ã§a coÃ»te ?',a:'3 formules : Essentiel (49â¬/mois, 1 utilisateur, 50 candidats), Pro (149â¬/mois, 5 utilisateurs, illimitÃ©), CollectivitÃ© (sur devis, multi-sites, SSO, formation). 14 jours d\'essai gratuit sans carte bancaire.'},
+  {q:'Comment former nos agents ?',a:'La formation prend 45 minutes en visio. Aurora est conÃ§ue pour Ãªtre intuitive : la plupart des utilisateurs sont autonomes en 2 jours. Documentation interactive intÃ©grÃ©e, support chat, et webinaires mensuels inclus.'},
+  {q:'Fonctionne-t-il sans internet ?',a:'Non, Auralis est une application web qui nÃ©cessite une connexion internet. Cependant, elle fonctionne sur n\'importe quel navigateur moderne, y compris mobile. Pas d\'installation nÃ©cessaire.'},
+  {q:'Peut-on l\'utiliser pour des concours de la FPT ?',a:'Oui. Aurora peut gÃ©rer les candidatures issues de concours territoriaux. Le pipeline s\'adapte aux Ã©tapes spÃ©cifiques : admissibilitÃ©, admission, liste d\'aptitude, recrutement effectif.'},
+  {q:'Combien de temps pour mettre en place ?',a:'Moins d\'une journÃ©e. CrÃ©ation du compte en 5 minutes, import des fiches de poste en 30 minutes, paramÃ©trage des critÃ¨res en 1 heure. Formation utilisateurs : 45 minutes. OpÃ©rationnel le jour mÃªme.'},
+  {q:'Quelle est la diffÃ©rence avec un jobboard ?',a:'Un jobboard publie des annonces. Auralis analyse, trie, recommande et suit chaque candidature de A Ã  Z. Aurora te dit qui contacter, quand, et pourquoi. C\'est un assistant intelligent, pas un panneau d\'affichage.'},
+  {q:'Aurora remplace-t-elle les RH ?',a:'Non. Aurora remplace les tÃ¢ches rÃ©pÃ©titives : tri de CV, relances, suivi des dÃ©lais. Les RH gardent le plus important : la relation humaine, l\'entretien, la dÃ©cision finale. Aurora libÃ¨re du temps pour l\'essentiel.'},
+  {q:'Comment gÃ©rez-vous les candidatures spontanÃ©es ?',a:'Les candidatures spontanÃ©es sont intÃ©grÃ©es au mÃªme pipeline. J'analyse le profil et le rapproche des postes ouverts. Si aucun poste ne correspond, le candidat est conservÃ© dans un vivier intelligent.'},
+  {q:'Peut-on personnaliser les critÃ¨res de scoring ?',a:'Oui. Chaque collectivitÃ© peut ajuster les pondÃ©rations des 5 critÃ¨res selon ses prioritÃ©s. Par exemple, donner plus de poids Ã  l\'expÃ©rience pour un poste senior, ou Ã  la disponibilitÃ© pour un remplacement urgent.'},
+  {q:'Y a-t-il une API pour s\'intÃ©grer Ã  nos outils ?',a:'Oui. API REST documentÃ©e pour s\'intÃ©grer avec votre SIRH, votre messagerie, ou votre intranet. Webhooks disponibles pour les notifications en temps rÃ©el. IntÃ©grations prÃªtes : Outlook, Gmail, Teams.'},
+  {q:'Comment garantissez-vous la disponibilitÃ© du service ?',a:'SLA de 99.9% de disponibilitÃ©. Infrastructure redondÃ©e sur 2 datacenters OVH en France. Sauvegardes quotidiennes. Monitoring 24/7. En cas d\'incident, notification sous 15 minutes et rÃ©solution sous 4 heures.'},
+  {q:'Peut-on gÃ©rer plusieurs services ou communes ?',a:'Oui. L\'offre CollectivitÃ© permet le multi-sites avec des espaces sÃ©parÃ©s par service ou commune. Chaque service voit uniquement ses candidats. L\'administrateur a une vue consolidÃ©e.'},
+  {q:'Quel est le taux de satisfaction des utilisateurs ?',a:'92% de satisfaction sur les collectivitÃ©s en test. Les retours les plus frÃ©quents : gain de temps considÃ©rable, meilleure traÃ§abilitÃ©, et fin de l\'oubli de relance candidat.'}];
 
 function showAuroraPanel(){
   document.getElementById('aurora-panel').classList.add('open');
@@ -1202,6 +1304,29 @@ function sendAuroraMsg(){
   // Auto redirect to login after 4000ms
   setTimeout(()=>{showPage('login');},4000);
 })();
+
+// LÃ©pine mode
+function checkLepineMode(){
+  if(window.location.hash==='#lepine'){
+    document.getElementById('lepine-overlay').classList.add('active');
+    // Skip splash, go directly to app
+    showPage('app');
+  }
+}
+function closeLepine(){
+  document.getElementById('lepine-overlay').classList.remove('active');
+  showAuroraPanel();
+}
+window.addEventListener('hashchange',checkLepineMode);
+
+checkLepineMode();
 </script>
+
+<!-- LÃ©pine mode -->
+<div id="lepine-overlay">
+  <div class="lepine-logo">Auralis<span class="lepine-rh">RH</span></div>
+  <div class="lepine-msg">Bonjour. Je suis Aurora.<br>Je suis l'intelligence artificielle d'Auralis RH.<br><br>Posez-moi une question sur ce produit.<br>N'importe laquelle.</div>
+  <button class="lepine-btn" onclick="closeLepine()">Poser une question â</button>
+</div>
 </body>
 </html>
