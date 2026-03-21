@@ -32,12 +32,16 @@ body{background:var(--bg,#04040e);transition:background 450ms ease,color 450ms e
 #cosmos-bg .halo-3{width:400px;height:400px;top:40%;left:40%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(196,181,253,0.10) 0%,transparent 70%);}
 
 /* Background images */
-#bg-image{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:url('assets/bg_dark.png');background-size:cover;background-position:center;background-attachment:scroll;background-repeat:no-repeat;}
-body.light #bg-image{background-image:url('assets/bg_light.png');}
-/* Fallback gradients */
-@supports not (background-image:url('')) {
-  #bg-image{background:radial-gradient(ellipse at 20% 50%,#1a0533 0%,#0d1b4b 40%,#04040e 100%);}
-  body.light #bg-image{background:radial-gradient(ellipse at 70% 30%,#fce4ec 0%,#e8d5f5 40%,#faf8ff 100%);}
+#bg-image{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 20% 50%,#1a0533 0%,#0d1b4b 40%,#04040e 100%);
+  background-image:url('https://drive.google.com/uc?export=view&id=1LRoCdJRZnRg4Y8IBPKQUMAxPAH9C2BUE');
+  background-size:cover;background-position:center;background-attachment:scroll;background-repeat:no-repeat;
+}
+body.light #bg-image{
+  background:radial-gradient(ellipse at 70% 30%,#fce4ec 0%,#e8d5f5 40%,#faf8ff 100%);
+  background-image:url('https://drive.google.com/uc?export=view&id=1l5-SvkqXFqD9Oh0HXcNtp53-2vMeGtQv');
+  background-size:cover;background-position:center;background-attachment:scroll;background-repeat:no-repeat;
 }
 #vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(4,4,14,0.7) 100%);}
 body.light #vignette{background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(200,180,255,0.2) 100%);}
