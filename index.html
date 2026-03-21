@@ -264,7 +264,7 @@ body.light .glass-card{background:rgba(255,255,255,0.75);}
   font-size:11px;font-weight:600;color:var(--indigo);text-transform:uppercase;letter-spacing:0.1em;
   margin-bottom:14px;
 }
-.aurora-suggestion-label::before{content:'Ã¢ÂÂ';font-size:8px;}
+.aurora-suggestion-label::before{content:'â';font-size:8px;}
 .hero-sep{height:1px;background:var(--glass-border);margin:14px 0;}
 .hero-name{font-size:28px;font-weight:700;color:var(--text-primary);margin-bottom:4px;}
 .hero-location{font-size:14px;color:rgba(248,247,244,0.55);}
@@ -579,7 +579,7 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
       </button>
     </div>
 
-    <div class="login-forgot"><a href="#">Mot de passe oubliÃ© Ã¢ÂÂ</a></div>
+    <div class="login-forgot"><a href="#">Mot de passe oubliÃ© â</a></div>
 
     <button class="btn-primary" onclick="showPage('app')">AccÃ©der Ã  mon espace</button>
     <button class="btn-demo" onclick="showPage('app')">Essayer maintenant â</button>
@@ -647,7 +647,7 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
   <div id="main-area">
     <!-- Header -->
     <div id="app-header">
-      <span id="header-emoji">Ã¢ÂÂÃ¯Â¸Â</span>
+      <span id="header-emoji">âï¸</span>
       <span class="header-greeting" id="header-greeting">Bonne journÃ©e, Lauralie</span>
       <span class="header-date" id="header-date">Vendredi 20 mars</span>
       <div class="header-pills">
@@ -690,7 +690,7 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
               <button class="btn-profile" onclick="switchContent('candidates')">Voir le profil</button>
             </div>
             <div class="hero-level">
-              <div class="level-label">Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂÃ¢ÂÂ Niveau 2 Â· Recrutement actif</div>
+              <div class="level-label">ââââââââââ Niveau 2 Â· Recrutement actif</div>
               <div class="level-bar"><div class="level-fill"></div></div>
             </div>
           </div>
@@ -977,10 +977,10 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
 
 <!-- Mobile nav -->
 <div id="mobile-nav">
-  <button class="mob-nav-btn active" onclick="switchContent('dashboard')"><span>Ã¢ÂÂ</span><span>Home</span></button>
-  <button class="mob-nav-btn" onclick="switchContent('candidates')"><span>Ã°ÂÂÂ¤</span><span>Candidats</span></button>
-  <button class="mob-nav-btn" onclick="switchContent('kanban')"><span>Ã¢ÂÂ¤</span><span>Pipeline</span></button>
-  <button class="mob-nav-btn" onclick="switchContent('messaging')"><span>Ã¢ÂÂ</span><span>Messages</span></button>
+  <button class="mob-nav-btn active" onclick="switchContent('dashboard')"><span>â</span><span>Home</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('candidates')"><span>ð¤</span><span>Candidats</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('kanban')"><span>â¤</span><span>Pipeline</span></button>
+  <button class="mob-nav-btn" onclick="switchContent('messaging')"><span>â</span><span>Messages</span></button>
   <button class="mob-nav-btn" onclick="showAuroraPanel()"><span>â</span><span>Plus</span></button>
 </div>
 
@@ -994,7 +994,7 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
       <div class="panel-name">Aurora</div>
       <div class="panel-status">Active Â· H24</div>
     </div>
-    <button class="panel-close" onclick="closeAuroraPanel()">Ã¢ÂÂ</button>
+    <button class="panel-close" onclick="closeAuroraPanel()">â</button>
   </div>
   <div class="panel-messages" id="panel-messages">
     <div class="panel-bubble aurora">Bonjour Lauralie. Je suis Aurora, ton assistant RH intelligent. Que puis-je faire pour toi aujourd'hui ?</div>
@@ -1176,12 +1176,12 @@ function switchContent(contentId){
 function setHeaderTime(){
   const now=new Date();
   const h=now.getHours();
-  let emoji='Ã¢ÂÂÃ¯Â¸Â',greeting='Bonne journÃ©e';
-  if(h>=5&&h<9){emoji='Ã°ÂÂÂ¤';greeting='Bonne matinÃ©e';}
-  else if(h>=9&&h<12){emoji='Ã¢ÂÂÃ¯Â¸Â';greeting='Bonne matinÃ©e';}
-  else if(h>=12&&h<17){emoji='Ã¢ÂÂÃ¯Â¸Â';greeting='Bon aprÃ¨s-midi';}
-  else if(h>=17&&h<20){emoji='Ã°ÂÂÂ';greeting='Bonne soirÃ©e';}
-  else{emoji='Ã°ÂÂÂ';greeting='Bonsoir';}
+  let emoji='âï¸',greeting='Bonne journÃ©e';
+  if(h>=5&&h<9){emoji='ð¤';greeting='Bonne matinÃ©e';}
+  else if(h>=9&&h<12){emoji='âï¸';greeting='Bonne matinÃ©e';}
+  else if(h>=12&&h<17){emoji='âï¸';greeting='Bon aprÃ¨s-midi';}
+  else if(h>=17&&h<20){emoji='ð';greeting='Bonne soirÃ©e';}
+  else{emoji='ð';greeting='Bonsoir';}
   const el=document.getElementById('header-emoji');
   const gr=document.getElementById('header-greeting');
   const dt=document.getElementById('header-date');
