@@ -1,0 +1,17 @@
+{
+  "name": "Auralis RH",
+  "short_name": "Auralis",
+  "start_url": "/auralis-rh/",
+  "display": "standalone",
+  "background_color": "#04040e",
+  "theme_color": "#818CF8",
+  "description": "Assistant IA de recrutement pour les collectivités territoriales",
+  "icons": [
+    {
+      "src": "https://drive.google.com/uc?export=view&id=1LRoCdJRZnRg4Y8IBPKQUMAxPAH9C2BUE",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
