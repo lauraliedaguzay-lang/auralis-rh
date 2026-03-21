@@ -569,11 +569,11 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
     <div class="login-divider">ou par email</div>
 
     <div class="login-input-wrap">
-      <input class="login-input" type="email" placeholder="ton@email.com">
+      <input class="login-input" type="email" id="login-email" placeholder="ton@email.com">
     </div>
 
     <div class="login-input-wrap" style="margin-top:10px;">
-      <input class="login-input" type="password" id="pwd-input" placeholder="Mot de passe" style="padding-right:44px;">
+      <input class="login-input" type="password" id="pwd-input" onkeydown="if(event.key==='Enter')loginValidate()" placeholder="Mot de passe" style="padding-right:44px;">
       <button class="eye-btn" onclick="togglePwd()" type="button">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><ellipse cx="9" cy="9" rx="7" ry="4.5" stroke="currentColor" stroke-width="1.3"/><circle cx="9" cy="9" r="2" stroke="currentColor" stroke-width="1.3"/></svg>
       </button>
@@ -581,7 +581,7 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
 
     <div class="login-forgot"><a href="#">Mot de passe oubliÃ© â</a></div>
 
-    <button class="btn-primary" onclick="showPage('app')">AccÃ©der Ã  mon espace</button>
+    <button class="btn-primary" onclick="loginValidate()">AccÃ©der Ã  mon espace</button>
     <button class="btn-demo" onclick="showPage('app')">Essayer maintenant â</button>
 
     <div class="login-fine">14 jours gratuit Â· sans carte bancaire</div>
@@ -851,8 +851,8 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
               <div class="bubble them">Tout Ã  fait, c'est notÃ©. Ã jeudi !</div>
             </div>
             <div class="msg-input-row">
-              <input class="msg-input" placeholder="Ãcrire un messageâ¦">
-              <button class="msg-send-btn">Envoyer</button>
+              <input class="msg-input" placeholder="Ãcrire un messageâ¦" onkeydown="if(event.key==='Enter')sendCandidateMsg()">
+              <button class="msg-send-btn" onclick="sendCandidateMsg()">Envoyer</button>
             </div>
           </div>
         </div>
@@ -904,11 +904,11 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
           </div>
         </div>
         <div class="rgpd-list">
-          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Camille Moreau</div><div class="rgpd-date">Consentement actif Â· Expire le 20/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
-          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Marie Chauvet</div><div class="rgpd-date">Consentement actif Â· Expire le 15/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
-          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Nadia Bensalem</div><div class="rgpd-date">Consentement actif Â· Expire le 10/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
-          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Thomas Lebrun</div><div class="rgpd-date">Consentement actif Â· Expire le 18/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
-          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Sophie Andrieu</div><div class="rgpd-date">Consentement actif Â· Expire le 08/09/2026</div></div><button class="rgpd-btn">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Camille Moreau</div><div class="rgpd-date">Consentement actif Â· Expire le 20/09/2026</div></div><button class="rgpd-btn" onclick="showAuroraPanel()">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Marie Chauvet</div><div class="rgpd-date">Consentement actif Â· Expire le 15/09/2026</div></div><button class="rgpd-btn" onclick="showAuroraPanel()">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Nadia Bensalem</div><div class="rgpd-date">Consentement actif Â· Expire le 10/09/2026</div></div><button class="rgpd-btn" onclick="showAuroraPanel()">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Thomas Lebrun</div><div class="rgpd-date">Consentement actif Â· Expire le 18/09/2026</div></div><button class="rgpd-btn" onclick="showAuroraPanel()">DÃ©tails</button></div>
+          <div class="glass-card rgpd-item"><div class="rgpd-status active"></div><div class="rgpd-info"><div class="rgpd-name">Sophie Andrieu</div><div class="rgpd-date">Consentement actif Â· Expire le 08/09/2026</div></div><button class="rgpd-btn" onclick="showAuroraPanel()">DÃ©tails</button></div>
         </div>
       </div>
 
@@ -919,7 +919,7 @@ body.light #lepine-overlay .lepine-msg{color:rgba(26,26,46,0.7);}
         <div class="settings-section">
           <div class="settings-section-title">Compte</div>
           <div class="glass-card">
-            <div class="settings-row"><div><div class="settings-label">Lauralie Daguzay</div><div class="settings-sub">lauralie.daguzay@gmail.com</div></div><button class="rgpd-btn">Modifier</button></div>
+            <div class="settings-row"><div><div class="settings-label">Lauralie Daguzay</div><div class="settings-sub">lauralie.daguzay@gmail.com</div></div><button class="rgpd-btn" onclick="modifierCompte()">Modifier</button></div>
             <div class="settings-row"><div><div class="settings-label">Notifications email</div><div class="settings-sub">Recevoir les rapports hebdomadaires</div></div><button class="toggle-switch on" onclick="this.classList.toggle('on')"><div class="toggle-switch-thumb"></div></button></div>
             <div class="settings-row"><div><div class="settings-label">Mode Aurora H24</div><div class="settings-sub">Assistance intelligente toujours active</div></div><button class="toggle-switch on" onclick="this.classList.toggle('on')"><div class="toggle-switch-thumb"></div></button></div>
           </div>
@@ -1324,6 +1324,145 @@ function closeLepine(){
 window.addEventListener('hashchange',checkLepineMode);
 
 checkLepineMode();
+
+
+// ===== MESSAGERIE CANDIDATS =====
+const candidateConversations = [
+  {name:'Camille Moreau', msgs:[
+    {from:'them', text:"Bonjour, j'ai bien reÃ§u votre message concernant le poste."},
+    {from:'me', text:"Bonjour Camille, effectivement votre profil nous intÃ©resse beaucoup."},
+    {from:'them', text:"Merci ! Je serais disponible cette semaine pour un entretien."},
+    {from:'me', text:"Parfait. Jeudi 14h vous conviendrait ?"},
+    {from:'them', text:"Tout Ã  fait, c'est notÃ©. Ã jeudi !"}
+  ]},
+  {name:'Marie Chauvet', msgs:[
+    {from:'me', text:"Bonjour Marie, votre candidature a retenu notre attention."},
+    {from:'them', text:"Merci beaucoup ! Je suis disponible jeudiâ¦"}
+  ]},
+  {name:'Thomas Lebrun', msgs:[
+    {from:'me', text:"Bonjour Thomas, merci pour votre candidature."},
+    {from:'them', text:"Bien reÃ§u, merci !"}
+  ]}
+];
+let currentConvo = 0;
+
+function switchConversation(idx){
+  currentConvo = idx;
+  const items = document.querySelectorAll('.msg-list-item');
+  items.forEach((el,i) => el.classList.toggle('active', i===idx));
+  renderConversation(idx);
+}
+
+function renderConversation(idx){
+  const convo = candidateConversations[idx];
+  if(!convo) return;
+  const container = document.querySelector('.msg-chat');
+  if(!container) return;
+  // Update header
+  const header = container.querySelector('.msg-chat-header');
+  if(header) header.textContent = convo.name;
+  // Update messages
+  const body = container.querySelector('.msg-bubbles');
+  if(!body) return;
+  body.innerHTML = '';
+  convo.msgs.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'msg-bubble ' + (m.from === 'me' ? 'sent' : 'received');
+    div.textContent = m.text;
+    body.appendChild(div);
+  });
+  body.scrollTop = body.scrollHeight;
+}
+
+function sendCandidateMsg(){
+  const input = document.querySelector('.msg-input');
+  if(!input) return;
+  const text = input.value.trim();
+  if(!text) return;
+  // Add to current conversation data
+  if(candidateConversations[currentConvo]){
+    candidateConversations[currentConvo].msgs.push({from:'me', text: text});
+  }
+  // Add bubble to UI
+  const body = document.querySelector('.msg-bubbles');
+  if(body){
+    const div = document.createElement('div');
+    div.className = 'msg-bubble sent';
+    div.textContent = text;
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+  input.value = '';
+  // Simulate response after 1.5s
+  setTimeout(() => {
+    const responses = [
+      "Merci pour votre message, je reviens vers vous rapidement.",
+      "Bien notÃ© ! Je vous confirme dÃ¨s que possible.",
+      "C'est parfait, merci pour cette information.",
+      "Je suis disponible, n'hÃ©sitez pas Ã  me recontacter."
+    ];
+    const resp = responses[Math.floor(Math.random() * responses.length)];
+    if(candidateConversations[currentConvo]){
+      candidateConversations[currentConvo].msgs.push({from:'them', text: resp});
+    }
+    if(body){
+      const div = document.createElement('div');
+      div.className = 'msg-bubble received';
+      div.textContent = resp;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+  }, 1500);
+}
+
+// ===== LOGIN VALIDATION =====
+function loginValidate(){
+  const email = document.getElementById('login-email');
+  const pwd = document.getElementById('pwd-input');
+  if(email && !email.value.trim()){
+    email.style.borderColor = '#ef4444';
+    email.placeholder = 'Email requis';
+    setTimeout(() => { email.style.borderColor = ''; email.placeholder = 'nom@collectivite.fr'; }, 2000);
+    return;
+  }
+  if(pwd && !pwd.value.trim()){
+    pwd.style.borderColor = '#ef4444';
+    pwd.placeholder = 'Mot de passe requis';
+    setTimeout(() => { pwd.style.borderColor = ''; pwd.placeholder = ''; }, 2000);
+    return;
+  }
+  showPage('app');
+}
+
+// ===== NOTIFICATIONS TOAST =====
+function showToast(message, duration){
+  duration = duration || 3000;
+  let toast = document.getElementById('aurora-toast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'aurora-toast';
+    toast.style.cssText = 'position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:rgba(129,140,248,0.95);color:#fff;padding:12px 24px;border-radius:14px;font-size:13px;font-family:inherit;z-index:9999;opacity:0;transition:opacity 300ms ease;pointer-events:none;max-width:90vw;text-align:center;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.opacity = '0'; }, duration);
+}
+
+// ===== ENTRETIEN PLANIFIER =====
+function planifierEntretien(name){
+  const jours = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi'];
+  const heures = ['9h00','10h30','14h00','15h30','16h00'];
+  const j = jours[Math.floor(Math.random()*jours.length)];
+  const h = heures[Math.floor(Math.random()*heures.length)];
+  showToast('Entretien planifiÃ© avec ' + name + ' â ' + j + ' ' + h);
+}
+
+// ===== SETTINGS MODIFIER COMPTE =====
+function modifierCompte(){
+  showToast('Modification du profil enregistrÃ©e.');
+}
+
 </script>
 
 <!-- LÃ©pine mode -->
